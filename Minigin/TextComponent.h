@@ -2,6 +2,8 @@
 #include <string>
 #include <memory>
 
+#include <SDL_ttf.h>
+
 #include "Component.h"
 
 namespace dae
@@ -11,7 +13,7 @@ namespace dae
 	class TextComponent final : public Component
 	{
 	public:
-		TextComponent(const std::string& text, std::shared_ptr<Font> font, const std::shared_ptr<GameObject>& pOwner);
+		explicit TextComponent(const std::weak_ptr<GameObject>& pOwner);
 		virtual ~TextComponent() override = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent& operator=(const TextComponent& other) = delete;
@@ -19,18 +21,19 @@ namespace dae
 		TextComponent& operator=(TextComponent&& other) = delete;
 
 		void Update() override;
-		void Render() const;
 
 		void SetText(const std::string& text);
-		void SetPosition(float x, float y);
+		void SetFont(const std::shared_ptr<Font>& pFont);
 
-		bool CanRender() const override { return true; }
+		void SetColor(const SDL_Color& color);
+		void SetColor(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a = 0);
+
+		bool CanRender() const override { return false; }
 
 	private:
-		bool m_needsUpdate;
-		std::string m_text;
-		//TransformComponent m_transform{};
-		std::shared_ptr<Font> m_font;
-		std::shared_ptr<Texture2D> m_textTexture;
+		bool m_NeedsUpdate{ true };
+		std::string m_pText{"empty"};
+		std::shared_ptr<Font> m_pFont{};
+		SDL_Color m_Color{ 255,255,255 };
 	};
 }
