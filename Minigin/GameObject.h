@@ -9,8 +9,8 @@ namespace dae
 {
 	class Texture2D;
 	class Component;
-	// todo: this should become final.
-	class GameObject final
+
+	class GameObject final : public std::enable_shared_from_this<GameObject>
 	{
 	public:
 		GameObject() = default;
@@ -23,8 +23,8 @@ namespace dae
 		void Update();
 		void Render() const;
 
-		template <class T, typename Owner>
-		void AddComponent(const Owner& owner);
+		template <class T>
+		std::shared_ptr<T> AddComponent();
 		template <class T>
 		std::shared_ptr<T> GetComponent();
 		template <class T>
@@ -33,19 +33,20 @@ namespace dae
 		bool HasComponent() const;
 
 	private:
-		std::vector<std::shared_ptr<Component>> m_ComponentPtrs;
+		std::vector<std::shared_ptr<Component>> m_ComponentPtrs{};
 	};
 
-	template <class T, typename Owner>
-	void GameObject::AddComponent(const Owner& owner)
+	template <class T>
+	std::shared_ptr<T> GameObject::AddComponent()
 	{
 		if (HasComponent<T>())
 			throw std::runtime_error("There is already a component of this type connected to this GameObject");
 
-		auto pComponent = std::make_shared<T>(owner);
-		m_ComponentPtrs.push_back(pComponent);
-		delete pComponent;
-		//return pComponent;
+		const std::shared_ptr<T>pComponent = std::make_shared<T>(shared_from_this());
+		
+		m_ComponentPtrs.emplace_back(pComponent);
+
+		return pComponent;
 	}
 
 	template <class T>
@@ -56,8 +57,8 @@ namespace dae
 
 		for (const auto& pComponent : m_ComponentPtrs)
 		{
-			if (std::shared_ptr<T> derivedComponent = std::dynamic_pointer_cast<T>(pComponent))
-				return derivedComponent;
+			if (std::shared_ptr<T> otherComponent = std::dynamic_pointer_cast<T>(pComponent))
+				return otherComponent;
 		}
 		return nullptr;
 	}

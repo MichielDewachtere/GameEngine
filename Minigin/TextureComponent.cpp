@@ -8,7 +8,7 @@ void dae::TextureComponent::Render() const
 	if (!m_pTexture)
 		return;
 
-	const auto pTransform = this->GetOwner()->GetComponent<TransformComponent>();
+	const auto pTransform = this->GetOwner().lock()->GetComponent<TransformComponent>();
 	if (!pTransform)
 		return;
 

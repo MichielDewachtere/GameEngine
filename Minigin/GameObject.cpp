@@ -3,7 +3,13 @@
 
 dae::GameObject::~GameObject() = default;
 
-void dae::GameObject::Update() {}
+void dae::GameObject::Update()
+{
+	for (const auto& pComponent : m_ComponentPtrs)
+	{
+		pComponent->Update();
+	}
+}
 
 void dae::GameObject::Render() const
 {

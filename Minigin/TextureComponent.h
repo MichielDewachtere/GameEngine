@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <utility>
 
 #include "Component.h"
 #include "Texture2D.h"
@@ -9,8 +10,7 @@ namespace dae
 	class TextureComponent final : public Component
 	{
 	public:
-		TextureComponent() = default;
-		explicit TextureComponent(const std::shared_ptr<GameObject>& pOwner) : Component(pOwner) {}
+		explicit TextureComponent(const std::weak_ptr<GameObject>& pOwner) : Component(pOwner) {}
 		~TextureComponent() override = default;
 		TextureComponent(const TextureComponent& other) = delete;
 		TextureComponent& operator=(const TextureComponent& rhs) = delete;
@@ -20,11 +20,11 @@ namespace dae
 		void Update() override {};
 		void Render() const override;
 
-		void SetTexture(const std::shared_ptr<Texture2D> & pTexture) { m_pTexture = pTexture; }
+		void SetTexture(std::shared_ptr<Texture2D> pTexture) { m_pTexture = std::move(pTexture); }
 
 		bool CanRender() const override { return true; }
 
 	private:
-		std::shared_ptr<Texture2D> m_pTexture{};
+		std::shared_ptr<Texture2D> m_pTexture{ nullptr };
 	};
 }

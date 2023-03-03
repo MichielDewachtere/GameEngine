@@ -7,7 +7,6 @@ namespace dae
 	class Component
 	{
 	public:
-		Component() = default;
 		virtual ~Component() = default;
 		Component(const Component& other) = delete;
 		Component& operator=(const Component& rhs) = delete;
@@ -21,10 +20,11 @@ namespace dae
 		virtual bool CanRender() const = 0;
 
 	protected:
-		std::shared_ptr<GameObject> GetOwner() const { return m_pOwner; }
-		explicit Component(const std::shared_ptr<GameObject>& pOwner) : m_pOwner(pOwner) {}
+		std::weak_ptr<dae::GameObject> GetOwner() const;
+
+		explicit Component(std::weak_ptr<GameObject> pOwner) : m_pOwner(std::move(pOwner)) {}
 
 	private:
-		std::shared_ptr<GameObject> m_pOwner;
+		std::weak_ptr<GameObject> m_pOwner{ };
 	};
 }
