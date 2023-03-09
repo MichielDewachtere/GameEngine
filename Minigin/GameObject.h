@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include <stdexcept>
+#include <glm/vec3.hpp>
 
 #include "Component.h"
 
@@ -32,8 +33,41 @@ namespace dae
 		template <class T>
 		bool HasComponent() const;
 
+		void SetLocalPosition(const glm::vec3& pos);
+		//void SetWorldPosition(const glm::vec3& worldPos) { m_WorldPosition = worldPos; }
+		const glm::vec3& GetWorldPosition();
+
+		void SetParent(const std::shared_ptr<GameObject>& parent, const bool keepWorldPosition);
+		std::shared_ptr<GameObject> GetParent() const { return m_pParent; }
+
+		size_t GetChildCount() const { return m_ChildrenPtrs.size(); }
+		std::shared_ptr<GameObject> GetChildAt(unsigned int idx) const;
+		std::vector<std::shared_ptr<GameObject>> GetChildren() const { return m_ChildrenPtrs; }
+		//TODO: what happens to children's children
+		bool RemoveChild(const std::shared_ptr<GameObject>& go);
+		void AddChild(const std::weak_ptr<GameObject>& go);
+
 	private:
 		std::vector<std::shared_ptr<Component>> m_ComponentPtrs{};
+
+		bool m_PositionIsDirty{ true };
+		glm::vec3 m_WorldPosition{};
+		glm::vec3 m_LocalPosition{};
+
+		//glm::vec3 m_LocalScale{};
+		//glm::vec3 m_WorldScale{};
+
+		//glm::vec3 m_LocalRotation{};
+		//glm::vec3 m_WorldRotation{};
+
+		//TODO: to solve memory leak make child or parent weakptr otherwise
+		//sharedptrs will point to each other and keep each other alive
+		std::shared_ptr<GameObject> m_pParent{ nullptr };
+
+		// Could be unique if not shared to scene.
+		std::vector<std::shared_ptr<GameObject>> m_ChildrenPtrs{};
+
+		void UpdateWorldPosition();
 	};
 
 	template <class T>
