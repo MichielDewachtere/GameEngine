@@ -8,10 +8,10 @@ void dae::TextureComponent::Render() const
 	if (!m_pTexture)
 		return;
 
-	const auto pTransform = this->GetOwner().lock()->GetComponent<TransformComponent>();
+	const auto pTransform = this->GetOwner()->GetComponent<TransformComponent>();
 	if (!pTransform)
 		return;
 
-	const glm::vec2& pos = pTransform->GetPosition();
+	const glm::vec2& pos = pTransform->GetWorldPosition();
 	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
 }

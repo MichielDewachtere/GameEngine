@@ -10,7 +10,7 @@ namespace dae
 	class TextureComponent final : public Component
 	{
 	public:
-		explicit TextureComponent(const std::weak_ptr<GameObject>& pOwner) : Component(pOwner) {}
+		explicit TextureComponent(GameObject* pOwner) : Component(pOwner) {}
 		~TextureComponent() override = default;
 		TextureComponent(const TextureComponent& other) = delete;
 		TextureComponent& operator=(const TextureComponent& rhs) = delete;
