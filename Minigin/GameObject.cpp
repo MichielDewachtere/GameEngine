@@ -1,109 +1,108 @@
 #include "GameObject.h"
 
 #include "ResourceManager.h"
+#include "Scene.h"
+#include "TransformComponent.h"
+#include "SceneManager.h"
 
 dae::GameObject::~GameObject() = default;
 
+dae::GameObject* dae::GameObject::CreateGameObject()
+{
+	auto pGameObject{ std::make_unique<GameObject>(m_pScene) };
+	pGameObject->Init();
+
+	const auto pGameObjectPtr{ pGameObject.get() };
+
+	//pGameObject->SetParent(this, true);
+	pGameObject->m_pParent = this;
+	m_ChildrenPtrs.push_back(std::move(pGameObject));
+
+	return pGameObjectPtr;
+}
+
+void dae::GameObject::Init()
+{
+	m_pTransform = this->AddComponent<TransformComponent>().get();
+}
+
 void dae::GameObject::Update()
 {
-	//if it owns the children, it updates the children <=> scene
 	for (const auto& pComponent : m_ComponentPtrs)
-	{
 		pComponent->Update();
-	}
+
+	for (const auto& pChild : m_ChildrenPtrs)
+		pChild->Update();
 }
 
 void dae::GameObject::Render() const
 {
-	//const auto& pos = m_transform.GetPosition();
-	//Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
 	for (const auto& pComponent : m_ComponentPtrs)
 	{
 		if (pComponent->CanRender()) 
 			pComponent->Render();
 	}
+	
+	for (const auto& pChild : m_ChildrenPtrs)
+		pChild->Render();
 }
 
-void dae::GameObject::SetParent(const std::shared_ptr<GameObject>& parent, const bool keepWorldPosition)
+void dae::GameObject::SetParent(GameObject* pParent, const bool keepWorldPosition [[maybe_unused]] )
 {
-	if (parent == nullptr)
-		SetLocalPosition(m_WorldPosition);
+	if (pParent == nullptr)
+		m_pTransform->SetLocalPosition(m_pTransform->GetWorldPosition());
 	else
 	{
 		if (keepWorldPosition)
-			SetLocalPosition(m_LocalPosition - parent->GetWorldPosition());
-		m_PositionIsDirty = true;	
+			m_pTransform->SetLocalPosition(m_pTransform->GetLocalPosition() - pParent->m_pTransform->GetWorldPosition());
 	}
 
-	if (m_pParent)
-		m_pParent->SetParent(nullptr, true);
-
-	m_pParent = parent;
-	//if (m_pParent)
-		//m_pParent->AddChild(weak_from_this());
-}
-
-bool dae::GameObject::RemoveChild(const std::shared_ptr<GameObject>& go)
-{
-	if (go == nullptr)
-		return false;
-
-	if (m_ChildrenPtrs.empty())
-		return false;
-
-	//Remove the given child from the children list
-	if (std::remove(m_ChildrenPtrs.begin(), m_ChildrenPtrs.end(), go) != m_ChildrenPtrs.end())
+	if (GameObject* pOldParent = m_pParent)
 	{
-		//Remove itself as a parent of the child
-		//Update position, rotation and scale
-		go->SetParent(nullptr, true);
+		if (pOldParent == pParent) 
+			return;
+		
+		for (size_t i{}; i <= pOldParent->GetChildCount(); ++i)
+		{
+			auto& pChild = pOldParent->m_ChildrenPtrs[i];
 
-		return true;
+			if (pChild.get() == this)
+			{
+				//Add Child
+				if (pParent) 
+					pParent->m_ChildrenPtrs.push_back(std::move(pChild));
+				else
+					m_pScene->Add(std::move(pChild));
+
+				//Remove Child
+				std::swap(pOldParent->m_ChildrenPtrs[i], pOldParent->m_ChildrenPtrs.back());
+				pOldParent->m_ChildrenPtrs.pop_back();
+
+				m_pParent = pParent;
+
+				break;
+			}
+		}
 	}
-
-	//TODO: 
-
-	return false;
-}
-
-void dae::GameObject::AddChild(const std::weak_ptr<dae::GameObject>& go)
-{
-	if (go.expired())
-		return;
-
-	////Remove the given child from the child's previous parent
-	//go->SetParent(nullptr, true);
-
-	////Set itself as parent of the child
-	////Update position, rotation and scale
-	//go->SetParent(shared_from_this(), false);
-
-	//Add the child to its children list
-	m_ChildrenPtrs.push_back(go.lock());
-}
-
-void dae::GameObject::SetLocalPosition(const glm::vec3& pos)
-{
-	//TODO: children are not set dirty
-	m_LocalPosition = pos;
-	m_PositionIsDirty = true;
-}
-
-const glm::vec3& dae::GameObject::GetWorldPosition()
-{
-	if (m_PositionIsDirty)
-		UpdateWorldPosition();
-	return m_WorldPosition;
-}
-
-void dae::GameObject::UpdateWorldPosition()
-{
-	if (m_PositionIsDirty)
+	else
 	{
-		if (m_pParent == nullptr)
-			m_WorldPosition = m_LocalPosition;
-		else
-			m_WorldPosition = m_pParent->GetWorldPosition() + m_LocalPosition;
+		if (!pParent) 
+			return;
+
+		//const std::unique_ptr<GameObject> pThis(this);
+		//pParent->m_ChildrenPtrs.push_back(pThis);
 	}
-	m_PositionIsDirty = false;
+}
+
+std::vector<dae::GameObject*> dae::GameObject::GetChildren() const
+{
+	std::vector<GameObject*> childrenPtrs;
+	childrenPtrs.reserve(m_ChildrenPtrs.size());
+
+	for (const auto& pChild : m_ChildrenPtrs)
+	{
+		childrenPtrs.push_back(pChild.get());
+	}
+
+	return childrenPtrs;
 }
