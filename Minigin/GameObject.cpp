@@ -5,9 +5,9 @@
 #include "TransformComponent.h"
 #include "SceneManager.h"
 
-dae::GameObject::~GameObject() = default;
+real::GameObject::~GameObject() = default;
 
-dae::GameObject* dae::GameObject::CreateGameObject()
+real::GameObject* real::GameObject::CreateGameObject()
 {
 	auto pGameObject{ std::make_unique<GameObject>(m_pScene) };
 	pGameObject->Init();
@@ -21,12 +21,12 @@ dae::GameObject* dae::GameObject::CreateGameObject()
 	return pGameObjectPtr;
 }
 
-void dae::GameObject::Init()
+void real::GameObject::Init()
 {
 	m_pTransform = this->AddComponent<TransformComponent>().get();
 }
 
-void dae::GameObject::Update()
+void real::GameObject::Update()
 {
 	for (const auto& pComponent : m_ComponentPtrs)
 		pComponent->Update();
@@ -35,7 +35,7 @@ void dae::GameObject::Update()
 		pChild->Update();
 }
 
-void dae::GameObject::Render() const
+void real::GameObject::Render() const
 {
 	for (const auto& pComponent : m_ComponentPtrs)
 	{
@@ -47,7 +47,7 @@ void dae::GameObject::Render() const
 		pChild->Render();
 }
 
-void dae::GameObject::SetParent(GameObject* pParent, const bool keepWorldPosition [[maybe_unused]] )
+void real::GameObject::SetParent(GameObject* pParent, const bool keepWorldPosition [[maybe_unused]] )
 {
 	if (pParent == nullptr)
 		m_pTransform->SetLocalPosition(m_pTransform->GetWorldPosition());
@@ -94,7 +94,7 @@ void dae::GameObject::SetParent(GameObject* pParent, const bool keepWorldPositio
 	}
 }
 
-std::vector<dae::GameObject*> dae::GameObject::GetChildren() const
+std::vector<real::GameObject*> real::GameObject::GetChildren() const
 {
 	std::vector<GameObject*> childrenPtrs;
 	childrenPtrs.reserve(m_ChildrenPtrs.size());

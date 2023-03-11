@@ -6,7 +6,7 @@
 
 #include "Component.h"
 
-namespace dae
+namespace real
 {
 	class Font;
 	class Texture2D;

@@ -3,7 +3,7 @@
 #include "TextComponent.h"
 #include "Time.h"
 
-void dae::FPSCounterComponent::Update()
+void real::FPSCounterComponent::Update()
 {
 	const auto pTextComponent = this->GetOwner()/*.lock()*/->GetComponent<TextComponent>();
 

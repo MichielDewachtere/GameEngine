@@ -1,11 +1,11 @@
 #include "Time.h"
 
-void dae::Time::Init()
+void real::Time::Init()
 {
 	m_PrevTime = std::chrono::high_resolution_clock::now();
 }
 
-void dae::Time::Update()
+void real::Time::Update()
 {
 	const auto currentTime = std::chrono::high_resolution_clock::now();
 
@@ -15,12 +15,12 @@ void dae::Time::Update()
 	m_PrevTime = currentTime;
 }
 
-float dae::Time::GetElapsed() const
+float real::Time::GetElapsed() const
 {
 	return m_DeltaTime;
 }
 
-float dae::Time::GetTotal() const
+float real::Time::GetTotal() const
 {
 	return m_TotalTime;
 }

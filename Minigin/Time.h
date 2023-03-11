@@ -2,9 +2,9 @@
 #include "Singleton.h"
 #include <chrono>
 
-namespace dae
+namespace real
 {
-	class Time final : public dae::Singleton<Time>
+	class Time final : public real::Singleton<Time>
 	{
 	public:
 		void Init();

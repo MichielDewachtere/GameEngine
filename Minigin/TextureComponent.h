@@ -5,7 +5,7 @@
 #include "Component.h"
 #include "Texture2D.h"
 
-namespace dae
+namespace real
 {
 	class TextureComponent final : public Component
 	{

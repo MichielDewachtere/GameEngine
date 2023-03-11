@@ -3,7 +3,7 @@
 #include "Renderer.h"
 #include "TransformComponent.h"
 
-void dae::TextureComponent::Render() const
+void real::TextureComponent::Render() const
 {
 	if (!m_pTexture)
 		return;

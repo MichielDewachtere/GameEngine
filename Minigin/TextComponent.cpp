@@ -5,11 +5,11 @@
 #include "Texture2D.h"
 #include "TextureComponent.h"
 
-void dae::TextComponent::Update()
+void real::TextComponent::Update()
 {
 	if (m_NeedsUpdate)
 	{
-		const auto pTextureRenderer = this->GetOwner()->GetComponent<dae::TextureComponent>();
+		const auto pTextureRenderer = this->GetOwner()->GetComponent<real::TextureComponent>();
 
 		if (!pTextureRenderer)
 			return;
@@ -33,24 +33,24 @@ void dae::TextComponent::Update()
 }
 
 // This implementation uses the "dirty flag" pattern
-void dae::TextComponent::SetText(const std::string& text)
+void real::TextComponent::SetText(const std::string& text)
 {
 	m_pText = text;
 	m_NeedsUpdate = true;
 }
 
-void dae::TextComponent::SetFont(const std::shared_ptr<Font>& pFont)
+void real::TextComponent::SetFont(const std::shared_ptr<Font>& pFont)
 {
 	m_pFont = pFont;
 	m_NeedsUpdate = true;
 }
 
-void dae::TextComponent::SetColor(const SDL_Color& color)
+void real::TextComponent::SetColor(const SDL_Color& color)
 {
 	m_Color = color;
 }
 
-void dae::TextComponent::SetColor(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a)
+void real::TextComponent::SetColor(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a)
 {
 	m_Color.r = r;
 	m_Color.g = g;

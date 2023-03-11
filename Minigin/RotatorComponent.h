@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-namespace dae
+namespace real
 {
 	class RotatorComponent final : public Component
 	{

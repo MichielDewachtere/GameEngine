@@ -4,7 +4,7 @@
 #include <memory>
 #include "Singleton.h"
 
-namespace dae
+namespace real
 {
 	class Scene;
 	class SceneManager final : public Singleton<SceneManager>

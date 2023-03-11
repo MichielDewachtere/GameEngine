@@ -3,7 +3,7 @@
 
 #include "Component.h"
 
-namespace dae
+namespace real
 {
 	class GameObject;
 	class TransformComponent final : public Component

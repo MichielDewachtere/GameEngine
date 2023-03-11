@@ -3,7 +3,7 @@
 #include "Time.h"
 #include "TransformComponent.h"
 
-void dae::RotatorComponent::Update()
+void real::RotatorComponent::Update()
 {
 	const auto pTransform = GetOwner()->GetComponent<TransformComponent>();
 	

@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-namespace dae
+namespace real
 {
 	class GameObject;
 	class Component
@@ -20,7 +20,7 @@ namespace dae
 		virtual bool CanRender() const = 0;
 
 	protected:
-		//std::weak_ptr<dae::GameObject> GetOwner() const;
+		//std::weak_ptr<real::GameObject> GetOwner() const;
 		GameObject* GetOwner() const;
 
 		explicit Component(GameObject* pOwner) : m_pOwner(pOwner) {}

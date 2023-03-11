@@ -1,34 +1,34 @@
 #include "TransformComponent.h"
 
-void dae::TransformComponent::Update()
+void real::TransformComponent::Update()
 {
 }
 
-const glm::vec3& dae::TransformComponent::GetLocalPosition() const
+const glm::vec3& real::TransformComponent::GetLocalPosition() const
 {
 	return m_LocalPosition;
 }
 
-const glm::vec3& dae::TransformComponent::GetWorldPosition()
+const glm::vec3& real::TransformComponent::GetWorldPosition()
 {
 	if (m_PositionIsDirty)
 		UpdateWorldPosition();
 	return m_WorldPosition;
 }
 
-void dae::TransformComponent::SetWorldPosition(const float x, const float y, const float z)
+void real::TransformComponent::SetWorldPosition(const float x, const float y, const float z)
 {
 	m_WorldPosition.x = x;
 	m_WorldPosition.y = y;
 	m_WorldPosition.z = z;
 }
 
-void dae::TransformComponent::SetWorldPosition(const glm::vec3& pos)
+void real::TransformComponent::SetWorldPosition(const glm::vec3& pos)
 {
 	m_WorldPosition = pos;
 }
 
-void dae::TransformComponent::SetLocalPosition(float x, float y, float z)
+void real::TransformComponent::SetLocalPosition(float x, float y, float z)
 {
 	m_LocalPosition.x = x;
 	m_LocalPosition.y = y;
@@ -37,14 +37,14 @@ void dae::TransformComponent::SetLocalPosition(float x, float y, float z)
 	SetPositionDirty();
 }
 
-void dae::TransformComponent::SetLocalPosition(const glm::vec3& pos)
+void real::TransformComponent::SetLocalPosition(const glm::vec3& pos)
 {
 	m_LocalPosition = pos;
 
 	SetPositionDirty();
 }
 
-void dae::TransformComponent::UpdateWorldPosition()
+void real::TransformComponent::UpdateWorldPosition()
 {
 	if (m_PositionIsDirty)
 	{
@@ -56,7 +56,7 @@ void dae::TransformComponent::UpdateWorldPosition()
 	m_PositionIsDirty = false;
 }
 
-void dae::TransformComponent::SetPositionDirty()
+void real::TransformComponent::SetPositionDirty()
 {
 	m_PositionIsDirty = true;
 
