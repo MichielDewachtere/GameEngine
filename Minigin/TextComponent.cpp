@@ -5,16 +5,11 @@
 #include "Texture2D.h"
 #include "TextureComponent.h"
 
-dae::TextComponent::TextComponent(const std::weak_ptr<GameObject>& pOwner) 
-	: Component(pOwner)
-{
-}
-
 void dae::TextComponent::Update()
 {
 	if (m_NeedsUpdate)
 	{
-		const auto pTextureRenderer = this->GetOwner().lock()->GetComponent<dae::TextureComponent>();
+		const auto pTextureRenderer = this->GetOwner()->GetComponent<dae::TextureComponent>();
 
 		if (!pTextureRenderer)
 			return;

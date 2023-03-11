@@ -13,7 +13,7 @@ namespace dae
 	class TextComponent final : public Component
 	{
 	public:
-		explicit TextComponent(const std::weak_ptr<GameObject>& pOwner);
+		explicit TextComponent(GameObject* pOwner) : Component(pOwner) {}
 		virtual ~TextComponent() override = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent& operator=(const TextComponent& other) = delete;
