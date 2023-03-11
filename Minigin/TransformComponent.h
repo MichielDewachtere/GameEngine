@@ -9,7 +9,7 @@ namespace dae
 	class TransformComponent final : public Component
 	{
 	public:
-		explicit TransformComponent(const std::weak_ptr<GameObject>& pOwner) : Component(pOwner) {}
+		explicit TransformComponent(GameObject* pOwner) : Component(pOwner) {}
 		~TransformComponent() override = default;
 		TransformComponent(const TransformComponent& other) = delete;
 		TransformComponent& operator=(const TransformComponent& rhs) = delete;
@@ -18,12 +18,23 @@ namespace dae
 
 		void Update() override;
 
-		const glm::vec3& GetPosition() const { return m_Position; }
-		void SetPosition(float x, float y, float z = 0);
-		void SetPosition(const glm::vec3& pos) { m_Position = pos; }
+		const glm::vec3& GetLocalPosition() const;
+		const glm::vec3& GetWorldPosition();
+
+		void SetWorldPosition(float x, float y, float z = 0);
+		void SetWorldPosition(const glm::vec3& pos);
+
+		void SetLocalPosition(float x, float y, float z = 0);
+		void SetLocalPosition(const glm::vec3& pos);
 
 		bool CanRender() const override { return false; }
 	private:
-		glm::vec3 m_Position{};
+		glm::vec3 m_LocalPosition{};
+		glm::vec3 m_WorldPosition{};
+
+		bool m_PositionIsDirty = true;
+
+		void UpdateWorldPosition();
+		void SetPositionDirty();
 	};
 }
