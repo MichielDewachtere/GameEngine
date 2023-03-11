@@ -6,7 +6,7 @@ namespace dae
 	class RotatorComponent final : public Component
 	{
 	public:
-		explicit RotatorComponent(const std::weak_ptr<GameObject>& pOwner) : Component(pOwner) {}
+		explicit RotatorComponent(GameObject* pOwner) : Component(pOwner) {}
 		RotatorComponent(const RotatorComponent& other) = delete;
 		RotatorComponent operator=(const RotatorComponent& rhs) = delete;
 		RotatorComponent(RotatorComponent&& other) = delete;

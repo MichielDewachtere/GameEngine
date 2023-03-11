@@ -5,24 +5,30 @@
 
 void dae::RotatorComponent::Update()
 {
-	const auto pTransform = this->GetOwner().lock()->GetComponent<TransformComponent>();
+	const auto pTransform = GetOwner()->GetComponent<TransformComponent>();
 	
 	if (!pTransform)
 		return;
+	
+	const auto pParent = GetOwner()->GetParent();
 
-	// TODO: rotates always around parent create bool or smthn
-	m_Pivot = this->GetOwner().lock()->GetParent()->GetWorldPosition();
+	if (!pParent)
+		m_Pivot = { 0,0,0 };
+	else
+		m_Pivot = pParent->GetComponent<TransformComponent>()->GetWorldPosition();
 
 	const auto dt = Time::GetInstance().GetElapsed();
-	const float radius = distance(this->GetOwner().lock()->GetWorldPosition(), m_Pivot);
+	const float radius = distance(pTransform->GetWorldPosition(), m_Pivot);
 	glm::vec3 newPos;
-
-	//TODO: m_Angle keeps increasing
+	
 	m_Angle += m_Speed * dt;
+	
+	if (m_Angle >= 360)
+		m_Angle = 0;
 
 	newPos.x = radius * glm::cos(glm::radians(m_Angle));
 	newPos.y = radius * glm::sin(glm::radians(m_Angle));
-	newPos.z = pTransform->GetPosition().z;
+	newPos.z = pTransform->GetLocalPosition().z;
 
-	pTransform->SetPosition(m_Pivot + newPos);
+	pTransform->SetLocalPosition(newPos);
 }
