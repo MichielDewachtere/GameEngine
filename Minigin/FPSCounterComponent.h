@@ -6,7 +6,7 @@ namespace dae
 	class FPSCounterComponent final : public Component
 	{
 	public:
-		explicit FPSCounterComponent(const std::weak_ptr<GameObject>& pOwner) : Component(pOwner) {}
+		explicit FPSCounterComponent(GameObject* pOwner) : Component(pOwner) {}
 		virtual ~FPSCounterComponent() override = default;
 		FPSCounterComponent(const FPSCounterComponent& other) = delete;
 		FPSCounterComponent& operator=(const FPSCounterComponent& other) = delete;

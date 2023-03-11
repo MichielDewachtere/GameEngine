@@ -20,11 +20,12 @@ namespace dae
 		virtual bool CanRender() const = 0;
 
 	protected:
-		std::weak_ptr<dae::GameObject> GetOwner() const;
+		//std::weak_ptr<dae::GameObject> GetOwner() const;
+		GameObject* GetOwner() const;
 
-		explicit Component(std::weak_ptr<GameObject> pOwner) : m_pOwner(std::move(pOwner)) {}
+		explicit Component(GameObject* pOwner) : m_pOwner(pOwner) {}
 
 	private:
-		std::weak_ptr<GameObject> m_pOwner{ };
+		GameObject* m_pOwner{ };
 	};
 }

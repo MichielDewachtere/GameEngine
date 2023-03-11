@@ -5,7 +5,7 @@
 
 void dae::FPSCounterComponent::Update()
 {
-	const auto pTextComponent = this->GetOwner().lock()->GetComponent<TextComponent>();
+	const auto pTextComponent = this->GetOwner()/*.lock()*/->GetComponent<TextComponent>();
 
 	if (!pTextComponent)
 		return;
