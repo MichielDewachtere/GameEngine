@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -176,6 +176,8 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\3rdParty\imgui-1.89.4\backends\imgui_impl_opengl2.h" />
+    <ClInclude Include="..\3rdParty\imgui-1.89.4\backends\imgui_impl_sdl2.h" />
     <ClInclude Include="..\3rdParty\imgui-1.89.4\imconfig.h" />
     <ClInclude Include="..\3rdParty\imgui-1.89.4\imgui.h" />
     <ClInclude Include="..\3rdParty\imgui-1.89.4\imgui_internal.h" />
@@ -201,6 +203,8 @@
     <ClInclude Include="TransformComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\3rdParty\imgui-1.89.4\backends\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="..\3rdParty\imgui-1.89.4\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.89.4\imgui.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.89.4\imgui_demo.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.89.4\imgui_draw.cpp" />

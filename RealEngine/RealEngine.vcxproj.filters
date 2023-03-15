@@ -87,6 +87,12 @@
     <ClInclude Include="..\3rdParty\imgui-1.89.4\imstb_truetype.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.89.4\backends\imgui_impl_opengl2.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.89.4\backends\imgui_impl_sdl2.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -153,6 +159,12 @@
       <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.89.4\imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.89.4\backends\imgui_impl_opengl2.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.89.4\backends\imgui_impl_sdl2.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
   </ItemGroup>
