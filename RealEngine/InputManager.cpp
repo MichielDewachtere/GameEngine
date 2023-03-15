@@ -1,6 +1,8 @@
 #include <SDL.h>
 #include "InputManager.h"
 
+#include "backends/imgui_impl_sdl2.h"
+
 bool real::InputManager::ProcessInput()
 {
 	SDL_Event e;
@@ -8,13 +10,8 @@ bool real::InputManager::ProcessInput()
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
-		if (e.type == SDL_KEYDOWN) {
-			
-		}
-		if (e.type == SDL_MOUSEBUTTONDOWN) {
-			
-		}
-		// etc...
+		//process event for ImGui
+		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
 
 	return true;
