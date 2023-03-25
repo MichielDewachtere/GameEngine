@@ -10,6 +10,7 @@ bool real::InputManager::ProcessInput()
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
+
 		//process event for ImGui
 		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
