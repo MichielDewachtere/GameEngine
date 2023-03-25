@@ -47,7 +47,7 @@ void real::GameObject::Render() const
 		pChild->Render();
 }
 
-void real::GameObject::SetParent(GameObject* pParent, const bool keepWorldPosition [[maybe_unused]] )
+void real::GameObject::SetParent(GameObject* pParent, const bool keepWorldPosition)
 {
 	if (pParent == nullptr)
 		m_pTransform->SetLocalPosition(m_pTransform->GetWorldPosition());
