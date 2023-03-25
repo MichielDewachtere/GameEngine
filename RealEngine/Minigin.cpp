@@ -8,6 +8,7 @@
 
 #include <chrono>
 
+#include "Input.h"
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
@@ -71,6 +72,8 @@ real::Minigin::Minigin(const std::string &dataPath)
 	ResourceManager::GetInstance().Init(dataPath);
 
 	Time::GetInstance().Init();
+
+	Input::GetInstance().Init();
 }
 
 real::Minigin::~Minigin()
@@ -87,7 +90,8 @@ void real::Minigin::Run(const std::function<void()>& load)
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
-	auto& input = InputManager::GetInstance();
+	//auto& input = InputManager::GetInstance();
+	auto& input = Input::GetInstance();
 	auto& time = Time::GetInstance();
 
 	// todo: this update loop could use some work.
@@ -111,6 +115,13 @@ void real::Minigin::Run(const std::function<void()>& load)
 		}
 
 		doContinue = input.ProcessInput();
+
+		input.Update();
+		//if (input.HandleInput())
+		//{
+		//	input.HandleInput()->Execute();
+		//}
+
 		time.Update();
 		sceneManager.Update();
 		renderer.Render();
