@@ -93,6 +93,15 @@
     <ClInclude Include="..\3rdParty\imgui\backends\imgui_impl_sdl2.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="XInputController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -166,6 +175,15 @@
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\backends\imgui_impl_sdl2.cpp">
       <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="XInputController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
