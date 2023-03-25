@@ -16,6 +16,7 @@ namespace real
 	class GameObject final : public std::enable_shared_from_this<GameObject>
 	{
 	public:
+		GameObject() = default;
 		GameObject(Scene* pScene)  : m_pScene(pScene) {}
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
