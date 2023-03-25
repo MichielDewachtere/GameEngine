@@ -15,7 +15,7 @@ namespace real
 		SDL_Color m_clearColor{};
 
 		//ImGui
-		bool m_ShowDemo{ true };
+		bool m_ShowDemo{ false };
 	public:
 		void Init(SDL_Window* window);
 		void Render();
