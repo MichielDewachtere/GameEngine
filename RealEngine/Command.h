@@ -28,6 +28,7 @@ namespace real
 	{
 	public:
 		explicit MoveCommand(GameObject* object, const float speed = 50);
+		virtual ~MoveCommand() override = default;
 
 		void Execute() override;
 		void SetDirection(const glm::vec2& direction) { m_Direction = direction; }
