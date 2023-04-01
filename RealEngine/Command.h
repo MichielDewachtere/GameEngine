@@ -46,4 +46,17 @@ namespace real
 
 		void Execute() override;
 	};
+
+	class DamageCommand final : public Command
+	{
+	public:
+		explicit DamageCommand(GameObject* object, const int damage = 1);
+		virtual ~DamageCommand() override = default;
+
+		void Execute() override;
+
+		void SetDamageAmount(const int amount) { m_Damage = amount; }
+	private:
+		int m_Damage;
+	};
 }

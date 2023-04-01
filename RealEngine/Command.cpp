@@ -6,7 +6,7 @@
 #include "TransformComponent.h"
 #include <memory>
 
-#include "Input.h"
+#include "HealthComponent.h"
 #include "Time.h"
 
 #define MAX_THUMBSTICK_VALUE 32767
@@ -24,7 +24,7 @@ void real::MoveCommand::Execute()
     // Check if the TransformComponent is valid.
     if (pTransform == nullptr)
     {
-        throw std::runtime_error("no transform component found when MoveCommand::Execute executed");
+        throw std::runtime_error("Error: Could not execute MoveCommand - no TransformComponent found on associated GameObject. Please ensure the GameObject has a TransformComponent attached.");
     }
 
     // Get the current position of the game object.
@@ -39,10 +39,32 @@ void real::MoveCommand::Execute()
     newPos.x = pos.x + m_Direction.x * m_Speed * Time::GetInstance().GetElapsed();
     newPos.y = pos.y + m_Direction.y * m_Speed * Time::GetInstance().GetElapsed();
 
-    // Set the new position of the game object.
-    pTransform->Translate(newPos);
+    // Translate the TransformComponent to the new position.
+    //pTransform->Translate(newPos);
+    pTransform->SetWorldPosition(newPos);
 }
+
 void real::TestCommand::Execute()
 {
 	std::cout << "test approved idk\n";
+}
+
+real::DamageCommand::DamageCommand(GameObject* object, const int damage)
+    : Command(object)
+    , m_Damage(damage)
+{
+}
+
+void real::DamageCommand::Execute()
+{
+    std::cout << m_Damage << '\n';
+
+    const auto pHealthComponent = GetObject()->GetComponent<real::HealthComponent>();
+
+    if (pHealthComponent == nullptr)
+    {
+        throw std::runtime_error("Error: Could not execute DamageCommand - no HealthComponent found on associated GameObject. Please ensure the GameObject has a HealthComponent attached.");
+    }
+
+    pHealthComponent->Damage(m_Damage);
 }
