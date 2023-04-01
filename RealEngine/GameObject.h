@@ -94,9 +94,16 @@ namespace real
 	void GameObject::RemoveComponent()
 	{
 		if (HasComponent<T>() == false)
-			return;
+			throw std::runtime_error("This GameObject doesn't have a component of this type");
 
-		// REMOVE COMPONENT LOGIC
+		for (auto it = m_ComponentPtrs.begin(); it != m_ComponentPtrs.end(); ++it)
+		{
+			if (std::shared_ptr<T> otherComponent = std::dynamic_pointer_cast<T>(*it))
+			{
+				it = m_ComponentPtrs.erase(it);
+				break;
+			}
+		}
 	}
 
 	template <class T>
