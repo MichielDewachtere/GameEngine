@@ -5,9 +5,9 @@
 
 void real::FPSCounterComponent::Update()
 {
-	const auto pTextComponent = this->GetOwner()/*.lock()*/->GetComponent<TextComponent>();
+	const auto pTextComponent = this->GetOwner()->GetComponent<TextComponent>();
 
-	if (!pTextComponent)
+	if (pTextComponent == nullptr)
 		return;
 
 	const float dt = Time::GetInstance().GetElapsed();
