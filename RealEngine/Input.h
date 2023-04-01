@@ -88,7 +88,8 @@ namespace real
 	 * \param scancode a SDL_SCANCODE_
 	 * \param event SDL_KEYUP, SDL_KEYDOWN or KEYPRESSED, all other inputs will result in a runtime error
 	 * \param commandArgs parameters for the Command class, must have a GameObject and optional params
-	 *		for MoveCommand: FLOAT	speed (= 50)
+	 *		for MoveCommand: FLOAT speed (= 50)
+	 *		for DamageCommand: INT damage (= 1)
 	 */
 	template <class T, typename... Args>
 	void Input::AddKeyboardCommands(Uint32 scancode, Uint32 event, Args... commandArgs)

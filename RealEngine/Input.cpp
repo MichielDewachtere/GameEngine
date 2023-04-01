@@ -50,7 +50,7 @@ bool real::Input::ProcessInput()
 			{
 				if (e.type == info.first && info.first == SDL_KEYUP)
 				{
-					if ((Uint32)e.key.keysym.scancode == info.second)
+					if (e.key.keysym.scancode == (int)info.second)
 					{
 						command->Execute();
 						//if (const auto moveCommand = dynamic_cast<MoveCommand*>(command.get()))
@@ -59,18 +59,13 @@ bool real::Input::ProcessInput()
 						//}
 					}
 				}
-				//else //if (info.first == SDL_KEYDOWN)
-				//{
-				//	const uint8_t* pKeyboardState = SDL_GetKeyboardState(nullptr);
-				//	if (pKeyboardState[info.second])
-				//	{
-				//		command->Execute(-1);
-				//		if (const auto moveCommand = dynamic_cast<MoveCommand*>(command.get()))
-				//		{
-				//			SetDirectionKeyboard(info.second, moveCommand);
-				//		}
-				//	}
-				//}
+				else if (e.type == info.first && info.first == SDL_KEYDOWN)
+				{
+					if (e.key.keysym.scancode == (int)info.second)
+					{
+						command->Execute();
+					}
+				}
 			}
 		}
 
