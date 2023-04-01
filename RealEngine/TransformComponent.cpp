@@ -58,10 +58,6 @@ void real::TransformComponent::Translate(const glm::vec2& translation)
 	SetPositionDirty();
 }
 
-void real::TransformComponent::Rotate(float angle, bool inDegrees)
-{
-}
-
 void real::TransformComponent::UpdateWorldPosition()
 {
 	if (m_PositionIsDirty)
