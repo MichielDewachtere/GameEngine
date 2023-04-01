@@ -6,8 +6,7 @@ namespace real
 	class XInputController final
 	{
 		class XInputControllerImpl;
-		//std::unique_ptr<XInputControllerImpl> m_pImpl;
-		XInputControllerImpl* m_pImpl;
+		std::unique_ptr<XInputControllerImpl> m_pImpl;
 
 	public:
 		enum class ControllerButton
@@ -40,8 +39,7 @@ namespace real
 		};
 
 		explicit XInputController(int controllerIndex);
-		//~XInputController() = default;
-		~XInputController();
+		~XInputController() = default;
 		XInputController(const XInputController& other) = delete;
 		XInputController operator=(const XInputController& rhs) = delete;
 		XInputController(XInputController&& other) = delete;
