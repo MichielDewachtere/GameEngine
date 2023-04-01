@@ -18,19 +18,23 @@ namespace real
 
 		void Update() override;
 
-		const glm::vec3& GetLocalPosition() const;
-		const glm::vec3& GetWorldPosition();
+		const glm::vec2& GetLocalPosition() const;
+		const glm::vec2& GetWorldPosition();
 
-		void SetWorldPosition(float x, float y, float z = 0);
-		void SetWorldPosition(const glm::vec3& pos);
+		void SetWorldPosition(float x, float y);
+		void SetWorldPosition(const glm::vec2& pos);
 
-		void SetLocalPosition(float x, float y, float z = 0);
-		void SetLocalPosition(const glm::vec3& pos);
+		void SetLocalPosition(float x, float y);
+		void SetLocalPosition(const glm::vec2& pos);
+
+		void Translate(float x, float y);
+		void Translate(const glm::vec2& translation);
 
 		bool CanRender() const override { return false; }
+
 	private:
-		glm::vec3 m_LocalPosition{};
-		glm::vec3 m_WorldPosition{};
+		glm::vec2 m_LocalPosition{};
+		glm::vec2 m_WorldPosition{};
 
 		bool m_PositionIsDirty = true;
 

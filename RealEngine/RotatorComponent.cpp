@@ -13,7 +13,7 @@ void real::RotatorComponent::Update()
 	const auto pParent = GetOwner()->GetParent();
 
 	if (!pParent)
-		m_Pivot = { 0,0,0 };
+		m_Pivot = { 0,0 };
 	else
 		m_Pivot = pParent->GetComponent<TransformComponent>()->GetWorldPosition();
 
@@ -28,7 +28,6 @@ void real::RotatorComponent::Update()
 
 	newPos.x = radius * glm::cos(glm::radians(m_Angle));
 	newPos.y = radius * glm::sin(glm::radians(m_Angle));
-	newPos.z = pTransform->GetLocalPosition().z;
 
 	pTransform->SetLocalPosition(newPos);
 }

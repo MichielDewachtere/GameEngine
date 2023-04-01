@@ -40,7 +40,7 @@ void real::MoveCommand::Execute()
     newPos.y = pos.y + m_Direction.y * m_Speed * Time::GetInstance().GetElapsed();
 
     // Set the new position of the game object.
-    pTransform->SetWorldPosition(newPos.x, newPos.y);
+    pTransform->Translate(newPos);
 }
 void real::TestCommand::Execute()
 {
