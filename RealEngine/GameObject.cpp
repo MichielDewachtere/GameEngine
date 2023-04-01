@@ -106,3 +106,16 @@ std::vector<real::GameObject*> real::GameObject::GetChildren() const
 
 	return childrenPtrs;
 }
+
+void real::GameObject::NotifyObservers(const Observer::GameEvent event)
+{
+	for (const auto& pObserver : m_ObserverPtrs)
+	{
+		pObserver->Notify(event, this);
+	}
+
+	for (const auto& pChild : m_ChildrenPtrs)
+	{
+		pChild->NotifyObservers(event);
+	}
+}
