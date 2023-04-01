@@ -13,8 +13,7 @@ real::GameObject* real::GameObject::CreateGameObject()
 	pGameObject->Init();
 
 	const auto pGameObjectPtr{ pGameObject.get() };
-
-	//pGameObject->SetParent(this, true);
+	
 	pGameObject->m_pParent = this;
 	m_ChildrenPtrs.push_back(std::move(pGameObject));
 
@@ -23,7 +22,7 @@ real::GameObject* real::GameObject::CreateGameObject()
 
 void real::GameObject::Init()
 {
-	m_pTransform = this->AddComponent<TransformComponent>().get();
+	m_pTransform = AddComponent<TransformComponent>();
 }
 
 void real::GameObject::Update()
