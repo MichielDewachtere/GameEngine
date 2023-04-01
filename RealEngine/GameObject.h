@@ -80,11 +80,11 @@ namespace real
 
 		std::unique_ptr<T> pComponent = std::make_unique<T>(this);
 
+		T* rawPtr = pComponent.get();
 		m_ComponentPtrs.emplace_back(std::move(pComponent));
 
-		return pComponent.get();
+		return rawPtr;
 	}
-
 	template <class T>
 	T* GameObject::GetComponent()
 	{
