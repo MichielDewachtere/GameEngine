@@ -14,18 +14,18 @@ namespace real
 		Component& operator=(Component&& rhs) = delete;
 
 		virtual void Update() = 0;
-		virtual void Render() const {};
+		virtual void Render() const {}
 		//virtual void FixedUpdate() = 0;
 
 		virtual bool CanRender() const = 0;
 
 	protected:
-		//std::weak_ptr<real::GameObject> GetOwner() const;
-		GameObject* GetOwner() const;
+		GameObject* GetOwner() const { return m_pOwner/*.get()*/; }
 
 		explicit Component(GameObject* pOwner) : m_pOwner(pOwner) {}
 
 	private:
-		GameObject* m_pOwner{ };
+		//std::unique_ptr<GameObject> m_pOwner{};
+		GameObject* m_pOwner{};
 	};
 }
