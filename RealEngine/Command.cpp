@@ -57,9 +57,7 @@ real::DamageCommand::DamageCommand(GameObject* object, const int damage)
 
 void real::DamageCommand::Execute()
 {
-    std::cout << m_Damage << '\n';
-
-    const auto pHealthComponent = GetObject()->GetComponent<real::HealthComponent>();
+    const auto pHealthComponent = GetObject()->GetParent()->GetComponent<HealthComponent>();
 
     if (pHealthComponent == nullptr)
     {
@@ -67,4 +65,15 @@ void real::DamageCommand::Execute()
     }
 
     pHealthComponent->Damage(m_Damage);
+}
+
+real::AddPointsCommand::AddPointsCommand(GameObject* object, const int amount)
+	: Command(object)
+	, m_Amount(amount)
+{
+}
+
+void real::AddPointsCommand::Execute()
+{
+	GetObject()->NotifyObservers(Observer::GameEvent::actorGainedPoints);
 }

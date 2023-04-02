@@ -59,4 +59,17 @@ namespace real
 	private:
 		int m_Damage;
 	};
+
+	class AddPointsCommand final : public Command
+	{
+	public:
+		explicit AddPointsCommand(GameObject* object, const int amount = 50);
+		virtual ~AddPointsCommand() override = default;
+
+		void Execute() override;
+
+		void SetPointsAmount(const int amount) { m_Amount = amount; }
+	private:
+		int m_Amount;
+	};
 }
