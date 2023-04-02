@@ -23,6 +23,8 @@ namespace real
 		void Update() override;
 
 		void SetText(const std::string& text);
+		std::string GetText() const { return m_pText; }
+
 		void SetFont(const std::shared_ptr<Font>& pFont);
 
 		void SetColor(const SDL_Color& color);
