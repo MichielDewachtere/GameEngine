@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RENDERER_H
+#define RENDERER_H
+
 #include <SDL.h>
 #include "Singleton.h"
 
@@ -31,3 +33,4 @@ namespace real
 	};
 }
 
+#endif // RENDERER_H

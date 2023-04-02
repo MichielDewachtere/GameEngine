@@ -1,4 +1,6 @@
-#pragma once
+#ifndef TEXTCOMPONENT_H
+#define TEXTCOMPONENT_H
+
 #include <string>
 #include <memory>
 
@@ -39,3 +41,5 @@ namespace real
 		SDL_Color m_Color{ 255,255,255 };
 	};
 }
+
+#endif // TEXTCOMPONENT_H

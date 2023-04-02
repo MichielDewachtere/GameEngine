@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RESOURCEMANAGER_H
+#define RESOURCEMANAGER_H
+
 #include <string>
 #include <memory>
 #include "Singleton.h"
@@ -19,3 +21,5 @@ namespace real
 		std::string m_dataPath;
 	};
 }
+
+#endif // RESOURCEMANAGER_H

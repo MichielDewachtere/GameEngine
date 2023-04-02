@@ -1,4 +1,6 @@
-//#pragma once
+#ifndef INPUT_H 
+#define INPUT_H
+
 #include <utility>
 #include <vector>
 #include <map>
@@ -100,3 +102,5 @@ namespace real
 			throw std::runtime_error("The event parameter must be either SDL_KEYDOWN or SDL_KEYUP");
 	}
 }
+
+#endif // INPUT_H

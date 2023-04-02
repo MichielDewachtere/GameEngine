@@ -1,4 +1,6 @@
-#pragma once
+#ifndef TIME_H
+#define TIME_H
+
 #include "Singleton.h"
 #include <chrono>
 
@@ -19,3 +21,5 @@ namespace real
 		float m_TotalTime{};	
 	};
 }
+
+#endif // TIME_H

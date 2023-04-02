@@ -1,4 +1,6 @@
-#pragma once
+#ifndef TRANSFORMCOMPONENT_H
+#define TRANSFORMCOMPONENT_H
+
 #include <glm/glm.hpp>
 
 #include "Component.h"
@@ -42,3 +44,5 @@ namespace real
 		void SetPositionDirty();
 	};
 }
+
+#endif // TRANSFORMCOMPONENT_H

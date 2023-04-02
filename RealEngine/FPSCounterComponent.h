@@ -1,4 +1,6 @@
-#pragma once
+#ifndef FPSCOUNTERCOMPONENT_H
+#define FPSCOUNTERCOMPONENT_H
+
 #include "Component.h"
 
 namespace real
@@ -21,3 +23,5 @@ namespace real
 		float m_Time{ m_UpdateInterval };
 	};
 }
+
+#endif // FPSCOUNTERCOMPONENT_H

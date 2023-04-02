@@ -1,4 +1,6 @@
-#pragma once
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
+
 #include <memory>
 #include <vector>
 #include <stdexcept>
@@ -14,7 +16,7 @@ namespace real
 	class Component;
 	class Observer;
 
-	class GameObject final : public std::enable_shared_from_this<GameObject>
+	class GameObject final
 	{
 	public:
 		GameObject() = default;
@@ -168,3 +170,5 @@ namespace real
 	}
 #pragma endregion
 }
+
+#endif // GAMEOBJECT_H

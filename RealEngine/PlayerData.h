@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PLAYERDATA_H
+#define PLAYERDATA_H
+
 #include "Observer.h"
 
 namespace real
@@ -19,3 +21,5 @@ namespace real
 		int m_AmountOfPoints{ 0 };
 	};
 }
+
+#endif // PLAYERDATA_H

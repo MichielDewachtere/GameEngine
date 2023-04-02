@@ -1,4 +1,6 @@
-#pragma once
+#ifndef COMPONENT_H
+#define COMPONENT_H
+
 #include "GameObject.h"
 
 namespace real
@@ -29,3 +31,5 @@ namespace real
 		GameObject* m_pOwner{};
 	};
 }
+
+#endif // COMPONENT_H

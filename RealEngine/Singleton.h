@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SINGLETON_H
+#define SINGLETON_H
+
 namespace real
 {
 	template <typename T>
@@ -21,3 +23,5 @@ namespace real
 		Singleton() = default;
 	};
 }
+
+#endif // SINGLETON_H

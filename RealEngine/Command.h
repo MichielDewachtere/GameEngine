@@ -1,4 +1,5 @@
-#pragma once
+#ifndef COMMAND_H
+#define COMMAND_H
 #include <glm/vec2.hpp>
 
 namespace real
@@ -73,3 +74,5 @@ namespace real
 		int m_Amount;
 	};
 }
+
+#endif // COMMAND_H

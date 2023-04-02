@@ -1,4 +1,6 @@
-#pragma once
+#ifndef TEXTURECOMPONENT_H
+#define TEXTURECOMPONENT_H
+
 #include <memory>
 #include <utility>
 
@@ -28,3 +30,5 @@ namespace real
 		std::shared_ptr<Texture2D> m_pTexture{ nullptr };
 	};
 }
+
+#endif // TEXTURECOMPONENT_H

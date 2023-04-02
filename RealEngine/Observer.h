@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBSERVER_H
+#define OBSERVER_H
 
 namespace real
 {
@@ -24,3 +25,5 @@ namespace real
 		virtual void Notify(GameEvent event, GameObject* actor) = 0;
 	};
 }
+
+#endif // OBSERVER_H
