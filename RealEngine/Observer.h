@@ -10,7 +10,8 @@ namespace real
 		enum class GameEvent
 		{
 			actorTookDamage,
-			actorDied
+			actorDied,
+			actorGainedPoints
 		};
 
 		explicit Observer() = default;
