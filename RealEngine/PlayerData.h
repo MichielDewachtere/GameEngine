@@ -14,5 +14,8 @@ namespace real
 		PlayerData& operator=(PlayerData&& other) = delete;
 
 		virtual void Notify(GameEvent event, GameObject* actor) override;
+	private:
+		//This is temporary, only for testing purposes
+		int m_AmountOfPoints{ 0 };
 	};
 }

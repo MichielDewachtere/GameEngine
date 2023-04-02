@@ -5,7 +5,9 @@
 
 void real::PlayerData::Notify(const GameEvent event, GameObject* actor)
 {
-	if (event == GameEvent::actorDied)
+	switch (event)
+	{
+	case GameEvent::actorDied:
 	{
 		const int lives = actor->GetParent()->GetComponent<HealthComponent>()->GetLives();
 
@@ -14,6 +16,33 @@ void real::PlayerData::Notify(const GameEvent event, GameObject* actor)
 		if (pTextComponent == nullptr)
 			return;
 
+		const std::string keyword = "Lives";
+
+		if (pTextComponent->GetText().find(keyword) == std::string::npos)
+			return;
+
 		pTextComponent->SetText("Lives: " + std::to_string(lives));
+		break;
+	}
+	case GameEvent::actorGainedPoints:
+	{
+		//This is for testing purposes
+		//TODO: finished version calls AttackComponent or something, this is still tbd.
+		m_AmountOfPoints += 50;
+
+		const auto pTextComponent = actor->GetComponent<TextComponent>();
+
+		if (pTextComponent == nullptr)
+			return;
+
+		const std::string keyword = "Points";
+
+		if (pTextComponent->GetText().find(keyword) == std::string::npos)
+			return;
+
+
+		pTextComponent->SetText("Points: " + std::to_string(m_AmountOfPoints));
+		break;
+	}
 	}
 }
