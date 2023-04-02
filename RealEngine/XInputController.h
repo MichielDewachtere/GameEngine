@@ -1,3 +1,6 @@
+#ifndef XINPUTCONTROLLER_H
+#define XINPUTCONTROLLER_H
+
 #include <memory>
 #include <glm/vec2.hpp>
 
@@ -5,8 +8,10 @@ namespace real
 {
 	class XInputController final
 	{
+	private:
 		class XInputControllerImpl;
-		std::unique_ptr<XInputControllerImpl> m_pImpl;
+		//std::unique_ptr<XInputControllerImpl> m_pImpl;
+		XInputControllerImpl* m_pImpl;
 
 	public:
 		enum class ControllerButton
@@ -39,7 +44,7 @@ namespace real
 		};
 
 		explicit XInputController(int controllerIndex);
-		~XInputController() = default;
+		~XInputController() /*= default*/;
 		XInputController(const XInputController& other) = delete;
 		XInputController operator=(const XInputController& rhs) = delete;
 		XInputController(XInputController&& other) = delete;
@@ -59,3 +64,5 @@ namespace real
 
 	};
 }
+
+#endif // XINPUTCONTROLLER_H
