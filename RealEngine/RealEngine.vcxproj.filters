@@ -32,6 +32,9 @@
     <Filter Include="Observer">
       <UniqueIdentifier>{32a7b601-e60f-4a53-bb03-675e9bf2d376}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Steam">
+      <UniqueIdentifier>{b92c3b69-9325-4f96-97d2-5cf88c558e7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdParty\imgui\imconfig.h">
@@ -125,6 +128,12 @@
     <ClInclude Include="PlayerData.h">
       <Filter>Observer</Filter>
     </ClInclude>
+    <ClInclude Include="SteamAchievements.h">
+      <Filter>Steam</Filter>
+    </ClInclude>
+    <ClInclude Include="Achievements.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui\imgui.cpp">
@@ -211,6 +220,12 @@
       <Filter>Observer</Filter>
     </ClCompile>
     <ClCompile Include="PlayerData.cpp">
+      <Filter>Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="SteamAchievements.cpp">
+      <Filter>Steam</Filter>
+    </ClCompile>
+    <ClCompile Include="Achievements.cpp">
       <Filter>Observer</Filter>
     </ClCompile>
   </ItemGroup>
