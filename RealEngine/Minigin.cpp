@@ -7,6 +7,7 @@
 #include "Minigin.h"
 
 #include <chrono>
+#include <steam_api_common.h>
 
 #include "Input.h"
 #include "InputManager.h"
@@ -122,6 +123,7 @@ void real::Minigin::Run(const std::function<void()>& load)
 		//	input.HandleInput()->Execute();
 		//}
 
+		SteamAPI_RunCallbacks();
 		time.Update();
 		sceneManager.Update();
 		renderer.Render();
