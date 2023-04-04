@@ -1,7 +1,7 @@
 #ifndef FONT_H
 #define FONT_H
 
-#include <string>
+#include "stdafx.h"
 
 struct _TTF_Font;
 namespace real

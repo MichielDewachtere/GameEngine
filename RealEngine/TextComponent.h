@@ -1,10 +1,7 @@
 #ifndef TEXTCOMPONENT_H
 #define TEXTCOMPONENT_H
 
-#include <string>
-#include <memory>
-
-#include <SDL_ttf.h>
+#include "stdafx.h"
 
 #include "Component.h"
 

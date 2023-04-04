@@ -1,7 +1,7 @@
 #ifndef TRANSFORMCOMPONENT_H
 #define TRANSFORMCOMPONENT_H
 
-#include <glm/glm.hpp>
+#include "stdafx.h"
 
 #include "Component.h"
 

@@ -3,7 +3,9 @@
 #include "HealthComponent.h"
 #include "TextComponent.h"
 
+#ifdef USE_STEAM
 #include "Achievements.h"
+#endif // USE_STEAM
 
 void real::PlayerData::Notify(const GameEvent event, GameObject* actor)
 {
@@ -32,10 +34,10 @@ void real::PlayerData::Notify(const GameEvent event, GameObject* actor)
 		//TODO: finished version calls AttackComponent or something, this is still tbd.
 		m_AmountOfPoints += 50;
 
-		const auto& achievements = Achievements::GetInstance();
+		//const auto& achievements = Achievements::GetInstance();
 
-		if (m_AmountOfPoints >= 500 && achievements.steamAchievements)
-			achievements.steamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
+		//if (m_AmountOfPoints >= 500 && achievements.steamAchievements)
+		//	achievements.steamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
 
 		const auto pTextComponent = actor->GetComponent<TextComponent>();
 

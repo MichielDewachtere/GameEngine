@@ -1,7 +1,7 @@
 #ifndef ROTATORCOMPONENT_H
 #define ROTATORCOMPONENT_H
 
-#include <glm/vec2.hpp>
+#include "stdafx.h"
 
 #include "Component.h"
 

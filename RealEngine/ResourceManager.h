@@ -1,8 +1,7 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 
-#include <string>
-#include <memory>
+#include "stdafx.h"
 #include "Singleton.h"
 
 namespace real

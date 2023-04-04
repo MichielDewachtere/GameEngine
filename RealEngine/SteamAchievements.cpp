@@ -1,10 +1,12 @@
 #include "SteamAchievements.h"
 
-#include <isteamuser.h>
-#include <isteamuserstats.h>
-#include <isteamutils.h>
-#include <SDL_syswm.h>
-#include <stdio.h>
+#ifdef USE_STEAM
+
+//#include <isteamuser.h>
+//#include <isteamuserstats.h>
+//#include <isteamutils.h>
+//#include <SDL_syswm.h>
+//#include <stdio.h>
 
 real::SteamAchievements::SteamAchievements(Achievement* achievements, int numAchievements) 
 	: m_CallbackUserStatsReceived(this, &SteamAchievements::OnUserStatsReceived)
@@ -108,3 +110,5 @@ void real::SteamAchievements::OnAchievementStored(UserAchievementStored_t* pCall
 		OutputDebugString("Stored Achievement for Steam\n");
 	}
 }
+
+#endif // USE_STEAM

@@ -1,7 +1,10 @@
 #ifndef STEAMACHIEVEMENTS_H
 #define STEAMACHIEVEMENTS_H
 
-#include <steam_api.h>
+#include "stdafx.h"
+
+#ifdef USE_STEAM
+
 
 #define _ACH_ID( id, name ) { id, #id, name, "", 0, 0 }
 namespace real
@@ -43,5 +46,7 @@ namespace real
 		bool m_Initialized; // Have we called Request stats and received the callback?
 	};
 }
+
+#endif // USE_STEAM
 
 #endif // STEAMACHIEVEMENTS_H

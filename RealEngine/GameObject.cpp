@@ -3,7 +3,6 @@
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "TransformComponent.h"
-#include "SceneManager.h"
 
 real::GameObject::~GameObject() = default;
 

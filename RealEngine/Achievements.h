@@ -1,13 +1,13 @@
 #ifndef ACHIEVEMENTS_H
 #define ACHIEVEMENTS_H
 
-#include "Observer.h"
-
-#include <steam_api.h>
-#include <vector>
+#include "stdafx.h"
 
 #include "Singleton.h"
+
+#ifdef USE_STEAM
 #include "SteamAchievements.h"
+#endif // USE_STEAM
 
 namespace real
 {
@@ -31,6 +31,7 @@ namespace real
 			ACH_TRAVEL_FAR_SINGLE = 3,
 		};
 
+#ifdef USE_STEAM
 		// Achievement array which will hold data about the achievements and their state
 		std::vector<Achievement> achievements =
 		{
@@ -42,6 +43,7 @@ namespace real
 
 		// Global access to Achievements object
 		SteamAchievements* steamAchievements = nullptr;
+#endif // USE_STEAM
 #pragma endregion
 	};
 }

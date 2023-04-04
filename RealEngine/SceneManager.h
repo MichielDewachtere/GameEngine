@@ -1,9 +1,7 @@
 #ifndef SCENEMANAGER_H
 #define SCENEMANAGER_H
 
-#include <vector>
-#include <string>
-#include <memory>
+#include "stdafx.h"
 #include "Singleton.h"
 
 namespace real
@@ -13,13 +11,15 @@ namespace real
 	{
 	public:
 		Scene& CreateScene(const std::string& name);
+		Scene& SetSceneActive(const std::string& name);
 
 		void Update();
 		void Render();
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
-		std::vector<std::shared_ptr<Scene>> m_scenes;
+		std::vector<std::shared_ptr<Scene>> m_ScenePtrs;
+		std::shared_ptr<Scene> m_pActiveScene;
 	};
 }
 

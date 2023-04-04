@@ -1,12 +1,8 @@
 #include "Input.h"
 
-#include <SDL_syswm.h>
-#include <iostream>
-#include <string>
-#include <Xinput.h>
-#include <glm/detail/func_geometric.inl>
+//#include <SDL_syswm.h>
 
-#include "backends/imgui_impl_sdl2.h"
+//#include "backends/imgui_impl_sdl2.h"
 
 void real::Input::Init()
 {

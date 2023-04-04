@@ -1,7 +1,5 @@
 #include "HealthComponent.h"
 
-#include <iostream>
-
 #include "TransformComponent.h"
 
 void real::HealthComponent::Update()

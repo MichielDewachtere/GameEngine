@@ -1,6 +1,7 @@
 #ifndef COMMAND_H
 #define COMMAND_H
-#include <glm/vec2.hpp>
+
+#include "stdafx.h"
 
 namespace real
 {
@@ -39,7 +40,6 @@ namespace real
 		glm::vec2 m_Direction{};
 		float m_Speed{};
 	};
-
 	class TestCommand final : public Command
 	{
 	public:
@@ -47,7 +47,6 @@ namespace real
 
 		void Execute() override;
 	};
-
 	class DamageCommand final : public Command
 	{
 	public:
@@ -60,7 +59,6 @@ namespace real
 	private:
 		int m_Damage;
 	};
-
 	class AddPointsCommand final : public Command
 	{
 	public:
@@ -72,6 +70,17 @@ namespace real
 		void SetPointsAmount(const int amount) { m_Amount = amount; }
 	private:
 		int m_Amount;
+	};
+	class LoadNextSceneCommand final : public Command
+	{
+	public:
+		LoadNextSceneCommand(GameObject* object, std::string name);
+		virtual ~LoadNextSceneCommand() override = default;
+
+		void Execute() override;
+
+	private:
+		std::string m_Name{ "empty" };
 	};
 }
 

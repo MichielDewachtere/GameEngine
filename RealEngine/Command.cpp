@@ -1,15 +1,11 @@
 #include "Command.h"
 
-#include <iostream>
-
 #include "GameObject.h"
 #include "TransformComponent.h"
-#include <memory>
 
 #include "HealthComponent.h"
+#include "SceneManager.h"
 #include "Time.h"
-
-#define MAX_THUMBSTICK_VALUE 32767
 
 real::MoveCommand::MoveCommand(GameObject* object, const float speed)
 	: Command(object)
@@ -57,7 +53,7 @@ real::DamageCommand::DamageCommand(GameObject* object, const int damage)
 
 void real::DamageCommand::Execute()
 {
-    const auto pHealthComponent = GetObject()->GetParent()->GetComponent<HealthComponent>();
+    const auto pHealthComponent = GetObject()->GetComponent<HealthComponent>();
 
     if (pHealthComponent == nullptr)
     {
@@ -76,4 +72,15 @@ real::AddPointsCommand::AddPointsCommand(GameObject* object, const int amount)
 void real::AddPointsCommand::Execute()
 {
 	GetObject()->NotifyObservers(Observer::GameEvent::actorGainedPoints);
+}
+
+real::LoadNextSceneCommand::LoadNextSceneCommand(GameObject* object, std::string name)
+	: Command(object)
+	, m_Name(std::move(name))
+{
+}
+
+void real::LoadNextSceneCommand::Execute()
+{
+    SceneManager::GetInstance().SetSceneActive(m_Name);
 }

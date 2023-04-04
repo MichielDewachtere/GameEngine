@@ -1,13 +1,4 @@
-#include <stdexcept>
-#define WIN32_LEAN_AND_MEAN 
-#include <windows.h>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
 #include "Minigin.h"
-
-#include <chrono>
-#include <steam_api_common.h>
 
 #include "Input.h"
 #include "InputManager.h"
@@ -123,7 +114,9 @@ void real::Minigin::Run(const std::function<void()>& load)
 		//	input.HandleInput()->Execute();
 		//}
 
+#ifdef USE_STEAM
 		SteamAPI_RunCallbacks();
+#endif // USE_STEAM
 		time.Update();
 		sceneManager.Update();
 		renderer.Render();

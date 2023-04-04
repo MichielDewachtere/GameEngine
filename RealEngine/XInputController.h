@@ -1,8 +1,7 @@
 #ifndef XINPUTCONTROLLER_H
 #define XINPUTCONTROLLER_H
 
-#include <memory>
-#include <glm/vec2.hpp>
+#include "stdafx.h"
 
 namespace real
 {
