@@ -1,9 +1,7 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include <memory>
-#include <vector>
-#include <stdexcept>
+#include "stdafx.h"
 
 #include "Component.h"
 #include "Observer.h"
@@ -16,12 +14,12 @@ namespace real
 	class Component;
 	class Observer;
 
-	class GameObject final
+	class GameObject
 	{
 	public:
-		GameObject() = default;
-		GameObject(Scene* pScene) : m_pScene(pScene) {}
-		~GameObject();
+		explicit GameObject() = default;
+		explicit GameObject(Scene* pScene) : m_pScene(pScene) {}
+		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject& operator=(const GameObject& rhs) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -29,7 +27,10 @@ namespace real
 
 		GameObject* CreateGameObject();
 
-		void Init();
+		template <class T>
+		T* CreateGameObject();
+
+		virtual void Init();
 
 		void Update();
 		void Render() const;
@@ -61,7 +62,7 @@ namespace real
 		bool HasObserver() const;
 		void NotifyObservers(Observer::GameEvent event);
 
-	private:
+	protected:
 		Scene* m_pScene{ nullptr };
 		TransformComponent* m_pTransform{ nullptr };
 
@@ -72,6 +73,28 @@ namespace real
 
 		std::vector<std::unique_ptr<Observer>> m_ObserverPtrs{};
 	};
+
+	/**
+	 * \brief 
+	 * \tparam T must be derived from GameObject
+	 * \return 
+	 */
+	template <class T>
+	T* GameObject::CreateGameObject()
+	{
+		if (std::is_base_of<GameObject, T>() == false)
+			throw std::runtime_error("Error: T must be derived from GameObject.");
+
+		auto pGameObject{ std::make_unique<T>(m_pScene) };
+		pGameObject->Init();
+	
+		const auto pGameObjectPtr{ pGameObject.get() };
+	
+		pGameObject->m_pParent = this;
+		m_ChildrenPtrs.push_back(std::move(pGameObject));
+	
+		return pGameObjectPtr;
+	}
 
 #pragma region ComponentLogic
 	template <class T>

@@ -1,11 +1,10 @@
 #include "Scene.h"
-//#include "GameObject.h"
 
 using namespace real;
 
 unsigned int Scene::m_idCounter = 0;
 
-Scene::Scene(const std::string& name) : m_name(name) {}
+Scene::Scene(const std::string& name) : m_Name(name) {}
 
 Scene::~Scene() = default;
 
@@ -16,7 +15,7 @@ GameObject* Scene::CreateGameObject()
 
 	GameObject* pGameObjectPtr{ pGameObject.get() };
 
-	m_objects.push_back(std::move(pGameObject));
+	Add(std::move(pGameObject));
 	return pGameObjectPtr;
 }
 
