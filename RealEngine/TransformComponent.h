@@ -1,8 +1,6 @@
 #ifndef TRANSFORMCOMPONENT_H
 #define TRANSFORMCOMPONENT_H
 
-#include "stdafx.h"
-
 #include "Component.h"
 
 namespace real

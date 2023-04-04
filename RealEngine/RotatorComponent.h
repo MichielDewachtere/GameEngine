@@ -1,8 +1,6 @@
 #ifndef ROTATORCOMPONENT_H
 #define ROTATORCOMPONENT_H
 
-#include "stdafx.h"
-
 #include "Component.h"
 
 namespace real

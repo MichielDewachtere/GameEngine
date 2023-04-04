@@ -1,7 +1,6 @@
 #ifndef SCENEMANAGER_H
 #define SCENEMANAGER_H
 
-#include "stdafx.h"
 #include "Singleton.h"
 
 namespace real

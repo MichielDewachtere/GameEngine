@@ -1,6 +1,5 @@
+#include "stdafx.h"
 #include "TransformComponent.h"
-
-#include "Command.h"
 
 void real::TransformComponent::Update()
 {

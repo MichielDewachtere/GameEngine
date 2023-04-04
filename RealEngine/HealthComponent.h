@@ -1,8 +1,6 @@
 #ifndef HEALTHCOMPONENT_H
 #define HEALTHCOMPONENT_H
 
-#include "stdafx.h"
-
 #include "Component.h"
 
 namespace real

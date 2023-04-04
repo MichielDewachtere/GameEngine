@@ -1,8 +1,6 @@
 #ifndef MINIGIN_H
 #define MINIGIN_H
 
-#include "stdafx.h"
-
 namespace real
 {
 	class Minigin

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "PlayerData.h"
 
 #include "HealthComponent.h"

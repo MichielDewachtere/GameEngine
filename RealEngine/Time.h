@@ -3,8 +3,6 @@
 
 #include "Singleton.h"
 
-#include <chrono>
-
 namespace real
 {
 	class Time final : public real::Singleton<Time>

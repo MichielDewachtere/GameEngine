@@ -1,6 +1,6 @@
+#include "stdafx.h"
 #include "GameObject.h"
 
-#include "ResourceManager.h"
 #include "Scene.h"
 #include "TransformComponent.h"
 

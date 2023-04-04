@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "TextObject.h"
 
 #include "TextComponent.h"

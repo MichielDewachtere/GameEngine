@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Minigin.h"
 
 #include "Input.h"

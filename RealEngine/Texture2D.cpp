@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Texture2D.h"
 
 real::Texture2D::~Texture2D()

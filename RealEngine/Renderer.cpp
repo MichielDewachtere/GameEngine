@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Renderer.h"
 
 #include "SceneManager.h"
@@ -26,10 +27,12 @@ void real::Renderer::Init(SDL_Window* window)
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
 
+#ifdef USE_IMGUI
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL2_Init();
+#endif // USE_IMGUI
 }
 
 void real::Renderer::Render()
@@ -40,6 +43,7 @@ void real::Renderer::Render()
 
 	SceneManager::GetInstance().Render();
 
+#ifdef USE_IMGUI
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_window);
 	ImGui::NewFrame();
@@ -50,15 +54,18 @@ void real::Renderer::Render()
 		ImGui::ShowDemoWindow(&m_ShowDemo);
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+#endif // USE_IMGUI
 
 	SDL_RenderPresent(m_renderer);
 }
 
 void real::Renderer::Destroy()
 {
+#ifdef USE_IMGUI
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+#endif // USE_IMGUI
 
 	if (m_renderer != nullptr)
 	{

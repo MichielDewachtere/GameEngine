@@ -1,8 +1,6 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include "stdafx.h"
-
 #include "Component.h"
 #include "Observer.h"
 

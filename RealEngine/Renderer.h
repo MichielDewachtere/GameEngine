@@ -1,7 +1,6 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "stdafx.h"
 #include "Singleton.h"
 
 namespace real

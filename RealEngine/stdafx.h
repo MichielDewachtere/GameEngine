@@ -21,6 +21,7 @@
 #include <stdexcept>
 #include <utility>
 #include <functional>
+#include <chrono>
 
 // Containers:
 #include <vector>
@@ -36,19 +37,27 @@
 
 #pragma region SDL Headers
 #include <SDL.h>
+#pragma comment(lib, "SDL2.dll")
 #include <SDL_ttf.h>
+#pragma comment(lib, "SDL2_ttf.dll")
 #include <SDL_image.h>
+#pragma comment(lib, "SDL2_image.dll")
 #pragma endregion
 
 #pragma region DirectX Headers
 // XInput:
 #include <Xinput.h>
+#pragma comment(lib, "xinput.lib")
 #pragma endregion
 
 #pragma region ImGui Headers
+//#define USE_IMGUI
+
+#ifdef USE_IMGUI
 #include <imgui.h>
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl2.h"
+#endif // USE_IMGUI
 #pragma endregion
 
 #pragma region Steam Headers

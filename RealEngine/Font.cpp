@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Font.h"
 
 TTF_Font* real::Font::GetFont() const {

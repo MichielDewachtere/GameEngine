@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "HealthComponent.h"
 
 #include "TransformComponent.h"

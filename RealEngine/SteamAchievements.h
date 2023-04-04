@@ -1,8 +1,6 @@
 #ifndef STEAMACHIEVEMENTS_H
 #define STEAMACHIEVEMENTS_H
 
-#include "stdafx.h"
-
 #ifdef USE_STEAM
 
 

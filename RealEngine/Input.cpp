@@ -1,8 +1,5 @@
+#include "stdafx.h"
 #include "Input.h"
-
-//#include <SDL_syswm.h>
-
-//#include "backends/imgui_impl_sdl2.h"
 
 void real::Input::Init()
 {
@@ -65,8 +62,10 @@ bool real::Input::ProcessInput()
 			}
 		}
 
+#ifdef USE_IMGUI
 		//process event for ImGui
 		ImGui_ImplSDL2_ProcessEvent(&e);
+#endif // USE_IMGUI
 	}
 
 	for (const auto& [info, command] : m_KeyboardCommands)
@@ -84,7 +83,6 @@ bool real::Input::ProcessInput()
 			}
 		}
 	}
-
 
 	for (const auto& pController : m_ControllerPtrs)
 	{

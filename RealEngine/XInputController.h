@@ -1,8 +1,6 @@
 #ifndef XINPUTCONTROLLER_H
 #define XINPUTCONTROLLER_H
 
-#include "stdafx.h"
-
 namespace real
 {
 	class XInputController final

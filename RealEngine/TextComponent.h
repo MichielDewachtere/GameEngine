@@ -1,8 +1,6 @@
 #ifndef TEXTCOMPONENT_H
 #define TEXTCOMPONENT_H
 
-#include "stdafx.h"
-
 #include "Component.h"
 
 namespace real

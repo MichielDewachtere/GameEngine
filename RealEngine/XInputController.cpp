@@ -1,8 +1,4 @@
-#define WIN_LEAN_AND_MEAN
-#include <Windows.h>
-#include <Xinput.h>
-#pragma comment(lib, "xinput.lib")
-
+#include "stdafx.h"
 #include "XInputController.h"
 
 #define MAX_THUMBSTICK_VALUE 32767

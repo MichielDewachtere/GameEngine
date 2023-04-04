@@ -1,8 +1,6 @@
 #ifndef ACHIEVEMENTS_H
 #define ACHIEVEMENTS_H
 
-#include "stdafx.h"
-
 #include "Singleton.h"
 
 #ifdef USE_STEAM

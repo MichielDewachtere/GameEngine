@@ -1,8 +1,6 @@
 #ifndef TEXTURE2D_H
 #define TEXTURE2D_H
 
-#include "stdafx.h"
-
 struct SDL_Texture;
 namespace real
 {

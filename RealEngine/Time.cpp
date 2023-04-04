@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Time.h"
 
 void real::Time::Init()

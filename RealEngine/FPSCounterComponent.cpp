@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "FPSCounterComponent.h"
 
 #include "TextComponent.h"
