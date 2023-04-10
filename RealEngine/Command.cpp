@@ -5,6 +5,8 @@
 #include "TransformComponent.h"
 
 #include "HealthComponent.h"
+#include "Input.h"
+#include "Scene.h"
 #include "SceneManager.h"
 #include "Time.h"
 
@@ -84,4 +86,5 @@ real::LoadNextSceneCommand::LoadNextSceneCommand(GameObject* object, std::string
 void real::LoadNextSceneCommand::Execute()
 {
     SceneManager::GetInstance().SetSceneActive(m_Name);
+    Input::GetInstance().SetInputMapActive(SceneManager::GetInstance().GetActiveScene().GetDefaultInputMap());
 }

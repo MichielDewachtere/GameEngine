@@ -205,6 +205,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="InputMap.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="PlayerData.h" />
@@ -234,6 +235,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InputMap.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="Observer.cpp" />

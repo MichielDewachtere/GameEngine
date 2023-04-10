@@ -114,6 +114,7 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="InputMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XInputController.cpp">
@@ -191,5 +192,6 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="InputMap.cpp" />
   </ItemGroup>
 </Project>

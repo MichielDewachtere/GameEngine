@@ -9,8 +9,10 @@ namespace real
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
-		Scene& CreateScene(const std::string& name);
+		Scene& CreateScene(const std::string& name, const std::string inputMapName = "empty");
 		Scene& SetSceneActive(const std::string& name);
+
+		Scene& GetActiveScene() const { return *m_pActiveScene; }
 
 		void Update();
 		void Render();

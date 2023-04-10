@@ -1,6 +1,14 @@
 #include "stdafx.h"
 #include "Input.h"
 
+#include "InputMap.h"
+
+real::Input::~Input()
+{
+	for (const auto pInputMap : m_InputMapPtrs)
+		delete pInputMap;
+}
+
 void real::Input::Init()
 {
 	//using ControllerKey = std::pair<unsigned, XInputController::ControllerButton>;
@@ -9,14 +17,14 @@ void real::Input::Init()
 	//m_ControllerPtrs.push_back(std::make_unique<XInputController>(0));
 	//
 	//ControllerKey controllerPair = std::make_pair(0, XInputController::ControllerButton::ButtonDown);
-	//m_ConsoleCommands.insert({ controllerPair, std::make_unique<TestCommand>(new GameObject()) });
+	//m_ControllerCommands.insert({ controllerPair, std::make_unique<TestCommand>(new GameObject()) });
 }
 
 real::Command* real::Input::HandleInput()
 {
 	//for (const auto& pController : m_ControllerPtrs)
 	//{
-	//	for (const auto& [key, command] : m_ConsoleCommands)
+	//	for (const auto& [key, command] : m_ControllerCommands)
 	//	{
 	//		if (pController->IsPressed(key.second))
 	//		{
@@ -39,20 +47,9 @@ bool real::Input::ProcessInput()
 
 		if (m_UseKeyboard)
 		{
-			for (const auto& [info, command] : m_KeyboardCommands)
+			for (const auto& [info, command] : m_pActiveInputMap->GetKeyboardCommands())
 			{
-				if (e.type == info.first && info.first == SDL_KEYUP)
-				{
-					if (e.key.keysym.scancode == (int)info.second)
-					{
-						command->Execute();
-						//if (const auto moveCommand = dynamic_cast<MoveCommand*>(command.get()))
-						//{
-						//	SetDirectionKeyboard(info.second, moveCommand);
-						//}
-					}
-				}
-				else if (e.type == info.first && info.first == SDL_KEYDOWN)
+				if (e.type == info.first && (info.first == SDL_KEYUP || info.first == SDL_KEYDOWN))
 				{
 					if (e.key.keysym.scancode == (int)info.second)
 					{
@@ -68,16 +65,16 @@ bool real::Input::ProcessInput()
 #endif // USE_IMGUI
 	}
 
-	for (const auto& [info, command] : m_KeyboardCommands)
+	for (const auto& [info, command] : m_pActiveInputMap->GetKeyboardCommands())
 	{
 		if (info.first != (Uint32)-1)
 			continue;
-
+		
 		const uint8_t* pKeyboardState = SDL_GetKeyboardState(nullptr);
 		if (pKeyboardState[info.second])
 		{
 			command->Execute();
-			if (const auto moveCommand = dynamic_cast<MoveCommand*>(command.get()))
+			if (const auto moveCommand = dynamic_cast<MoveCommand*>(command))
 			{
 				SetDirectionKeyboard(info.second, moveCommand);
 			}
@@ -86,7 +83,7 @@ bool real::Input::ProcessInput()
 
 	for (const auto& pController : m_ControllerPtrs)
 	{
-		for (const auto& [key, command] : m_ConsoleCommands)
+		for (const auto& [key, command] : m_pActiveInputMap->GetControllerCommands())
 		{
 			switch (command.second)
 			{
@@ -108,7 +105,7 @@ bool real::Input::ProcessInput()
 				if (pController->HasLeftThumbStickMoved() && key.first == static_cast<unsigned int>(pController->GetIndex()))
 				{
 					command.first->Execute();
-					if (const auto moveCommand = dynamic_cast<MoveCommand*>(command.first.get()))
+					if (const auto moveCommand = dynamic_cast<MoveCommand*>(command.first))
 						moveCommand->SetDirection(pController->GetNormalizedLeftThumbStickPos());
 				}
 				break;
@@ -120,7 +117,7 @@ bool real::Input::ProcessInput()
 		}
 	}
 
-	//for (const auto& [key, command] : m_ConsoleCommands)
+	//for (const auto& [key, command] : m_ControllerCommands)
 	//{
 	//	if (m_ControllerPtrs[key.first]->HasLeftThumbStickMoved(key.second))
 	//	{
@@ -139,6 +136,48 @@ real::XInputController* real::Input::GetController(const unsigned idx) const
 			return pController.get();
 	}
 	return nullptr;
+}
+
+std::vector<real::XInputController*> real::Input::GetControllers() const
+{
+	std::vector<XInputController*> controllerPtrs;
+
+	for (const auto& pController : m_ControllerPtrs)
+		controllerPtrs.push_back(pController.get());
+
+	return controllerPtrs;
+}
+
+real::InputMap* real::Input::AddInputMap(const std::string& name)
+{
+	//auto pInputMap = std::make_unique<InputMap>(name);
+	auto pInputMap = new InputMap(name);
+
+	//const auto pInputMapPtr = pInputMap.get();
+	const auto pInputMapPtr = pInputMap;
+
+	//m_InputMapPtrs.emplace_back(std::move(pInputMap));
+	m_InputMapPtrs.emplace_back(pInputMap);
+
+	if (m_pActiveInputMap == nullptr)
+	{
+		//m_pActiveInputMap = m_InputMapPtrs.begin()->get();
+		m_pActiveInputMap = m_InputMapPtrs[0];
+	}
+
+	return pInputMapPtr;
+}
+
+void real::Input::SetInputMapActive(const std::string& name)
+{
+	for (const auto& pInputMap : m_InputMapPtrs)
+	{
+		if (pInputMap->GetName() == name)
+		{
+			//m_pActiveInputMap = pInputMap.get();
+			m_pActiveInputMap = pInputMap;
+		}
+	}
 }
 
 void real::Input::Update()

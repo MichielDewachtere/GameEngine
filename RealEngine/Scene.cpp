@@ -5,7 +5,11 @@ using namespace real;
 
 unsigned int Scene::m_idCounter = 0;
 
-Scene::Scene(const std::string& name) : m_Name(name) {}
+Scene::Scene(std::string name, std::string inputMapName)
+	: m_Name(std::move(name))
+	, m_InputMapName(std::move(inputMapName))
+{
+}
 
 Scene::~Scene() = default;
 
