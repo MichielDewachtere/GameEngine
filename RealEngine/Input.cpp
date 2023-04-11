@@ -227,7 +227,7 @@ const std::vector<int> real::Input::AddControllers()
 {
 	std::vector<int> controllers{};
 
-	for (int i{ 1 }; i < 5; ++i)
+	for (int i{ 0 }; i < 5; ++i)
 	{
 		XINPUT_STATE state;
 		const DWORD result = XInputGetState(i, &state);

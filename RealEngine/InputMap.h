@@ -52,7 +52,7 @@ namespace real
  * \tparam T must derive from the Command class
  * \param button
  * \param inputType
- * \param controller
+ * \param controller -1 will allow every controller to invoke this command
  * \param commandArgs parameters for the Command class, must have a GameObject and optional params
  *		for MoveCommand: FLOAT	speed (= 50)
  */
@@ -60,17 +60,24 @@ namespace real
 	inline void InputMap::AddControllerCommands(XInputController::ControllerButton button, XInputController::InputType inputType, unsigned int controller, Args... commandArgs)
 	{
 		static_assert(std::is_base_of<Command, T>(), "T must derive from the Command class");
-		
+
+		UINT controllerIdx{};
 		for (const auto& pController : Input::GetInstance().GetControllers())
 		{
-			if (pController->GetIndex() == (int)controller)
+			if (controller == -1)
+			{
+				m_ControllerCommands[std::pair(controllerIdx, button)] = std::pair(std::make_unique<T>(std::forward<Args>(commandArgs)...), inputType);
+				++controllerIdx;
+			}
+			else if (pController->GetIndex() == (int)controller)
 			{
 				m_ControllerCommands[std::pair(controller, button)] = std::pair(std::make_unique<T>(std::forward<Args>(commandArgs)...), inputType);
 				return;
 			}
 		}
-		
-		throw std::runtime_error("controller doesn't exist");
+
+		if (controller != -1)
+			throw std::runtime_error("controller doesn't exist");
 	}
 
 	/**
