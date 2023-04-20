@@ -3,26 +3,20 @@
 
 namespace real
 {
-	class GameObject;
-
+	template<typename... Args>
 	class Observer
 	{
 	public:
-		enum class GameEvent
-		{
-			actorTookDamage,
-			actorDied,
-			actorGainedPoints
-		};
-
-		explicit Observer() = default;
+		Observer() = default;
 		virtual ~Observer() = default;
 		Observer(const Observer& other) = delete;
-		Observer& operator=(const Observer& other) = delete;
+		Observer& operator=(const Observer& rhs) = delete;
 		Observer(Observer&& other) = delete;
-		Observer& operator=(Observer&& other) = delete;
+		Observer& operator=(Observer&& rhs) = delete;
 
-		virtual void Notify(GameEvent event, GameObject* actor) = 0;
+
+		virtual void HandleEvent(Args... args) = 0;
+		virtual void OnSubjectDestroy() = 0;
 	};
 }
 
