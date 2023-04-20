@@ -3,31 +3,26 @@
 
 #include "TransformComponent.h"
 
+real::HealthComponent::HealthComponent(GameObject* pOwner, int lives)
+	: Component(pOwner)
+	, m_Lives(lives)
+{
+}
+
 void real::HealthComponent::Update()
 {
 }
 
-void real::HealthComponent::SetHealth(const int health)
+void real::HealthComponent::Damage()
 {
-	m_Health = health;
-	m_CurrentHealth = health;
-}
+	--m_Lives;
 
-void real::HealthComponent::Damage(const int amount)
-{
-	m_Health -= amount;
+	healthChanged.Notify();
 
-	if (m_Health <= 0 && m_Lives > 0)
-	{
-		--m_Lives;
-
-		GetOwner()->NotifyObservers(Observer::GameEvent::actorDied);
-
-		if (m_Lives == 0)
-			Kill();
-		else
-			Respawn();
-	}
+	if (m_Lives == 0)
+		Kill();
+	else
+		Respawn();
 }
 
 void real::HealthComponent::Kill()
@@ -43,6 +38,5 @@ void real::HealthComponent::Respawn()
 	if (transformComponent == nullptr)
 		return;
 
-	m_Health = m_CurrentHealth;
 	transformComponent->SetWorldPosition(m_SpawnPoint);
 }
