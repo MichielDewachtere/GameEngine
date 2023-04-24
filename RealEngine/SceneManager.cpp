@@ -5,12 +5,14 @@
 
 void real::SceneManager::Update()
 {
-	m_pActiveScene->Update();
+	if (m_pActiveScene)
+		m_pActiveScene->Update();
 }
 
 void real::SceneManager::Render()
 {
-	m_pActiveScene->Render();
+	if (m_pActiveScene)
+		m_pActiveScene->Render();
 }
 
 real::Scene& real::SceneManager::CreateScene(const std::string& name, const std::string inputMapName)
