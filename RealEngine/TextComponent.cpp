@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "TextComponent.h"
 
+#include <SDL_ttf.h>
+
 #include "Renderer.h"
 #include "Font.h"
 #include "Texture2D.h"
@@ -17,7 +19,7 @@ void real::TextComponent::Update()
 
 		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_pText.c_str(), m_Color);
 		if (surf == nullptr) 
-		{
+		{ 
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
 		}
 		auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);

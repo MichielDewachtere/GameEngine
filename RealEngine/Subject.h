@@ -1,6 +1,9 @@
 #ifndef SUBJECT_H
 #define SUBJECT_H
 
+//#include <vector>
+//#include <algorithm>
+
 #include "Observer.h"
 
 namespace real

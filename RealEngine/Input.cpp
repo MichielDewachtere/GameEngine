@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "Input.h"
 
+#include <SDL_syswm.h>
+
+#include <Xinput.h>
+#include <glm/glm.hpp>
+
 #include "InputMap.h"
 
 real::Input::~Input()
@@ -45,6 +50,9 @@ bool real::Input::ProcessInput()
 			return false;
 		}
 
+		if (m_pActiveInputMap == nullptr)
+			return true;
+
 		if (m_UseKeyboard)
 		{
 			for (const auto& [info, command] : m_pActiveInputMap->GetKeyboardCommands())
@@ -64,6 +72,9 @@ bool real::Input::ProcessInput()
 		ImGui_ImplSDL2_ProcessEvent(&e);
 #endif // USE_IMGUI
 	}
+
+	if (m_pActiveInputMap == nullptr)
+		return true;
 
 	for (const auto& [info, command] : m_pActiveInputMap->GetKeyboardCommands())
 	{

@@ -1,8 +1,6 @@
 #ifndef TEXTURECOMPONENT_H
 #define TEXTURECOMPONENT_H
 
-#include "stdafx.h"
-
 #include "Component.h"
 #include "Texture2D.h"
 

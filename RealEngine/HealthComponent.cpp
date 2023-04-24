@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "HealthComponent.h"
 
+#include <iostream>
+
 #include "TransformComponent.h"
 
 real::HealthComponent::HealthComponent(GameObject* pOwner, int lives)

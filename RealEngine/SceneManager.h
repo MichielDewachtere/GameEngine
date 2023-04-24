@@ -1,6 +1,10 @@
 #ifndef SCENEMANAGER_H
 #define SCENEMANAGER_H
 
+#include <string>
+#include <vector>
+#include <memory>
+
 #include "Singleton.h"
 
 namespace real

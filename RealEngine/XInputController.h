@@ -1,6 +1,8 @@
 #ifndef XINPUTCONTROLLER_H
 #define XINPUTCONTROLLER_H
 
+#include <glm/vec2.hpp>
+
 namespace real
 {
 	class XInputController final

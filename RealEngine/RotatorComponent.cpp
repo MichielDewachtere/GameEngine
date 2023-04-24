@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "RotatorComponent.h"
 
-#include "Time.h"
+#include "GameTime.h"
 #include "TransformComponent.h"
 
 void real::RotatorComponent::Update()

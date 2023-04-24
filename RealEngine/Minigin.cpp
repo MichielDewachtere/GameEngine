@@ -1,12 +1,16 @@
 #include "stdafx.h"
 #include "Minigin.h"
 
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <SDL_version.h>
+
 #include "Input.h"
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-#include "Time.h"
+#include "GameTime.h"
 
 SDL_Window* g_window{};
 

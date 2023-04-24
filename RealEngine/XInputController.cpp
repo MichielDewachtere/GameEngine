@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "XInputController.h"
 
+#include <SDL_syswm.h>
+#include <Xinput.h>
+
 #define MAX_THUMBSTICK_VALUE 32767
 #define DEAD_ZONE 5000
 

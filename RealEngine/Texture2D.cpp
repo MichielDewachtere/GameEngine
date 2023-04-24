@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "Texture2D.h"
 
+#include <SDL_rect.h>
+#include <SDL_render.h>
+
 real::Texture2D::~Texture2D()
 {
 	SDL_DestroyTexture(m_texture);

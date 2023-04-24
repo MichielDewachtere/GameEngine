@@ -1,6 +1,11 @@
 #ifndef INPUT_H 
 #define INPUT_H
 
+#include <memory>
+#include <SDL_stdinc.h>
+#include <string>
+#include <vector>
+
 #include "Singleton.h"
 #include "XInputController.h"
 //#include "InputMap.h"

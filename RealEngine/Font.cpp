@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "Font.h"
 
+#include <SDL_ttf.h>
+#include <SDL_error.h>
+#include <stdexcept>
+#include <string>
+
 TTF_Font* real::Font::GetFont() const {
 	return m_font;
 }

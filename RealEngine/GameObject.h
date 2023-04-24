@@ -1,8 +1,11 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
+#include <memory>
+#include <vector>
+#include <stdexcept>
+
 #include "Component.h"
-#include "Observer.h"
 
 namespace real
 {

@@ -1,6 +1,8 @@
 #ifndef HEALTHCOMPONENT_H
 #define HEALTHCOMPONENT_H
 
+#include <glm/vec2.hpp>
+
 #include "Component.h"
 #include "Subject.h"
 

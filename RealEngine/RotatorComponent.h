@@ -1,6 +1,8 @@
 #ifndef ROTATORCOMPONENT_H
 #define ROTATORCOMPONENT_H
 
+#include <glm/vec2.hpp>
+
 #include "Component.h"
 
 namespace real

@@ -1,6 +1,9 @@
 #ifndef TEXTCOMPONENT_H
 #define TEXTCOMPONENT_H
 
+#include <SDL.h>
+#include <string>
+
 #include "Component.h"
 
 namespace real

@@ -1,6 +1,10 @@
 #ifndef INPUTMAP_H
 #define INPUTMAP_H
 
+#include <map>
+#include <stdexcept>
+#include <SDL.h>
+
 #include "Command.h"
 #include "Input.h"
 
@@ -61,7 +65,7 @@ namespace real
 	{
 		static_assert(std::is_base_of<Command, T>(), "T must derive from the Command class");
 
-		UINT controllerIdx{};
+		unsigned int controllerIdx{};
 		for (const auto& pController : Input::GetInstance().GetControllers())
 		{
 			if (controller == -1)

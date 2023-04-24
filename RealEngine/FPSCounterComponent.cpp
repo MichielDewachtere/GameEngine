@@ -2,7 +2,7 @@
 #include "FPSCounterComponent.h"
 
 #include "TextComponent.h"
-#include "Time.h"
+#include "GameTime.h"
 
 void real::FPSCounterComponent::Update()
 {

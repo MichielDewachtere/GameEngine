@@ -1,6 +1,9 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <SDL_render.h>
+#include <SDL_video.h>
+
 #include "Singleton.h"
 
 namespace real

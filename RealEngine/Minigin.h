@@ -1,6 +1,9 @@
 #ifndef MINIGIN_H
 #define MINIGIN_H
 
+#include <string>
+#include <functional>
+
 namespace real
 {
 	class Minigin

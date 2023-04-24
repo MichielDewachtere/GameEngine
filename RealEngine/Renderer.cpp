@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Renderer.h"
 
+#include <stdexcept>
+
 #include "SceneManager.h"
 #include "Texture2D.h"
 
