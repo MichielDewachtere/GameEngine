@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Time.h"
+#include "GameTime.h"
 
 void real::Time::Init()
 {
