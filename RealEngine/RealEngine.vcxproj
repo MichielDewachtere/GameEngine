@@ -28,26 +28,26 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -79,20 +79,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>0</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>0</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>0</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <OutDir>0</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -104,6 +106,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\steamworks\public\steam;$(SolutionDir)\3rdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,6 +118,9 @@
     <PostBuildEvent>
       <Command>xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\*.dll $(OutputPath) /Y</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -142,6 +148,9 @@ xcopy $(SolutionDir)\3rdParty\SDL2_image\lib\x64\SDL2_image.dll $(OutputPath) /Y
 xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
 </Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -155,6 +164,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
       <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\imgui;$(SolutionDir)3rdParty\steamworks\public\steam;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -168,6 +178,9 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <PostBuildEvent>
       <Command>xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\*.dll $(OutputPath) /Y</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -181,6 +194,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
       <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\imgui;$(SolutionDir)3rdParty\steamworks\public\steam;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -194,6 +208,9 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <PostBuildEvent>
       <Command>xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll $(OutputPath) /Y</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h" />
@@ -206,22 +223,25 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputMap.h" />
+    <ClInclude Include="LivesDisplay.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="Observer.h" />
-    <ClInclude Include="PlayerData.h" />
+    <ClInclude Include="PlayerCharacter.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ScoreDisplay.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SteamAchievements.h" />
+    <ClInclude Include="Subject.h" />
     <ClInclude Include="TextComponent.h" />
-    <ClInclude Include="TextObject.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TextureComponent.h" />
-    <ClInclude Include="Time.h" />
+    <ClInclude Include="GameTime.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="XInputController.h" />
   </ItemGroup>
@@ -236,26 +256,30 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputMap.cpp" />
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="LivesDisplay.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="Observer.cpp" />
-    <ClCompile Include="PlayerData.cpp" />
+    <ClCompile Include="PlayerCharacter.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ScoreDisplay.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SteamAchievements.cpp" />
+    <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextComponent.cpp" />
-    <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
-    <ClCompile Include="Time.cpp" />
+    <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="XInputController.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RealEngine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

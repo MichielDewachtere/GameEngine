@@ -61,7 +61,7 @@
     <ClInclude Include="TextComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Time.h">
+    <ClInclude Include="GameTime.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
@@ -98,9 +98,6 @@
     <ClInclude Include="Observer.h">
       <Filter>Observer</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerData.h">
-      <Filter>Observer</Filter>
-    </ClInclude>
     <ClInclude Include="SteamAchievements.h">
       <Filter>Steam</Filter>
     </ClInclude>
@@ -110,12 +107,22 @@
     <ClInclude Include="DemoScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="TextObject.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="InputMap.h">
       <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Subject.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreDisplay.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCharacter.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="LivesDisplay.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -140,7 +147,7 @@
     <ClCompile Include="TransformComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="Time.cpp">
+    <ClCompile Include="GameTime.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
@@ -170,15 +177,11 @@
     <ClCompile Include="Command.cpp">
       <Filter>Command</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="HealthComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="Observer.cpp">
-      <Filter>Observer</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerData.cpp">
       <Filter>Observer</Filter>
     </ClCompile>
     <ClCompile Include="SteamAchievements.cpp">
@@ -190,12 +193,26 @@
     <ClCompile Include="DemoScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="TextObject.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="InputMap.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="Subject.cpp">
+      <Filter>Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreDisplay.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCharacter.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="LivesDisplay.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RealEngine.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
