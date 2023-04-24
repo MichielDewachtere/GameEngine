@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Command.h"
 
+#include <iostream>
+
 #include "GameObject.h"
 #include "TransformComponent.h"
 
@@ -8,7 +10,7 @@
 #include "Input.h"
 #include "Scene.h"
 #include "SceneManager.h"
-#include "Time.h"
+#include "GameTime.h"
 
 real::MoveCommand::MoveCommand(GameObject* object, const float speed)
 	: Command(object)
@@ -63,19 +65,19 @@ void real::DamageCommand::Execute()
         throw std::runtime_error("Error: Could not execute DamageCommand - no HealthComponent found on associated GameObject. Please ensure the GameObject has a HealthComponent attached.");
     }
 
-    pHealthComponent->Damage(m_Damage);
+    pHealthComponent->Damage();
 }
 
-real::AddPointsCommand::AddPointsCommand(GameObject* object, const int amount)
-	: Command(object)
-	, m_Amount(amount)
-{
-}
+//real::AddPointsCommand::AddPointsCommand(GameObject* object, const int amount)
+//	: Command(object)
+//	, m_Amount(amount)
+//{
+//}
 
-void real::AddPointsCommand::Execute()
-{
-	GetObject()->NotifyObservers(Observer::GameEvent::actorGainedPoints);
-}
+//void real::AddPointsCommand::Execute()
+//{
+//	GetObject()->NotifyObservers(Observer::GameEvent::actorGainedPoints);
+//}
 
 real::LoadNextSceneCommand::LoadNextSceneCommand(GameObject* object, std::string name)
 	: Command(object)

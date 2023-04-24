@@ -1,6 +1,9 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
+#include <glm/vec2.hpp>
+#include <string>
+
 namespace real
 {
 	class GameObject;
@@ -57,18 +60,20 @@ namespace real
 	private:
 		int m_Damage;
 	};
-	class AddPointsCommand final : public Command
-	{
-	public:
-		explicit AddPointsCommand(GameObject* object, const int amount = 50);
-		virtual ~AddPointsCommand() override = default;
-
-		void Execute() override;
-
-		void SetPointsAmount(const int amount) { m_Amount = amount; }
-	private:
-		int m_Amount;
-	};
+	//class AddPointsCommand final : public Command
+	//{
+	//public:
+	//
+	//	//TODO: wrong :0
+	//	explicit AddPointsCommand(GameObject* object, const int amount = 50);
+	//	virtual ~AddPointsCommand() override = default;
+	//
+	//	void Execute() override;
+	//
+	//	void SetPointsAmount(const int amount) { m_Amount = amount; }
+	//private:
+	//	int m_Amount;
+	//};
 	class LoadNextSceneCommand final : public Command
 	{
 	public:
