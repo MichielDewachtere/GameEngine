@@ -4,8 +4,10 @@
 #include "GameTime.h"
 #include "TransformComponent.h"
 
-void real::RotatorComponent::Update()
+void RotatorComponent::Update()
 {
+	using namespace real;
+
 	const auto pTransform = GetOwner()->GetComponent<TransformComponent>();
 	
 	if (!pTransform)

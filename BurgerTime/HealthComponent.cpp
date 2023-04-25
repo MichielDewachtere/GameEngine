@@ -3,19 +3,20 @@
 
 #include <iostream>
 
+#include "LivesDisplay.h"
 #include "TransformComponent.h"
 
-real::HealthComponent::HealthComponent(GameObject* pOwner, int lives)
+HealthComponent::HealthComponent(real::GameObject* pOwner, int lives)
 	: Component(pOwner)
 	, m_Lives(lives)
 {
 }
 
-void real::HealthComponent::Update()
+void HealthComponent::Update()
 {
 }
 
-void real::HealthComponent::Damage()
+void HealthComponent::Damage()
 {
 	--m_Lives;
 
@@ -27,13 +28,13 @@ void real::HealthComponent::Damage()
 		Respawn();
 }
 
-void real::HealthComponent::Kill()
+void HealthComponent::Kill()
 {
 	//GetOwner()->Destroy();
 	std::cout << "HealthComponent > GamObject should get destroyed";
 }
 
-void real::HealthComponent::Respawn()
+void HealthComponent::Respawn()
 {
 	const auto transformComponent = this->GetOwner()->GetComponent<real::TransformComponent>();
 
