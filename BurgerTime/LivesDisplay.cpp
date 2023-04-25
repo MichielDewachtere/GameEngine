@@ -4,7 +4,7 @@
 #include "HealthComponent.h"
 #include "TextComponent.h"
 
-real::LivesDisplay::LivesDisplay(GameObject* pOwner, HealthComponent* pHealth)
+LivesDisplay::LivesDisplay(real::GameObject* pOwner, HealthComponent* pHealth)
 	: Component(pOwner)
 	, m_Health(pHealth)
 {
@@ -12,18 +12,18 @@ real::LivesDisplay::LivesDisplay(GameObject* pOwner, HealthComponent* pHealth)
 	UpdateLivesText();
 }
 
-real::LivesDisplay::~LivesDisplay()
+LivesDisplay::~LivesDisplay()
 {
 	if (m_Health)
 		m_Health->healthChanged.RemoveObserver(this);
 }
 
-void real::LivesDisplay::HandleEvent()
+void LivesDisplay::HandleEvent()
 {
 	UpdateLivesText();
 }
 
-void real::LivesDisplay::UpdateLivesText() const
+void LivesDisplay::UpdateLivesText() const
 {
-	this->GetOwner()->GetComponent<TextComponent>()->SetText("Lives :" + std::to_string(m_Health->GetLives()));
+	this->GetOwner()->GetComponent<real::TextComponent>()->SetText("Lives :" + std::to_string(m_Health->GetLives()));
 }
