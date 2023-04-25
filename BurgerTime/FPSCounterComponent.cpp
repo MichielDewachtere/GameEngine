@@ -4,8 +4,10 @@
 #include "TextComponent.h"
 #include "GameTime.h"
 
-void real::FPSCounterComponent::Update()
+void FPSCounterComponent::Update()
 {
+	using namespace real;
+
 	const auto pTextComponent = this->GetOwner()->GetComponent<TextComponent>();
 
 	if (pTextComponent == nullptr)
