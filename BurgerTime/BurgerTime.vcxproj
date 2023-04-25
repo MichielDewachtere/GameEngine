@@ -83,6 +83,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)RealEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -102,6 +103,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)RealEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -121,6 +123,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)RealEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,6 +143,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)RealEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,7 +155,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DamageCommand.cpp" />
+    <ClCompile Include="FPSCounterComponent.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="LivesDisplay.cpp" />
+    <ClCompile Include="LoadNextSceneCommand.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PlayerCharacter.cpp" />
+    <ClCompile Include="RotatorComponent.cpp" />
+    <ClCompile Include="ScoreDisplay.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DamageCommand.h" />
+    <ClInclude Include="FPSCounterComponent.h" />
+    <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="LivesDisplay.h" />
+    <ClInclude Include="LoadNextSceneCommand.h" />
+    <ClInclude Include="PlayerCharacter.h" />
+    <ClInclude Include="RotatorComponent.h" />
+    <ClInclude Include="ScoreDisplay.h" />
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
