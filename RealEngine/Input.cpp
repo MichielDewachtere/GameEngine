@@ -8,6 +8,8 @@
 
 #include "InputMap.h"
 
+#include "MoveCommand.h"
+
 real::Input::~Input()
 {
 	for (const auto pInputMap : m_InputMapPtrs)
