@@ -46,12 +46,6 @@
     <ClInclude Include="Component.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="FPSCounterComponent.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="RotatorComponent.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="TextureComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -92,9 +86,6 @@
       <Filter>Command</Filter>
     </ClInclude>
     <ClInclude Include="Minigin.h" />
-    <ClInclude Include="HealthComponent.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="Observer.h">
       <Filter>Observer</Filter>
     </ClInclude>
@@ -111,18 +102,14 @@
     <ClInclude Include="InputMap.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Subject.h">
       <Filter>Observer</Filter>
     </ClInclude>
-    <ClInclude Include="ScoreDisplay.h">
-      <Filter>Component</Filter>
+    <ClInclude Include="MoveCommand.h">
+      <Filter>Command</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerCharacter.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="LivesDisplay.h">
-      <Filter>Component</Filter>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -132,13 +119,7 @@
     <ClCompile Include="Input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="RotatorComponent.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="Component.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="FPSCounterComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="TextureComponent.cpp">
@@ -178,9 +159,6 @@
       <Filter>Command</Filter>
     </ClCompile>
     <ClCompile Include="Minigin.cpp" />
-    <ClCompile Include="HealthComponent.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="Observer.cpp">
       <Filter>Observer</Filter>
     </ClCompile>
@@ -200,14 +178,8 @@
     <ClCompile Include="Subject.cpp">
       <Filter>Observer</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreDisplay.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerCharacter.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="LivesDisplay.cpp">
-      <Filter>Component</Filter>
+    <ClCompile Include="MoveCommand.cpp">
+      <Filter>Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
