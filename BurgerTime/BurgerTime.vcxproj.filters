@@ -39,6 +39,9 @@
     <ClCompile Include="LoadNextSceneCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="MoveCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -64,6 +67,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="LoadNextSceneCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>

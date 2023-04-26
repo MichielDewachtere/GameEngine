@@ -152,10 +152,10 @@ void loadDemoScene()
 	{
 		// only keyboard
 		input.UseKeyboard(true);
-		pInputMap->AddKeyboardCommands<real::MoveCommand>(SDL_SCANCODE_A, KEYPRESSED, pCharacter);
-		pInputMap->AddKeyboardCommands<real::MoveCommand>(SDL_SCANCODE_D, KEYPRESSED, pCharacter);
-		pInputMap->AddKeyboardCommands<real::MoveCommand>(SDL_SCANCODE_S, KEYPRESSED, pCharacter);
-		pInputMap->AddKeyboardCommands<real::MoveCommand>(SDL_SCANCODE_W, KEYPRESSED, pCharacter);
+		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_A, KEYPRESSED, pCharacter, glm::vec2{ -1,0 });
+		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_D, KEYPRESSED, pCharacter, glm::vec2{ 1,0 });
+		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_S, KEYPRESSED, pCharacter, glm::vec2{ 0,-1 });
+		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_W, KEYPRESSED, pCharacter, glm::vec2{ 0,1 });
 		pInputMap->AddKeyboardCommands<DamageCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, pCharacter);
 		//pInputMap->AddKeyboardCommands<real::AddPointsCommand>(SDL_SCANCODE_LSHIFT, SDL_KEYUP, pCharacter);
 	}
@@ -165,7 +165,10 @@ void loadDemoScene()
 		using InputType = real::XInputController::InputType;
 
 		// 1 controller (and 1 keyboard if co-op)
-		pInputMap->AddControllerCommands<real::MoveCommand>(ControllerButton::LeftThumb, InputType::leftThumbMoved, controllerIdcs[0], pCharacter);
+		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadLeft, InputType::pressed, controllerIdcs[0], pCharacter, glm::vec2{ -1,0 });
+		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadRight, InputType::pressed, controllerIdcs[0], pCharacter, glm::vec2{ 1,0 });
+		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadUp, InputType::pressed, controllerIdcs[0], pCharacter, glm::vec2{ 0,1 });
+		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadDown, InputType::pressed, controllerIdcs[0], pCharacter, glm::vec2{ 0,-1 });
 		pInputMap->AddControllerCommands<real::TestCommand>(ControllerButton::ButtonDown, InputType::down, controllerIdcs[0], pCharacter);
 		pInputMap->AddControllerCommands<DamageCommand>(ControllerButton::ButtonLeft, InputType::down, controllerIdcs[0], pCharacter);
 		//pInputMap->AddControllerCommands<real::AddPointsCommand>(ControllerButton::ButtonUp, InputType::down, controllerIdcs[0], pCharacter);
@@ -176,17 +179,20 @@ void loadDemoScene()
 			{
 				input.UseKeyboard(false);
 
-				pInputMap->AddControllerCommands<real::MoveCommand>(ControllerButton::RightThumb, InputType::leftThumbMoved, controllerIdcs[1], pSecondaryCharacter, 100.f);
+				pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadLeft, InputType::pressed, controllerIdcs[1], pSecondaryCharacter, glm::vec2{ -1,0 }, 100.f);
+				pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadRight, InputType::pressed, controllerIdcs[1], pSecondaryCharacter, glm::vec2{ 1,0 }, 100.f);
+				pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadUp, InputType::pressed, controllerIdcs[1], pSecondaryCharacter, glm::vec2{ 0,1 }, 100.f);
+				pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadDown, InputType::pressed, controllerIdcs[1], pSecondaryCharacter, glm::vec2{ 0,-1 }, 100.f);
 				pInputMap->AddControllerCommands<DamageCommand>(ControllerButton::ButtonLeft, InputType::down, controllerIdcs[1], pSecondaryCharacter);
 				//pInputMap->AddControllerCommands<real::AddPointsCommand>(ControllerButton::ButtonUp, InputType::down, controllerIdcs[1], pSecondaryCharacter);
 			}
 			else
 			{
 				input.UseKeyboard(true);
-				pInputMap->AddKeyboardCommands<real::MoveCommand>(SDL_SCANCODE_A, KEYPRESSED, pSecondaryCharacter, 100.f);
-				pInputMap->AddKeyboardCommands<real::MoveCommand>(SDL_SCANCODE_D, KEYPRESSED, pSecondaryCharacter, 100.f);
-				pInputMap->AddKeyboardCommands<real::MoveCommand>(SDL_SCANCODE_S, KEYPRESSED, pSecondaryCharacter, 100.f);
-				pInputMap->AddKeyboardCommands<real::MoveCommand>(SDL_SCANCODE_W, KEYPRESSED, pSecondaryCharacter, 100.f);
+				pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_A, KEYPRESSED, pSecondaryCharacter, glm::vec2{ -1,0 }, 100.f);
+				pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_D, KEYPRESSED, pSecondaryCharacter, glm::vec2{ 1,0 }, 100.f);
+				pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_S, KEYPRESSED, pSecondaryCharacter, glm::vec2{ 0,-1 }, 100.f);
+				pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_W, KEYPRESSED, pSecondaryCharacter, glm::vec2{ 0,1 }, 100.f);
 				pInputMap->AddKeyboardCommands<DamageCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, pSecondaryCharacter);
 				//pInputMap->AddKeyboardCommands<real::AddPointsCommand>(SDL_SCANCODE_LSHIFT, SDL_KEYUP, pSecondaryCharacter);
 			}

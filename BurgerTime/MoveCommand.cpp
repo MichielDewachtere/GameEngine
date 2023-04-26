@@ -4,13 +4,18 @@
 #include "TransformComponent.h"
 #include "GameTime.h"
 
-real::MoveCommand::MoveCommand(real::GameObject* object, const float speed)
+#include "Input.h"
+
+MoveCommand::MoveCommand(real::GameObject* object, const glm::vec2& direction, const float speed)
     : Command(object)
+	, m_Direction(direction)
     , m_Speed(speed)
 {
+    // Flip the y direction so that the positive y direction is up.
+    m_Direction.y *= -1;
 }
 
-void real::MoveCommand::Execute()
+void MoveCommand::Execute()
 {
     // Get the TransformComponent of the game object associated with this MoveCommand.
     const auto pTransform = GetOwner()->GetComponent<real::TransformComponent>();
@@ -24,14 +29,11 @@ void real::MoveCommand::Execute()
     // Get the current position of the game object.
     const auto pos = pTransform->GetWorldPosition();
 
-    // Flip the y direction so that the positive y direction is up.
-    m_Direction.y *= -1;
-
     // Calculate the new position of the game object based on its current position,
     // its direction, and the elapsed time since the last frame.
     glm::vec2 newPos;
-    newPos.x = pos.x + m_Direction.x * m_Speed * Time::GetInstance().GetElapsed();
-    newPos.y = pos.y + m_Direction.y * m_Speed * Time::GetInstance().GetElapsed();
+    newPos.x = pos.x + m_Direction.x * m_Speed * real::Time::GetInstance().GetElapsed();
+    newPos.y = pos.y + m_Direction.y * m_Speed * real::Time::GetInstance().GetElapsed();
 
     // Translate the TransformComponent to the new position.
     //pTransform->Translate(newPos);

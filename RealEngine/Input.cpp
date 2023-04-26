@@ -8,8 +8,6 @@
 
 #include "InputMap.h"
 
-#include "MoveCommand.h"
-
 real::Input::~Input()
 {
 	for (const auto pInputMap : m_InputMapPtrs)
@@ -63,6 +61,7 @@ bool real::Input::ProcessInput()
 				{
 					if (e.key.keysym.scancode == (int)info.second)
 					{
+						command->SetKeyBoardInput(static_cast<int>(info.second));
 						command->Execute();
 					}
 				}
@@ -86,11 +85,12 @@ bool real::Input::ProcessInput()
 		const uint8_t* pKeyboardState = SDL_GetKeyboardState(nullptr);
 		if (pKeyboardState[info.second])
 		{
+			command->SetKeyBoardInput(static_cast<int>(info.second));
 			command->Execute();
-			if (const auto moveCommand = dynamic_cast<MoveCommand*>(command))
-			{
-				SetDirectionKeyboard(info.second, moveCommand);
-			}
+			//if (const auto moveCommand = dynamic_cast<MoveCommand*>(command))
+			//{
+			//	SetDirectionKeyboard(info.second, moveCommand);
+			//}
 		}
 	}
 
@@ -101,42 +101,57 @@ bool real::Input::ProcessInput()
 			switch (command.second)
 			{
 			case XInputController::InputType::pressed:
+			{
 				if (pController->IsPressed(key.second) && key.first == static_cast<unsigned int>(pController->GetIndex()))
-					command.first->Execute();
-				
-				break;
-			case XInputController::InputType::down:
-				if (pController->IsDown(key.second) && key.first == static_cast<unsigned int>(pController->GetIndex()))
-					command.first->Execute();
-				break;
-			case XInputController::InputType::up:
-				if (pController->IsUp(key.second) && key.first == static_cast<unsigned int>(pController->GetIndex()))
-					command.first->Execute();
-				
-				break;
-			case XInputController::InputType::leftThumbMoved: 
-				if (pController->HasLeftThumbStickMoved() && key.first == static_cast<unsigned int>(pController->GetIndex()))
 				{
+					command.first->SetInputController(pController.get());
 					command.first->Execute();
-					if (const auto moveCommand = dynamic_cast<MoveCommand*>(command.first))
-						moveCommand->SetDirection(pController->GetNormalizedLeftThumbStickPos());
+				}
+				
+				break;
+			}
+			case XInputController::InputType::down:
+			{
+				if (pController->IsDown(key.second) && key.first == static_cast<unsigned int>(pController->GetIndex()))
+				{
+					command.first->SetInputController(pController.get());
+					command.first->Execute();
 				}
 				break;
-			case XInputController::InputType::rightThumbMoved: 
-				if (pController->HasRightThumbStickMoved() && key.first == static_cast<unsigned int>(pController->GetIndex()))
+			}
+			case XInputController::InputType::up:
+			{
+				if (pController->IsUp(key.second) && key.first == static_cast<unsigned int>(pController->GetIndex()))
+				{
+					command.first->SetInputController(pController.get());
 					command.first->Execute();
+				}
+				
 				break;
+			}
+			case XInputController::InputType::leftThumbMoved:
+			{
+				if (pController->HasLeftThumbStickMoved() && key.first == static_cast<unsigned int>(pController->GetIndex()))
+				{
+					command.first->SetInputController(pController.get());
+					command.first->Execute();
+					//if (const auto moveCommand = dynamic_cast<MoveCommand*>(command.first))
+					//	moveCommand->SetDirection(pController->GetNormalizedLeftThumbStickPos());
+				}
+				break;
+			}
+			case XInputController::InputType::rightThumbMoved:
+			{
+				if (pController->HasRightThumbStickMoved() && key.first == static_cast<unsigned int>(pController->GetIndex()))
+				{
+					command.first->SetInputController(pController.get());
+					command.first->Execute();
+				}
+				break;
+			}
 			}
 		}
 	}
-
-	//for (const auto& [key, command] : m_ControllerCommands)
-	//{
-	//	if (m_ControllerPtrs[key.first]->HasLeftThumbStickMoved(key.second))
-	//	{
-	//		command->Execute(key.first);
-	//	}
-	//}
 
 	return true;
 }
@@ -151,7 +166,7 @@ real::XInputController* real::Input::GetController(const unsigned idx) const
 	return nullptr;
 }
 
-std::vector<real::XInputController*> real::Input::GetControllers() const
+std::vector<real::XInputController*> real::Input::GetControllers() const 
 {
 	std::vector<XInputController*> controllerPtrs;
 
@@ -252,21 +267,4 @@ const std::vector<int> real::Input::AddControllers()
 	}
 
 	return controllers;
-}
-
-void real::Input::SetDirectionKeyboard(Uint32 scancode, real::MoveCommand* command)
-{
-	glm::vec2 direction{};
-
-	if (scancode == SDL_SCANCODE_A)
-		direction = { -1,0 };
-	else if (scancode == SDL_SCANCODE_D)
-		direction = { 1,0 };
-	else if (scancode == SDL_SCANCODE_W)
-		direction = { 0,1 };
-	else if (scancode == SDL_SCANCODE_S)
-		direction = { 0,-1 };
-
-	direction = normalize(direction);
-	command->SetDirection(direction);
 }

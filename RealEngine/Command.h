@@ -4,6 +4,7 @@
 namespace real
 {
 	class GameObject;
+	class XInputController;
 
 	class Command
 	{
@@ -17,11 +18,18 @@ namespace real
 
 		virtual void Execute() = 0;
 
+		void SetInputController(XInputController* controller) { m_pController = controller; }
+		void SetKeyBoardInput(int key) { m_Key = key; }
+
 	protected:
 		GameObject* GetOwner() const { return m_pGameObject; }
+		XInputController* GetController() const { return m_pController; }
+		int GetKeyBoardInput() const { return m_Key; }
 
 	private:
 		GameObject* m_pGameObject;
+		XInputController* m_pController{ nullptr };
+		int m_Key{ 0 };
 	};
 
 	class TestCommand final : public Command

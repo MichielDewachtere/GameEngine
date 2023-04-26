@@ -8,7 +8,6 @@
 
 #include "Singleton.h"
 #include "XInputController.h"
-//#include "InputMap.h"
 
 namespace real
 {
@@ -48,8 +47,6 @@ namespace real
 
 		bool m_EnableCoOp{ false };
 		bool m_UseKeyboard{ false };
-
-		void SetDirectionKeyboard(Uint32 scancode, MoveCommand* command);
 	};
 }
 

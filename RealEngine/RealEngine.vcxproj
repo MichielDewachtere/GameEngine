@@ -222,7 +222,6 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputMap.h" />
     <ClInclude Include="Minigin.h" />
-    <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
@@ -250,7 +249,6 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputMap.cpp" />
     <ClCompile Include="Minigin.cpp" />
-    <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
