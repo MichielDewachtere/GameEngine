@@ -11,6 +11,11 @@
 
 #include <ResourceManager.h>
 
+#include <TextComponent.h>
+#include <TextureComponent.h>
+#include <TransformComponent.h>
+#include <ColliderComponent.h>
+
 #ifdef USE_STEAM
 #include <Achievements.h>
 #endif 
@@ -19,13 +24,12 @@
 #include "HealthComponent.h"
 #include "LivesDisplay.h"
 
-#include <TextComponent.h>
-#include <TextureComponent.h>
-#include <TransformComponent.h>
 
 #include "DamageCommand.h"
 #include "LoadNextSceneCommand.h"
 #include "MoveCommand.h"
+
+real::WindowSettings g_window;
 
 void loadControlsDisplayScene();
 void loadDemoScene();
@@ -58,12 +62,11 @@ int main(int, char* [])
 		std::cout << "Successfully initialized steam." << '\n';
 #endif // USE _STEAM
 
-	real::WindowSettings window;
-	window.title = "BurgerTime";
-	window.width = 400;
-	window.height = 456;
+	g_window.title = "BurgerTime | Exam Assignment";
+	g_window.width = 624;
+	g_window.height = 640;
 
-	real::Minigin engine("../Data/", window);
+	real::Minigin engine("../Data/", g_window);
 	engine.Run(load);
 
 #ifdef USE_STEAM
@@ -109,7 +112,7 @@ void loadDemoScene()
 	pFpsCounter->AddComponent<FPSCounterComponent>();
 
 	const auto pWorldCenter = scene.CreateGameObject();
-	pWorldCenter->GetComponent<real::TransformComponent>()->SetLocalPosition({ 640 / 2.f, 300 });
+	pWorldCenter->GetComponent<real::TransformComponent>()->SetLocalPosition({ static_cast<float>(g_window.width) / 2.f, static_cast<float>(g_window.height) / 2.f });
 
 	const auto pCharacter = pWorldCenter->CreateGameObject();
 	pCharacter->GetComponent<real::TransformComponent>()->SetLocalPosition({ 20,0 });
@@ -118,14 +121,14 @@ void loadDemoScene()
 	pCharacter->GetComponent<HealthComponent>()->SetSpawnPoint(pCharacter->GetComponent<real::TransformComponent>()->GetWorldPosition());
 
 	const auto pLiveCounterP1 = pCharacter->CreateGameObject();
-	pLiveCounterP1->GetComponent<real::TransformComponent>()->SetLocalPosition(-338, 100);
+	pLiveCounterP1->GetComponent<real::TransformComponent>()->SetLocalPosition(-308, 100);
 	pLiveCounterP1->AddComponent<real::TextureComponent>();
 	pLiveCounterP1->AddComponent<real::TextComponent>()->SetColor(254, 194, 12);
 	pLiveCounterP1->GetComponent<real::TextComponent>()->SetFont(pFontLiveCounter);
 	pLiveCounterP1->AddComponent<LivesDisplay>(pCharacter->GetComponent<HealthComponent>());
 
 	const auto pPointCounterP1 = pCharacter->CreateGameObject();
-	pPointCounterP1->GetComponent<real::TransformComponent>()->SetLocalPosition(-338, 118);
+	pPointCounterP1->GetComponent<real::TransformComponent>()->SetLocalPosition(-308, 118);
 	pPointCounterP1->AddComponent<real::TextureComponent>();
 	pPointCounterP1->AddComponent<real::TextComponent>()->SetColor(254, 194, 12);
 	pPointCounterP1->GetComponent<real::TextComponent>()->SetFont(pFontLiveCounter);
@@ -138,14 +141,14 @@ void loadDemoScene()
 	pSecondaryCharacter->GetComponent<HealthComponent>()->SetSpawnPoint(pSecondaryCharacter->GetComponent<real::TransformComponent>()->GetWorldPosition());
 
 	const auto pLiveCounterP2 = pSecondaryCharacter->CreateGameObject();
-	pLiveCounterP2->GetComponent<real::TransformComponent>()->SetLocalPosition(-358, 140);
+	pLiveCounterP2->GetComponent<real::TransformComponent>()->SetLocalPosition(-328, 140);
 	pLiveCounterP2->AddComponent<real::TextureComponent>();
 	pLiveCounterP2->AddComponent<real::TextComponent>()->SetColor(50, 205, 50);
 	pLiveCounterP2->GetComponent<real::TextComponent>()->SetFont(pFontLiveCounter);
 	pLiveCounterP2->AddComponent<LivesDisplay>(pSecondaryCharacter->GetComponent<HealthComponent>());
 
 	const auto pPointCounterP2 = pSecondaryCharacter->CreateGameObject();
-	pPointCounterP2->GetComponent<real::TransformComponent>()->SetLocalPosition(-358, 158);
+	pPointCounterP2->GetComponent<real::TransformComponent>()->SetLocalPosition(-328, 158);
 	pPointCounterP2->AddComponent<real::TextureComponent>();
 	pPointCounterP2->AddComponent<real::TextComponent>()->SetColor(50, 205, 50);
 	pPointCounterP2->GetComponent<real::TextComponent>()->SetFont(pFontLiveCounter);
@@ -208,20 +211,87 @@ void loadDemoScene()
 			input.UseKeyboard(false);
 	}
 
+	const auto pContinueText = scene.CreateGameObject();
+	pContinueText->GetComponent<real::TransformComponent>()->SetLocalPosition(320, 450);
+	pContinueText->AddComponent<real::TextureComponent>();
+	pContinueText->AddComponent<real::TextComponent>()->SetFont(pFontLiveCounter);
+	pContinueText->GetComponent<real::TextComponent>()->SetText("To continue, press Space");
+
 	pInputMap->AddKeyboardCommands<LoadNextSceneCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, nullptr, "level");
 	pInputMap->AddControllerCommands<LoadNextSceneCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, (unsigned int)-1, nullptr, "level");
 }
 
 void loadLevelScene()
 {
-	auto& scene = real::SceneManager::GetInstance().CreateScene("level");
-	//auto& input = real::Input::GetInstance();
-	//const auto pInputMap = input.AddInputMap("level");
+	auto& scene = real::SceneManager::GetInstance().CreateScene("level", "level");
+	auto& input = real::Input::GetInstance();
+	const auto pInputMap = input.AddInputMap("level");
 
 	const auto pBackGroundTexture = real::ResourceManager::GetInstance().LoadTexture("Level.png");
+	const auto pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("PeterPepper.png");
 
 	const auto pLevel = scene.CreateGameObject();
+	pLevel->GetComponent<real::TransformComponent>()->Translate(0, 32);
 	pLevel->AddComponent<real::TextureComponent>()->SetTexture(pBackGroundTexture);
+
+	const auto pCharacter = scene.CreateGameObject();
+	pCharacter->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(g_window.width) / 2.f, static_cast<float>(g_window.height) / 2.f);
+	pCharacter->AddComponent<real::TextureComponent>()->SetTexture(pCharacterTexture);
+	pCharacter->AddComponent<HealthComponent>()->SetLives(4);
+	pCharacter->GetComponent<HealthComponent>()->SetSpawnPoint(pCharacter->GetComponent<real::TransformComponent>()->GetWorldPosition());
+	pCharacter->AddComponent<real::ColliderComponent>(pCharacterTexture->GetSize())->EnableDebugRendering(true);
+
+	input.EnableCoOp(true);
+	const auto controllerIdcs = input.AddControllers();
+
+	if (controllerIdcs.empty())
+	{
+		// only keyboard
+		input.UseKeyboard(true);
+		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_A, KEYPRESSED, pCharacter, glm::vec2{ -1,0 });
+		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_D, KEYPRESSED, pCharacter, glm::vec2{ 1,0 });
+		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_S, KEYPRESSED, pCharacter, glm::vec2{ 0,-1 });
+		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_W, KEYPRESSED, pCharacter, glm::vec2{ 0,1 });
+	}
+	else if (!controllerIdcs.empty())
+	{
+		using ControllerButton = real::XInputController::ControllerButton;
+		using InputType = real::XInputController::InputType;
+
+		// 1 controller (and 1 keyboard if co-op)
+		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadLeft, InputType::pressed, controllerIdcs[0], pCharacter, glm::vec2{ -1,0 });
+		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadRight, InputType::pressed, controllerIdcs[0], pCharacter, glm::vec2{ 1,0 });
+		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadUp, InputType::pressed, controllerIdcs[0], pCharacter, glm::vec2{ 0,1 });
+		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadDown, InputType::pressed, controllerIdcs[0], pCharacter, glm::vec2{ 0,-1 });
+
+		//if (input.IsCoOpEnabled() == true)
+		//{
+		//	if (controllerIdcs.size() == 2)
+		//	{
+		//		input.UseKeyboard(false);
+		//		
+		//		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadLeft, InputType::pressed, controllerIdcs[1], pSecondaryCharacter, glm::vec2{ -1,0 }, 100.f);
+		//		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadRight, InputType::pressed, controllerIdcs[1], pSecondaryCharacter, glm::vec2{ 1,0 }, 100.f);
+		//		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadUp, InputType::pressed, controllerIdcs[1], pSecondaryCharacter, glm::vec2{ 0,1 }, 100.f);
+		//		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadDown, InputType::pressed, controllerIdcs[1], pSecondaryCharacter, glm::vec2{ 0,-1 }, 100.f);
+		//		pInputMap->AddControllerCommands<DamageCommand>(ControllerButton::ButtonLeft, InputType::down, controllerIdcs[1], pSecondaryCharacter);
+		//		pInputMap->AddControllerCommands<real::AddPointsCommand>(ControllerButton::ButtonUp, InputType::down, controllerIdcs[1], pSecondaryCharacter);
+		//	}
+		//	else
+		//	{
+		//		input.UseKeyboard(true);
+		//		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_A, KEYPRESSED, pSecondaryCharacter, glm::vec2{ -1,0 }, 100.f);
+		//		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_D, KEYPRESSED, pSecondaryCharacter, glm::vec2{ 1,0 }, 100.f);
+		//		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_S, KEYPRESSED, pSecondaryCharacter, glm::vec2{ 0,-1 }, 100.f);
+		//		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_W, KEYPRESSED, pSecondaryCharacter, glm::vec2{ 0,1 }, 100.f);
+		//		pInputMap->AddKeyboardCommands<DamageCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, pSecondaryCharacter);
+		//		pInputMap->AddKeyboardCommands<real::AddPointsCommand>(SDL_SCANCODE_LSHIFT, SDL_KEYUP, pSecondaryCharacter);
+		//	}
+		//}
+		//else
+		//	input.UseKeyboard(false);
+	}
+
 }
 
 void loadControlsDisplayScene()
@@ -290,7 +360,7 @@ void loadControlsDisplayScene()
 	pText4->GetComponent<real::TransformComponent>()->SetLocalPosition(0, 150);
 	pText4->AddComponent<real::TextureComponent>();
 	pText4->AddComponent<real::TextComponent>()->SetFont(pFont);
-	pText4->GetComponent<real::TextComponent>()->SetText("Move                 Left Joystick");
+	pText4->GetComponent<real::TextComponent>()->SetText("Move                 DPAD");
 
 	//const auto pText5 = pTitleText->CreateGameObject<real::TextObject>();
 	//pText5->InitComponents({ 0,170 }, pFont, "Remove Life    Left Button");
@@ -311,7 +381,7 @@ void loadControlsDisplayScene()
 	//const auto pContinueText = scene.CreateGameObject<real::TextObject>();
 	//pContinueText->InitComponents({ 350, 450 }, pFont, "To continue, press Space");
 	const auto pContinueText = scene.CreateGameObject();
-	pContinueText->GetComponent<real::TransformComponent>()->SetLocalPosition(350, 450);
+	pContinueText->GetComponent<real::TransformComponent>()->SetLocalPosition(320, 450);
 	pContinueText->AddComponent<real::TextureComponent>();
 	pContinueText->AddComponent<real::TextComponent>()->SetFont(pFont);
 	pContinueText->GetComponent<real::TextComponent>()->SetText("To continue, press Space");
