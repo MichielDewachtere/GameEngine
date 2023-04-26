@@ -27,13 +27,15 @@
 #include "LoadNextSceneCommand.h"
 #include "MoveCommand.h"
 
-void loadDemoScene();
 void loadControlsDisplayScene();
+void loadDemoScene();
+void loadLevelScene();
 
 void load()
 {
-	loadDemoScene();
 	loadControlsDisplayScene();
+	loadDemoScene();
+	loadLevelScene();
 
 	real::SceneManager::GetInstance().SetSceneActive("Scene2");
 	real::Input::GetInstance().SetInputMapActive("menu");
@@ -56,7 +58,12 @@ int main(int, char* [])
 		std::cout << "Successfully initialized steam." << '\n';
 #endif // USE _STEAM
 
-	real::Minigin engine("../Data/");
+	real::WindowSettings window;
+	window.title = "BurgerTime";
+	window.width = 400;
+	window.height = 456;
+
+	real::Minigin engine("../Data/", window);
 	engine.Run(load);
 
 #ifdef USE_STEAM
@@ -200,7 +207,23 @@ void loadDemoScene()
 		else
 			input.UseKeyboard(false);
 	}
+
+	pInputMap->AddKeyboardCommands<LoadNextSceneCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, nullptr, "level");
+	pInputMap->AddControllerCommands<LoadNextSceneCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, (unsigned int)-1, nullptr, "level");
 }
+
+void loadLevelScene()
+{
+	auto& scene = real::SceneManager::GetInstance().CreateScene("level");
+	//auto& input = real::Input::GetInstance();
+	//const auto pInputMap = input.AddInputMap("level");
+
+	const auto pBackGroundTexture = real::ResourceManager::GetInstance().LoadTexture("Level.png");
+
+	const auto pLevel = scene.CreateGameObject();
+	pLevel->AddComponent<real::TextureComponent>()->SetTexture(pBackGroundTexture);
+}
+
 void loadControlsDisplayScene()
 {
 	auto& scene = real::SceneManager::GetInstance().CreateScene("Scene2");
