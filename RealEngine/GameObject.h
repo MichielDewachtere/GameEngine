@@ -18,7 +18,8 @@ namespace real
 	{
 	public:
 		explicit GameObject() = default;
-		explicit GameObject(Scene* pScene) : m_pScene(pScene) {}
+		explicit GameObject(Scene* pScene, const std::string& tag = "empty") 
+			: m_pScene(pScene), m_Tag(tag) {}
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject& operator=(const GameObject& rhs) = delete;
@@ -31,6 +32,9 @@ namespace real
 
 		void Update();
 		void Render() const;
+
+		void SetTag(const std::string& newTag) { m_Tag = newTag; }
+		std::string GetTag() const { return m_Tag; }
 
 		//Component Logic
 		template <class T, typename... Args>
@@ -52,6 +56,7 @@ namespace real
 
 	protected:
 		Scene* m_pScene{ nullptr };
+		std::string m_Tag;
 		TransformComponent* m_pTransform{ nullptr };
 
 		std::vector<std::unique_ptr<Component>> m_ComponentPtrs{};
