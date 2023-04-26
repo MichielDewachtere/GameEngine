@@ -1,12 +1,15 @@
 #ifndef MINIGIN_H
 #define MINIGIN_H
 
+#include <string>
+#include <functional>
+
 namespace real
 {
 	struct WindowSettings
 	{
-		std::string title;
-		int width, height;
+		std::string title{};
+		int width{}, height{};
 	};
 
 	class Minigin
