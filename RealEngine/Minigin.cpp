@@ -42,7 +42,7 @@ void PrintSDLVersion()
 		version.major, version.minor, version.patch);
 }
 
-real::Minigin::Minigin(const std::string &dataPath)
+real::Minigin::Minigin(const std::string &dataPath, const WindowSettings& window)
 {
 	PrintSDLVersion();
 	
@@ -52,11 +52,11 @@ real::Minigin::Minigin(const std::string &dataPath)
 	}
 
 	g_window = SDL_CreateWindow(
-		"Programming 4 assignment",
+		window.title.c_str(),
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
+		window.width,
+		window.height,
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr) 

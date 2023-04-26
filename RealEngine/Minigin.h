@@ -1,15 +1,18 @@
 #ifndef MINIGIN_H
 #define MINIGIN_H
 
-#include <string>
-#include <functional>
-
 namespace real
 {
+	struct WindowSettings
+	{
+		std::string title;
+		int width, height;
+	};
+
 	class Minigin
 	{
 	public:
-		explicit Minigin(const std::string& dataPath);
+		explicit Minigin(const std::string& dataPath, const WindowSettings& window);
 		~Minigin();
 		void Run(const std::function<void()>& load);
 
