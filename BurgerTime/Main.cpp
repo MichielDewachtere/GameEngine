@@ -26,6 +26,7 @@
 
 
 #include "DamageCommand.h"
+#include "GameInfo.h"
 #include "LoadNextSceneCommand.h"
 #include "MoveCommand.h"
 
@@ -224,6 +225,7 @@ void loadDemoScene()
 void loadLevelScene()
 {
 	auto& scene = real::SceneManager::GetInstance().CreateScene("level", "level");
+	scene.SetDebugRendering(false);
 	auto& input = real::Input::GetInstance();
 	const auto pInputMap = input.AddInputMap("level");
 
@@ -234,12 +236,129 @@ void loadLevelScene()
 	pLevel->GetComponent<real::TransformComponent>()->Translate(0, 32);
 	pLevel->AddComponent<real::TextureComponent>()->SetTexture(pBackGroundTexture);
 
-	const auto pCharacter = scene.CreateGameObject();
-	pCharacter->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(g_window.width) / 2.f, static_cast<float>(g_window.height) / 2.f);
+	const auto pLevelBoundaries = pLevel->CreateGameObject();
+	pLevelBoundaries->SetTag(Tags::boundary);
+	pLevelBoundaries->GetComponent<real::TransformComponent>()->SetLocalPosition(0, -8);
+	glm::vec2 levelBoundaries = { pBackGroundTexture->GetSize().x, 503 - 24 };
+	pLevelBoundaries->AddComponent<real::ColliderComponent>(levelBoundaries)->SetColor(Colors::red);
+
+	const auto pCharacter = pLevel->CreateGameObject();
+	pCharacter->SetTag(Tags::player);
+	pCharacter->GetComponent<real::TransformComponent>()->SetLocalPosition(288, 422);
 	pCharacter->AddComponent<real::TextureComponent>()->SetTexture(pCharacterTexture);
 	pCharacter->AddComponent<HealthComponent>()->SetLives(4);
 	pCharacter->GetComponent<HealthComponent>()->SetSpawnPoint(pCharacter->GetComponent<real::TransformComponent>()->GetWorldPosition());
 	pCharacter->AddComponent<real::ColliderComponent>(pCharacterTexture->GetSize())->EnableDebugRendering(true);
+
+#pragma region stairs
+	const auto pStair1 = pLevel->CreateGameObject();
+	pStair1->SetTag(Tags::stair);
+	pStair1->GetComponent<real::TransformComponent>()->SetLocalPosition(288, -8);
+	pStair1->AddComponent<real::ColliderComponent>(glm::vec2{ 48,479 })->EnableDebugRendering(true, Colors::purple);
+
+	const auto pStair2 = pLevel->CreateGameObject();
+	pStair2->SetTag(Tags::stair);
+	pStair2->GetComponent<real::TransformComponent>()->SetLocalPosition(144, -8);
+	pStair2->AddComponent<real::ColliderComponent>(glm::vec2{ 48,479 })->EnableDebugRendering(true, Colors::purple);
+
+	const auto pStair3 = pLevel->CreateGameObject();
+	pStair3->SetTag(Tags::stair);
+	pStair3->GetComponent<real::TransformComponent>()->SetLocalPosition(0, -8);
+	pStair3->AddComponent<real::ColliderComponent>(glm::vec2{ 48,143 })->EnableDebugRendering(true, Colors::purple);
+
+	const auto pStair4 = pLevel->CreateGameObject();
+	pStair4->SetTag(Tags::stair);
+	pStair4->GetComponent<real::TransformComponent>()->SetLocalPosition(0, 262 - 32 - 48);
+	pStair4->AddComponent<real::ColliderComponent>(glm::vec2{ 48,240 + 48 })->EnableDebugRendering(true, Colors::purple);
+
+	const auto pStair5 = pLevel->CreateGameObject();
+	pStair5->SetTag(Tags::stair);
+	pStair5->GetComponent<real::TransformComponent>()->SetLocalPosition(72, 166 - 32 - 48);
+	pStair5->AddComponent<real::ColliderComponent>(glm::vec2{ 48,241 + 48 })->EnableDebugRendering(true, Colors::purple);
+
+	const auto pStair6 = pLevel->CreateGameObject();
+	pStair6->SetTag(Tags::stair);
+	pStair6->GetComponent<real::TransformComponent>()->SetLocalPosition(216, -8);
+	pStair6->AddComponent<real::ColliderComponent>(glm::vec2{ 48,143 + 48 })->EnableDebugRendering(true, Colors::purple);
+
+	const auto pStair7 = pLevel->CreateGameObject();
+	pStair7->SetTag(Tags::stair);
+	pStair7->GetComponent<real::TransformComponent>()->SetLocalPosition(360, 166 - 32 - 48);
+	pStair7->AddComponent<real::ColliderComponent>(glm::vec2{ 48,145 + 48 })->EnableDebugRendering(true, Colors::purple);
+
+	const auto pStair8 = pLevel->CreateGameObject();
+	pStair8->SetTag(Tags::stair);
+	pStair8->GetComponent<real::TransformComponent>()->SetLocalPosition(504, 263 - 32 - 48);
+	pStair8->AddComponent<real::ColliderComponent>(glm::vec2{ 48,287 })->EnableDebugRendering(true, Colors::purple);
+
+	const auto pStair9 = pLevel->CreateGameObject();
+	pStair9->SetTag(Tags::stair);
+	pStair9->GetComponent<real::TransformComponent>()->SetLocalPosition(432, -8);
+	pStair9->AddComponent<real::ColliderComponent>(glm::vec2{ 48,479 })->EnableDebugRendering(true, Colors::purple);
+
+	const auto pStair10 = pLevel->CreateGameObject();
+	pStair10->SetTag(Tags::stair);
+	pStair10->GetComponent<real::TransformComponent>()->SetLocalPosition(576, -8);
+	pStair10->AddComponent<real::ColliderComponent>(glm::vec2{ 48,192 + 48 })->EnableDebugRendering(true, Colors::purple);
+
+	const auto pStair11 = pLevel->CreateGameObject();
+	pStair11->SetTag(Tags::stair);
+	pStair11->GetComponent<real::TransformComponent>()->SetLocalPosition(576, 359 - 32 - 48);
+	pStair11->AddComponent<real::ColliderComponent>(glm::vec2{ 48,144 + 48 })->EnableDebugRendering(true, Colors::purple);
+#pragma endregion stairs
+#pragma region floors
+	// ordened from top to bottom / left to right
+	const auto pFloor1 = pLevel->CreateGameObject();
+	pFloor1->SetTag(Tags::floor);
+	pFloor1->GetComponent<real::TransformComponent>()->SetLocalPosition(0, 422);
+	pFloor1->AddComponent<real::ColliderComponent>(glm::vec2{ pBackGroundTexture->GetSize().x, 48 })->EnableDebugRendering(true, Colors::yellow);
+
+	const auto pFloor2 = pLevel->CreateGameObject();
+	pFloor2->SetTag(Tags::floor);
+	pFloor2->GetComponent<real::TransformComponent>()->SetLocalPosition(0, 407 - 32 - 48);
+	pFloor2->AddComponent<real::ColliderComponent>(glm::vec2{ 144 * 3 + 48, 48 })->EnableDebugRendering(true, Colors::appelblauwzeegroen);
+
+	const auto pFloor3 = pLevel->CreateGameObject();
+	pFloor3->SetTag(Tags::floor);
+	pFloor3->GetComponent<real::TransformComponent>()->SetLocalPosition(432, 359 - 32 - 48);
+	pFloor3->AddComponent<real::ColliderComponent>(glm::vec2{ 48 + 144, 48 })->EnableDebugRendering(true, Colors::yellow);
+
+	const auto pFloor4 = pLevel->CreateGameObject();
+	pFloor4->SetTag(Tags::floor);
+	pFloor4->GetComponent<real::TransformComponent>()->SetLocalPosition(144, 311 - 32 - 48);
+	pFloor4->AddComponent<real::ColliderComponent>(glm::vec2{ 2 * 144 + 48, 48 })->EnableDebugRendering(true, Colors::appelblauwzeegroen);
+
+	const auto pFloor5 = pLevel->CreateGameObject();
+	pFloor5->SetTag(Tags::floor);
+	pFloor5->GetComponent<real::TransformComponent>()->SetLocalPosition(0, 263 - 32 - 48);
+	pFloor5->AddComponent<real::ColliderComponent>(glm::vec2{ 144 + 48, 48 })->EnableDebugRendering(true, Colors::yellow);
+
+	const auto pFloor6 = pLevel->CreateGameObject();
+	pFloor6->SetTag(Tags::floor);
+	pFloor6->GetComponent<real::TransformComponent>()->SetLocalPosition(432, 263 - 32 - 48);
+	pFloor6->AddComponent<real::ColliderComponent>(glm::vec2{ 144 + 48, 48 })->EnableDebugRendering(true, Colors::yellow);
+
+	const auto pFloor7 = pLevel->CreateGameObject();
+	pFloor7->SetTag(Tags::floor);
+	pFloor7->GetComponent<real::TransformComponent>()->SetLocalPosition(144, 215 - 32 - 48);
+	pFloor7->AddComponent<real::ColliderComponent>(glm::vec2{ 144 + 48, 48 })->EnableDebugRendering(true, Colors::appelblauwzeegroen);
+
+	const auto pFloor8 = pLevel->CreateGameObject();
+	pFloor8->SetTag(Tags::floor);
+	pFloor8->GetComponent<real::TransformComponent>()->SetLocalPosition(0, 167 - 32 - 48);
+	pFloor8->AddComponent<real::ColliderComponent>(glm::vec2{ 144 + 48, 48 })->EnableDebugRendering(true, Colors::yellow);
+
+	const auto pFloor9 = pLevel->CreateGameObject();
+	pFloor9->SetTag(Tags::floor);
+	pFloor9->GetComponent<real::TransformComponent>()->SetLocalPosition(288, 167 - 32 - 48);
+	pFloor9->AddComponent<real::ColliderComponent>(glm::vec2{ 2 * 144 + 48, 48 })->EnableDebugRendering(true, Colors::yellow);
+
+	const auto pFloor10 = pLevel->CreateGameObject();
+	pFloor10->SetTag(Tags::floor);
+	pFloor10->GetComponent<real::TransformComponent>()->SetLocalPosition(0, 72 - 32 - 48);
+	pFloor10->AddComponent<real::ColliderComponent>(glm::vec2{ pBackGroundTexture->GetSize().x, 48 })->EnableDebugRendering(true, Colors::appelblauwzeegroen);
+#pragma endregion floors
+
 
 	input.EnableCoOp(true);
 	const auto controllerIdcs = input.AddControllers();
