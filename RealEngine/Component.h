@@ -17,6 +17,7 @@ namespace real
 
 		virtual void Update() = 0;
 		virtual void Render() const {}
+		virtual void DebugRender() const {}
 		//virtual void FixedUpdate() = 0;
 
 		virtual bool CanRender() const = 0;
