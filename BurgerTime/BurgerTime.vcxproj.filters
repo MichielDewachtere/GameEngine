@@ -72,5 +72,6 @@
     <ClInclude Include="MoveCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
+    <ClInclude Include="GameInfo.h" />
   </ItemGroup>
 </Project>
