@@ -27,11 +27,13 @@ namespace real
 		GameObject& operator=(GameObject&& rhs) = delete;
 
 		GameObject* CreateGameObject();
+		std::vector<GameObject*> GetObjectsWithTag(const std::string& tag);
 
 		void Init();
 
 		void Update();
 		void Render() const;
+		void DebugRender() const;
 
 		void SetTag(const std::string& newTag) { m_Tag = newTag; }
 		std::string GetTag() const { return m_Tag; }

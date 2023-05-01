@@ -19,6 +19,24 @@ real::GameObject* real::GameObject::CreateGameObject()
 	return pGameObjectPtr;
 }
 
+std::vector<real::GameObject*> real::GameObject::GetObjectsWithTag(const std::string& tag)
+{
+	std::vector<GameObject*> goPtrs;
+
+	if (m_Tag == tag)
+		goPtrs.push_back(this);
+
+	for (const auto& gameObject : m_ChildrenPtrs)
+	{
+		for (const auto go : gameObject->GetObjectsWithTag(tag))
+		{
+			goPtrs.push_back(go);
+		}
+	}
+
+	return goPtrs;
+}
+
 void real::GameObject::Init()
 {
 	m_pTransform = AddComponent<TransformComponent>();
@@ -43,6 +61,19 @@ void real::GameObject::Render() const
 	
 	for (const auto& pChild : m_ChildrenPtrs)
 		pChild->Render();
+}
+
+void real::GameObject::DebugRender() const
+{
+	for (const auto& pComponent : m_ComponentPtrs)
+	{
+		if (pComponent->CanRender())
+			pComponent->DebugRender();
+	}
+
+	for (const auto& pChild : m_ChildrenPtrs)
+		pChild->DebugRender();
+
 }
 
 void real::GameObject::SetParent(GameObject* pParent, const bool keepWorldPosition)
