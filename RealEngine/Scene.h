@@ -19,6 +19,7 @@ namespace real
 		void Add(std::unique_ptr<GameObject> object);
 		void Remove(std::unique_ptr<GameObject> object);
 		void RemoveAll();
+		std::vector<GameObject*> FindObjectsWithTag(const std::string& tag) const;
 
 		void Update();
 		void Render() const;
@@ -27,6 +28,8 @@ namespace real
 
 		void SetDefaultInputMap(std::string name) { m_InputMapName = std::move(name); }
 		std::string GetDefaultInputMap() const { return m_InputMapName; }
+
+		void SetDebugRendering(bool enable) { m_DebugRender = enable; }
 
 		~Scene();
 		Scene(const Scene& other) = delete;
@@ -41,7 +44,9 @@ namespace real
 		std::string m_InputMapName;
 		std::vector < std::unique_ptr<GameObject>> m_objects{};
 
-		static unsigned int m_idCounter; 
+		static unsigned int m_idCounter;
+
+		bool m_DebugRender{};
 	};
 
 	template <class T>

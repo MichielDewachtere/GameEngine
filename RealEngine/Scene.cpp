@@ -39,6 +39,24 @@ void Scene::RemoveAll()
 	m_objects.clear();
 }
 
+std::vector<GameObject*> Scene::FindObjectsWithTag(const std::string& tag) const
+{
+	std::vector<GameObject*> goPtrs;
+
+	for (const auto& gameObject : m_objects)
+	{
+		//if (gameObject->GetTag() == tag)
+		//	goPtrs.push_back(gameObject.get());
+
+		for (const auto go : gameObject->GetObjectsWithTag(tag))
+		{
+			goPtrs.push_back(go);
+		}
+	}
+
+	return goPtrs;
+}
+
 void Scene::Update()
 {
 	for(auto& object : m_objects)
@@ -52,6 +70,9 @@ void Scene::Render() const
 	for (const auto& object : m_objects)
 	{
 		object->Render();
+
+		if (m_DebugRender)
+			object->DebugRender();
 	}
 }
 
