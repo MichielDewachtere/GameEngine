@@ -1,10 +1,14 @@
 #include "stdafx.h"
 #include "MoveCommand.h"
 
+#include "ColliderComponent.h"
+#include "GameInfo.h"
 #include "TransformComponent.h"
 #include "GameTime.h"
 
 #include "Input.h"
+#include "Scene.h"
+#include "SceneManager.h"
 
 MoveCommand::MoveCommand(real::GameObject* object, const glm::vec2& direction, const float speed)
     : Command(object)
@@ -29,13 +33,51 @@ void MoveCommand::Execute()
     // Get the current position of the game object.
     const auto pos = pTransform->GetWorldPosition();
 
+    auto stairPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::stair);
+    auto floorPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::floor);
+    auto pBoundary = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::boundary);
+    const auto& collider = GetOwner()->GetComponent<real::ColliderComponent>();
+
+    real::ColliderComponent futureCollider{ nullptr, collider->GetSize() };
+
     // Calculate the new position of the game object based on its current position,
     // its direction, and the elapsed time since the last frame.
-    glm::vec2 newPos;
-    newPos.x = pos.x + m_Direction.x * m_Speed * real::Time::GetInstance().GetElapsed();
-    newPos.y = pos.y + m_Direction.y * m_Speed * real::Time::GetInstance().GetElapsed();
+    glm::vec2 newPos = pos;
+    glm::vec2 futurePos{};
+    constexpr float epsilon = 0.01f;
+    futurePos.x = pos.x + m_Direction.x * m_Speed * real::Time::GetInstance().GetElapsed() + epsilon;
+    futurePos.y = pos.y + m_Direction.y * m_Speed * real::Time::GetInstance().GetElapsed() + epsilon;
+    futureCollider.SetPosition(futurePos);
+
+    if (pBoundary[0]->HasComponent<real::ColliderComponent>())
+    {
+        if (pBoundary[0]->GetComponent<real::ColliderComponent>()->IsEntireColliderOverlapping(futureCollider) == false)
+	            return;
+    }
+
+	// if owner overlaps with ground
+
+    for (const auto& floor : floorPtrs)
+    {
+        if (floor->HasComponent<real::ColliderComponent>() == false)
+            continue;
+
+        if (floor->GetComponent<real::ColliderComponent>()->IsEntireColliderOverlapping(futureCollider))
+            newPos.x = pos.x + m_Direction.x * m_Speed * real::Time::GetInstance().GetElapsed();
+    }
+
+    // if owner overlaps with stair
+    for (const auto& stair : stairPtrs)
+    {
+        if (stair->HasComponent<real::ColliderComponent>() == false)
+            continue;
+
+        if (stair->GetComponent<real::ColliderComponent>()->IsEntireColliderOverlapping(futureCollider))
+            newPos.y = pos.y + m_Direction.y * m_Speed * real::Time::GetInstance().GetElapsed();
+    }
 
     // Translate the TransformComponent to the new position.
     //pTransform->Translate(newPos);
     pTransform->SetWorldPosition(newPos);
+
 }
