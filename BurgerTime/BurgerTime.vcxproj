@@ -170,6 +170,7 @@
   <ItemGroup>
     <ClInclude Include="DamageCommand.h" />
     <ClInclude Include="FPSCounterComponent.h" />
+    <ClInclude Include="GameInfo.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="LivesDisplay.h" />
     <ClInclude Include="LoadNextSceneCommand.h" />
