@@ -17,11 +17,23 @@ namespace real
 		ColliderComponent operator=(Component&& rhs) = delete;
 
 		void Update() override;
-		void Render() const override;
+		void DebugRender() const override;
 
 		bool CanRender() const override { return true; }
 
-		void EnableDebugRendering(bool enable) { m_DrawDebug = enable; }
+		void SetPosition(const glm::vec2& pos) { m_Pos = pos; }
+		void SetPosition(float x, float y) { SetPosition({ x,y }); }
+		glm::vec2 GetPosition() const { return m_Pos; }
+		void SetSize(const glm::vec2& size) { m_Size = size; }
+		void SetSize(float width, float height) { SetSize({ width, height }); }
+		glm::vec2 GetSize() const { return m_Size; }
+
+		/**
+		 * \brief 
+		 * \param enable 
+		 * \param color color values between 0 and 255
+		 */
+		void EnableDebugRendering(bool enable, const glm::vec4& color = { 0,255,0,255 }) { m_DrawDebug = enable; m_Color = color; }
 		/**
 		 * \brief The Color of the debug box
 		 * \param color values between 0 and 255
@@ -29,6 +41,8 @@ namespace real
 		void SetColor(const glm::vec4& color) { m_Color = color; }
 
 		bool IsOverlapping(const ColliderComponent& other) const;
+		bool IsEntireColliderOverlapping(const ColliderComponent& other) const;
+
 		/**
 		\brief Determines whether the current collider is overlapping with the expected game object, identified by its tag.
 		\param other The collider of the other game object.
@@ -39,7 +53,6 @@ namespace real
 		*/
 		bool IsOverlappingWith(const ColliderComponent& other, const std::string& expectedTag) const;
 
-		glm::vec2 GetSize() const { return m_Size; }
 
 	private:
 		glm::vec2 m_Pos{};

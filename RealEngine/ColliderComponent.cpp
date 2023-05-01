@@ -8,7 +8,10 @@ real::ColliderComponent::ColliderComponent(GameObject* pOwner, const glm::vec2& 
 	: Component(pOwner)
 	, m_Size(size)
 {
-	m_Pos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
+	if (GetOwner() != nullptr)
+		m_Pos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
+	else
+		m_Pos = { 0,0 };
 }
 
 real::ColliderComponent::ColliderComponent(GameObject* pOwner, float width, float height)
@@ -21,7 +24,7 @@ void real::ColliderComponent::Update()
 	m_Pos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
 }
 
-void real::ColliderComponent::Render() const
+void real::ColliderComponent::DebugRender() const
 {
 	const auto renderer = Renderer::GetInstance().GetSDLRenderer();
 
@@ -38,7 +41,7 @@ void real::ColliderComponent::Render() const
 bool real::ColliderComponent::IsOverlapping(const ColliderComponent& other) const
 {
 	const auto otherSize = other.GetSize();
-	const auto otherPos = other.GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
+	const auto otherPos = other.GetPosition();
 
 	if (m_Pos.x > otherPos.x + otherSize.x)
 		return false;
@@ -46,10 +49,32 @@ bool real::ColliderComponent::IsOverlapping(const ColliderComponent& other) cons
 	if (m_Pos.x + m_Size.x < otherPos.x)
 		return false;
 
-	if (m_Pos.y + m_Size.y > otherPos.y)
+	// Y(0,0) IS ON THE TOP RIGHT OF THE SCREEN
+	if (m_Pos.y > otherPos.y + otherSize.y)
 		return false;
 
-	if (m_Pos.y < otherPos.y + otherSize.y)
+	if (m_Pos.y + m_Size.y < otherPos.y)
+		return false;
+
+	return true;
+}
+
+bool real::ColliderComponent::IsEntireColliderOverlapping(const ColliderComponent& other) const
+{
+	const auto otherSize = other.GetSize();
+	const auto otherPos = other.GetPosition();
+
+	if (static_cast<int>(m_Pos.x) > static_cast<int>(otherPos.x))
+		return false;
+
+	if (static_cast<int>(m_Pos.x + m_Size.x) < static_cast<int>(otherPos.x + otherSize.x))
+		return false;
+
+	// Y(0,0) IS ON THE TOP RIGHT OF THE SCREEN
+	if (static_cast<int>(m_Pos.y) > static_cast<int>(otherPos.y))
+		return false;
+
+	if (static_cast<int>(m_Pos.y + m_Size.y) < static_cast<int>(otherPos.y + otherSize.y))
 		return false;
 
 	return true;
