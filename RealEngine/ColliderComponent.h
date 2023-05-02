@@ -23,6 +23,8 @@ namespace real
 
 		void SetPosition(const glm::vec2& pos) { m_Pos = pos; }
 		void SetPosition(float x, float y) { SetPosition({ x,y }); }
+		void Translate(float x, float y) { Translate({ x,y }); }
+		void Translate(const glm::vec2& t) { m_Pos += t; }
 		glm::vec2 GetPosition() const { return m_Pos; }
 		void SetSize(const glm::vec2& size) { m_Size = size; }
 		void SetSize(float width, float height) { SetSize({ width, height }); }

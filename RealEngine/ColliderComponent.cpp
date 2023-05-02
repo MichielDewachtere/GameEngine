@@ -21,7 +21,7 @@ real::ColliderComponent::ColliderComponent(GameObject* pOwner, float width, floa
 
 void real::ColliderComponent::Update()
 {
-	m_Pos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
+	//m_Pos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
 }
 
 void real::ColliderComponent::DebugRender() const
