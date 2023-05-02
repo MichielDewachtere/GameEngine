@@ -9,6 +9,8 @@ struct Tags
 	inline static const std::string stair = "Stair";
 	inline static const std::string floor = "Floor";
 	inline static const std::string boundary = "Boundary";
+	inline static const std::string hotDog = "HotDog";
+	inline static const std::string egg = "Egg";
 };
 
 struct Colors
