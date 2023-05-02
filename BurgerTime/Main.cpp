@@ -64,7 +64,7 @@ int main(int, char* [])
 #endif // USE _STEAM
 
 	g_window.title = "BurgerTime | Exam Assignment";
-	g_window.width = 624;
+	g_window.width = 624 + 48 * 2;
 	g_window.height = 640;
 
 	real::Minigin engine("../Data/", g_window);
@@ -225,15 +225,25 @@ void loadDemoScene()
 void loadLevelScene()
 {
 	auto& scene = real::SceneManager::GetInstance().CreateScene("level", "level");
-	scene.SetDebugRendering(false);
+	scene.SetDebugRendering(true);
 	auto& input = real::Input::GetInstance();
 	const auto pInputMap = input.AddInputMap("level");
 
 	const auto pBackGroundTexture = real::ResourceManager::GetInstance().LoadTexture("Level.png");
 	const auto pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("PeterPepper.png");
 
+	const auto pBurgerTopTexture = real::ResourceManager::GetInstance().LoadTexture("Burger_BunTop.png");
+	const auto pBurgerTop_LeftTexture = real::ResourceManager::GetInstance().LoadTexture("Burger/BunTop/left.png");
+	const auto pBurgerTop_MiddleTexture = real::ResourceManager::GetInstance().LoadTexture("Burger/BunTop/middle.png");
+	const auto pBurgerTop_RightTexture = real::ResourceManager::GetInstance().LoadTexture("Burger/BunTop/right.png");
+
+
+	const auto pBurgerBottomTexture = real::ResourceManager::GetInstance().LoadTexture("Burger_BunBottom.png");
+	const auto pLettuceTexture = real::ResourceManager::GetInstance().LoadTexture("Burger_Lettuce.png");
+	const auto pPattyTexture = real::ResourceManager::GetInstance().LoadTexture("Burger_Patty.png");
+
 	const auto pLevel = scene.CreateGameObject();
-	pLevel->GetComponent<real::TransformComponent>()->Translate(0, 32);
+	pLevel->GetComponent<real::TransformComponent>()->Translate(48, 32);
 	pLevel->AddComponent<real::TextureComponent>()->SetTexture(pBackGroundTexture);
 
 	const auto pLevelBoundaries = pLevel->CreateGameObject();
@@ -254,12 +264,12 @@ void loadLevelScene()
 	const auto pStair1 = pLevel->CreateGameObject();
 	pStair1->SetTag(Tags::stair);
 	pStair1->GetComponent<real::TransformComponent>()->SetLocalPosition(288, -8);
-	pStair1->AddComponent<real::ColliderComponent>(glm::vec2{ 48,479 })->EnableDebugRendering(true, Colors::purple);
+	pStair1->AddComponent<real::ColliderComponent>(glm::vec2{ 48,478 })->EnableDebugRendering(true, Colors::purple);
 
 	const auto pStair2 = pLevel->CreateGameObject();
 	pStair2->SetTag(Tags::stair);
 	pStair2->GetComponent<real::TransformComponent>()->SetLocalPosition(144, -8);
-	pStair2->AddComponent<real::ColliderComponent>(glm::vec2{ 48,479 })->EnableDebugRendering(true, Colors::purple);
+	pStair2->AddComponent<real::ColliderComponent>(glm::vec2{ 48,478 })->EnableDebugRendering(true, Colors::purple);
 
 	const auto pStair3 = pLevel->CreateGameObject();
 	pStair3->SetTag(Tags::stair);
@@ -268,13 +278,13 @@ void loadLevelScene()
 
 	const auto pStair4 = pLevel->CreateGameObject();
 	pStair4->SetTag(Tags::stair);
-	pStair4->GetComponent<real::TransformComponent>()->SetLocalPosition(0, 262 - 32 - 48);
+	pStair4->GetComponent<real::TransformComponent>()->SetLocalPosition(0, 263 - 32 - 48);
 	pStair4->AddComponent<real::ColliderComponent>(glm::vec2{ 48,240 + 48 })->EnableDebugRendering(true, Colors::purple);
 
 	const auto pStair5 = pLevel->CreateGameObject();
 	pStair5->SetTag(Tags::stair);
-	pStair5->GetComponent<real::TransformComponent>()->SetLocalPosition(72, 166 - 32 - 48);
-	pStair5->AddComponent<real::ColliderComponent>(glm::vec2{ 48,241 + 48 })->EnableDebugRendering(true, Colors::purple);
+	pStair5->GetComponent<real::TransformComponent>()->SetLocalPosition(72, 167 - 32 - 48);
+	pStair5->AddComponent<real::ColliderComponent>(glm::vec2{ 48,240 + 48 })->EnableDebugRendering(true, Colors::purple);
 
 	const auto pStair6 = pLevel->CreateGameObject();
 	pStair6->SetTag(Tags::stair);
@@ -283,8 +293,8 @@ void loadLevelScene()
 
 	const auto pStair7 = pLevel->CreateGameObject();
 	pStair7->SetTag(Tags::stair);
-	pStair7->GetComponent<real::TransformComponent>()->SetLocalPosition(360, 166 - 32 - 48);
-	pStair7->AddComponent<real::ColliderComponent>(glm::vec2{ 48,145 + 48 })->EnableDebugRendering(true, Colors::purple);
+	pStair7->GetComponent<real::TransformComponent>()->SetLocalPosition(360, 167 - 32 - 48);
+	pStair7->AddComponent<real::ColliderComponent>(glm::vec2{ 48,144 + 48 })->EnableDebugRendering(true, Colors::purple);
 
 	const auto pStair8 = pLevel->CreateGameObject();
 	pStair8->SetTag(Tags::stair);
@@ -294,17 +304,17 @@ void loadLevelScene()
 	const auto pStair9 = pLevel->CreateGameObject();
 	pStair9->SetTag(Tags::stair);
 	pStair9->GetComponent<real::TransformComponent>()->SetLocalPosition(432, -8);
-	pStair9->AddComponent<real::ColliderComponent>(glm::vec2{ 48,479 })->EnableDebugRendering(true, Colors::purple);
+	pStair9->AddComponent<real::ColliderComponent>(glm::vec2{ 48,478 })->EnableDebugRendering(true, Colors::purple);
 
 	const auto pStair10 = pLevel->CreateGameObject();
 	pStair10->SetTag(Tags::stair);
 	pStair10->GetComponent<real::TransformComponent>()->SetLocalPosition(576, -8);
-	pStair10->AddComponent<real::ColliderComponent>(glm::vec2{ 48,192 + 48 })->EnableDebugRendering(true, Colors::purple);
+	pStair10->AddComponent<real::ColliderComponent>(glm::vec2{ 48,191 + 48 })->EnableDebugRendering(true, Colors::purple);
 
 	const auto pStair11 = pLevel->CreateGameObject();
 	pStair11->SetTag(Tags::stair);
 	pStair11->GetComponent<real::TransformComponent>()->SetLocalPosition(576, 359 - 32 - 48);
-	pStair11->AddComponent<real::ColliderComponent>(glm::vec2{ 48,144 + 48 })->EnableDebugRendering(true, Colors::purple);
+	pStair11->AddComponent<real::ColliderComponent>(glm::vec2{ 48,143 + 48 })->EnableDebugRendering(true, Colors::purple);
 #pragma endregion stairs
 #pragma region floors
 	// ordened from top to bottom / left to right
@@ -358,7 +368,37 @@ void loadLevelScene()
 	pFloor10->GetComponent<real::TransformComponent>()->SetLocalPosition(0, 72 - 32 - 48);
 	pFloor10->AddComponent<real::ColliderComponent>(glm::vec2{ pBackGroundTexture->GetSize().x, 48 })->EnableDebugRendering(true, Colors::appelblauwzeegroen);
 #pragma endregion floors
+#pragma region burgers
+	const auto pBurgerTop1 = pLevel->CreateGameObject();
+	pBurgerTop1->GetComponent<real::TransformComponent>()->SetLocalPosition(48, 172 - 31 - static_cast<float>(pBurgerTopTexture->GetSize().y));
+	//pBurgerTop1->AddComponent<real::TextureComponent>()->SetTexture(pBurgerTopTexture);
+	pBurgerTop1->AddComponent<real::ColliderComponent>(glm::vec2{ pBurgerTopTexture->GetSize().x, 48 })->EnableDebugRendering(true, Colors::red);
+	pBurgerTop1->GetComponent<real::ColliderComponent>()->Translate(0, -33);
 
+	const auto pBurgerTop1_Left = pLevel->CreateGameObject();
+	pBurgerTop1_Left->GetComponent<real::TransformComponent>()->SetLocalPosition(48, 172 - 31 - static_cast<float>(pBurgerTop_LeftTexture->GetSize().y));
+	pBurgerTop1_Left->AddComponent<real::TextureComponent>()->SetTexture(pBurgerTop_LeftTexture);
+	pBurgerTop1_Left->AddComponent<real::ColliderComponent>(glm::vec2{ pBurgerTop_LeftTexture->GetSize().x, 48 })->EnableDebugRendering(true, Colors::red);
+	pBurgerTop1_Left->GetComponent<real::ColliderComponent>()->Translate(0, -33);
+
+	const auto pBurgerTop1_Middle = pLevel->CreateGameObject();
+	pBurgerTop1_Middle->GetComponent<real::TransformComponent>()->SetLocalPosition(48 + static_cast<float>(pBurgerTop_MiddleTexture->GetSize().x), 172 - 31 - static_cast<float>(pBurgerTop_MiddleTexture->GetSize().y));
+	pBurgerTop1_Middle->AddComponent<real::TextureComponent>()->SetTexture(pBurgerTop_MiddleTexture);
+	pBurgerTop1_Middle->AddComponent<real::ColliderComponent>(glm::vec2{ pBurgerTop_MiddleTexture->GetSize().x, 48 })->EnableDebugRendering(true, Colors::red);
+	pBurgerTop1_Middle->GetComponent<real::ColliderComponent>()->Translate(0, -33);
+
+	const auto pBurgerTop1_Middle2 = pLevel->CreateGameObject();
+	pBurgerTop1_Middle2->GetComponent<real::TransformComponent>()->SetLocalPosition(48 + static_cast<float>(pBurgerTop_MiddleTexture->GetSize().x) * 2, 172 - 31 - static_cast<float>(pBurgerTop_MiddleTexture->GetSize().y));
+	pBurgerTop1_Middle2->AddComponent<real::TextureComponent>()->SetTexture(pBurgerTop_MiddleTexture);
+	pBurgerTop1_Middle2->AddComponent<real::ColliderComponent>(glm::vec2{ pBurgerTop_MiddleTexture->GetSize().x, 48 })->EnableDebugRendering(true, Colors::red);
+	pBurgerTop1_Middle2->GetComponent<real::ColliderComponent>()->Translate(0, -33);
+
+	const auto pBurgerTop1_Right = pLevel->CreateGameObject();
+	pBurgerTop1_Right->GetComponent<real::TransformComponent>()->SetLocalPosition(48 + static_cast<float>(pBurgerTop_RightTexture->GetSize().x) * 3, 172 - 31 - static_cast<float>(pBurgerTop_MiddleTexture->GetSize().y));
+	pBurgerTop1_Right->AddComponent<real::TextureComponent>()->SetTexture(pBurgerTop_RightTexture);
+	pBurgerTop1_Right->AddComponent<real::ColliderComponent>(glm::vec2{ pBurgerTop_RightTexture->GetSize().x, 48 })->EnableDebugRendering(true, Colors::red);
+	pBurgerTop1_Right->GetComponent<real::ColliderComponent>()->Translate(0, -33);
+#pragma endregion burgers
 
 	input.EnableCoOp(true);
 	const auto controllerIdcs = input.AddControllers();
