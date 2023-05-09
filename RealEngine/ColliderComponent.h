@@ -24,8 +24,8 @@ namespace real
 		void SetPosition(const glm::vec2& pos) { m_Pos = pos; }
 		void SetPosition(float x, float y) { SetPosition({ x,y }); }
 		void Translate(float x, float y) { Translate({ x,y }); }
-		void Translate(const glm::vec2& t) { m_Pos += t; }
-		glm::vec2 GetPosition() const { return m_Pos; }
+		void Translate(const glm::vec2& t) { m_Offset += t; }
+		glm::vec2 GetPosition() const { return m_Pos + m_Offset; }
 		void SetSize(const glm::vec2& size) { m_Size = size; }
 		void SetSize(float width, float height) { SetSize({ width, height }); }
 		glm::vec2 GetSize() const { return m_Size; }
@@ -58,6 +58,7 @@ namespace real
 
 	private:
 		glm::vec2 m_Pos{};
+		glm::vec2 m_Offset{};
 		glm::vec2 m_Size;
 
 		bool m_DrawDebug{ false };
