@@ -1,6 +1,8 @@
 #ifndef STDAFX_H
 #define STDAFX_H
 
+#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+
 #pragma region Third-Party Includes/Libs
 #if _DEBUG
 // ReSharper disable once CppUnusedIncludeDirective
@@ -13,6 +15,7 @@
 #pragma region Windows Headers
 // Windows Header Files:
 #define WIN32_LEAN_AND_MEAN 
+#define NOMINMAX
 #include <windows.h>
 
 // STL Headers:
