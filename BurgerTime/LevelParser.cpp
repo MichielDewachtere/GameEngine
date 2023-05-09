@@ -4,8 +4,6 @@
 
 #include <fstream>
 
-#include <document.h>
-
 #include <TextureComponent.h>
 #include <ResourceManager.h>
 #include <TransformComponent.h>
@@ -53,38 +51,27 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     // FLOORS
     for (const auto& floor : document["floors"].GetArray())
         Floor::CreateFloor(pLevel, { floor[0].GetDouble(), floor[1].GetDouble() }, static_cast<float>(floor[2].GetDouble()), false);
-
     // STAIRS
     for (const auto& stair : document["stairs"].GetArray())
         Stair::CreateStair(pLevel, { stair[0].GetDouble(), stair[1].GetDouble() }, static_cast<float>(stair[2].GetDouble()), false);
-
     // BUN_TOP
-    const rapidjson::Value& bunTop = document["bun_top"];
-    const std::string bunTopTexturePath = bunTop["texturePath"].GetString();
-    for (const auto& top : bunTop["position"].GetArray())
-        IngredientPrefab::CreateIngredient(pLevel, bunTopTexturePath, { top[0].GetDouble(), top[1].GetDouble() }, false);
-
+    ParseIngredient(pLevel, document, "bun_top");
     // LETTUCE
-    const rapidjson::Value& lettuceValue = document["lettuce"];
-    const std::string lettuceTexturePath = lettuceValue["texturePath"].GetString();
-    for (const auto& lettuce : lettuceValue["position"].GetArray())
-        IngredientPrefab::CreateIngredient(pLevel, lettuceTexturePath, { lettuce[0].GetDouble(), lettuce[1].GetDouble() }, false);
-
+    ParseIngredient(pLevel, document, "lettuce");
     // TOMATO
-
     // CHEESE
-
 	// PATTY
-    const rapidjson::Value& pattyValue = document["patty"];
-    const std::string pattyTexturePath = pattyValue["texturePath"].GetString();
-    for (const auto& patty : pattyValue["position"].GetArray())
-        IngredientPrefab::CreateIngredient(pLevel, pattyTexturePath, { patty[0].GetDouble(), patty[1].GetDouble() }, false);
-
-	// BUN_BOTTOM
-	const rapidjson::Value& bunBottomValue = document["bun_bottom"];
-    const std::string bunBottomTexturePath = bunBottomValue["texturePath"].GetString();
-    for (const auto& bunBottom : bunBottomValue["position"].GetArray())
-        IngredientPrefab::CreateIngredient(pLevel, bunBottomTexturePath, { bunBottom[0].GetDouble(), bunBottom[1].GetDouble() }, false);
+    ParseIngredient(pLevel, document, "patty");
+    // BUN_BOTTOM
+    ParseIngredient(pLevel, document, "bun_bottom");
 
     return pLevel;
+}
+
+void LevelParser::ParseIngredient(real::GameObject* pGameObject, const rapidjson::Document& document, const std::string& part)
+{
+    const rapidjson::Value& bunBottomValue = document[part.c_str()];
+    const std::string bunBottomTexturePath = bunBottomValue["texturePath"].GetString();
+    for (const auto& bunBottom : bunBottomValue["position"].GetArray())
+        IngredientPrefab::CreateIngredient(pGameObject, bunBottomTexturePath, { bunBottom[0].GetDouble(), bunBottom[1].GetDouble() }, false);
 }

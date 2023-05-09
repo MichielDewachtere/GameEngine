@@ -121,8 +121,10 @@
     <ClInclude Include="LevelParser.h">
       <Filter>Parsers</Filter>
     </ClInclude>
-    <ClInclude Include="Floor.h" />
     <ClInclude Include="IngredientPrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Floor.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
   </ItemGroup>
