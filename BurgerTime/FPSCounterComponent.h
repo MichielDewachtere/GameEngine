@@ -1,8 +1,7 @@
 #ifndef FPSCOUNTERCOMPONENT_H
 #define FPSCOUNTERCOMPONENT_H
 
-#include "Component.h"
-
+#include <Component.h>
 
 class FPSCounterComponent final : public real::Component
 {
