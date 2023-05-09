@@ -3,8 +3,8 @@
 
 #include <glm/vec2.hpp>
 
-#include "Component.h"
-#include "Subject.h"
+#include <Component.h>
+#include <Subject.h>
 
 class HealthComponent final : public real::Component
 {
