@@ -80,7 +80,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)RealEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\rapidjson;$(SolutionDir)RealEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)RealEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\rapidjson;$(SolutionDir)RealEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)RealEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)RealEngine;$(SolutionDir)\3rdParty\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -140,7 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)RealEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\rapidjson;$(SolutionDir)RealEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -156,8 +156,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DamageCommand.cpp" />
+    <ClCompile Include="Floor.cpp" />
     <ClCompile Include="FPSCounterComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="Ingredient.cpp" />
+    <ClCompile Include="IngredientPart.cpp" />
+    <ClCompile Include="IngredientPrefab.cpp" />
+    <ClCompile Include="LevelParser.cpp" />
     <ClCompile Include="LivesDisplay.cpp" />
     <ClCompile Include="LoadNextSceneCommand.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -165,19 +170,26 @@
     <ClCompile Include="PlayerCharacter.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
+    <ClCompile Include="Stair.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DamageCommand.h" />
+    <ClInclude Include="Floor.h" />
     <ClInclude Include="FPSCounterComponent.h" />
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="Ingredient.h" />
+    <ClInclude Include="IngredientPart.h" />
+    <ClInclude Include="IngredientPrefab.h" />
+    <ClInclude Include="LevelParser.h" />
     <ClInclude Include="LivesDisplay.h" />
     <ClInclude Include="LoadNextSceneCommand.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="PlayerCharacter.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreDisplay.h" />
+    <ClInclude Include="Stair.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
