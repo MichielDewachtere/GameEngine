@@ -19,13 +19,15 @@ const glm::vec2& real::TransformComponent::GetWorldPosition()
 
 void real::TransformComponent::SetWorldPosition(const float x, const float y)
 {
-	m_WorldPosition.x = x;
-	m_WorldPosition.y = y;
+	SetWorldPosition({ x,y });
 }
 
 void real::TransformComponent::SetWorldPosition(const glm::vec2& pos)
 {
 	m_WorldPosition = pos;
+
+	for (const auto& pChild : GetOwner()->GetChildren())
+		pChild->GetComponent<TransformComponent>()->SetPositionDirty();
 }
 
 void real::TransformComponent::SetLocalPosition(float x, float y)
