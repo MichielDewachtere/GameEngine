@@ -11,6 +11,24 @@
     <Filter Include="Commands">
       <UniqueIdentifier>{26c76ff0-4957-4d93-bea8-d0d343ecdc1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\HUD">
+      <UniqueIdentifier>{6ec423c7-021c-49e6-a4a8-15bdafdc24dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Character">
+      <UniqueIdentifier>{a722d91e-22bf-4b0b-8c49-f01752605910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Utils">
+      <UniqueIdentifier>{8e612a62-84b4-4087-8582-d4f7c82b2c6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Burger">
+      <UniqueIdentifier>{e040c012-23d0-4d10-b578-d7616bc6d72a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs">
+      <UniqueIdentifier>{a7fbb5c1-6406-433d-8e93-b49ef735aa5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parsers">
+      <UniqueIdentifier>{250e9c9c-898e-498d-98ac-919f5b3aab2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -18,53 +36,53 @@
     <ClCompile Include="DamageCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
-    <ClCompile Include="LivesDisplay.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="FPSCounterComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="HealthComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerCharacter.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="RotatorComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreDisplay.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="LoadNextSceneCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
     <ClCompile Include="MoveCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="FPSCounterComponent.cpp">
+      <Filter>Components\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="LivesDisplay.cpp">
+      <Filter>Components\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreDisplay.cpp">
+      <Filter>Components\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCharacter.cpp">
+      <Filter>Components\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthComponent.cpp">
+      <Filter>Components\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="RotatorComponent.cpp">
+      <Filter>Components\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Ingredient.cpp">
+      <Filter>Components\Burger</Filter>
+    </ClCompile>
+    <ClCompile Include="IngredientPart.cpp">
+      <Filter>Components\Burger</Filter>
+    </ClCompile>
+    <ClCompile Include="Stair.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelParser.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="Floor.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="IngredientPrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="DamageCommand.h">
       <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="LivesDisplay.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="FPSCounterComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="HealthComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerCharacter.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="RotatorComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreDisplay.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="LoadNextSceneCommand.h">
       <Filter>Commands</Filter>
@@ -73,5 +91,39 @@
       <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="GameInfo.h" />
+    <ClInclude Include="FPSCounterComponent.h">
+      <Filter>Components\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="LivesDisplay.h">
+      <Filter>Components\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreDisplay.h">
+      <Filter>Components\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCharacter.h">
+      <Filter>Components\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthComponent.h">
+      <Filter>Components\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="RotatorComponent.h">
+      <Filter>Components\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Ingredient.h">
+      <Filter>Components\Burger</Filter>
+    </ClInclude>
+    <ClInclude Include="IngredientPart.h">
+      <Filter>Components\Burger</Filter>
+    </ClInclude>
+    <ClInclude Include="Stair.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelParser.h">
+      <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="Floor.h" />
+    <ClInclude Include="IngredientPrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
