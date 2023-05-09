@@ -1,7 +1,7 @@
 #ifndef PLAYERCHARACTER_H
 #define PLAYERCHARACTER_H
 
-#include "Component.h"
+#include <Component.h>
 
 class PlayerCharacter : public real::Component
 {
