@@ -42,6 +42,8 @@
 #pragma comment(lib, "SDL2_ttf.dll")
 #include <SDL_image.h>
 #pragma comment(lib, "SDL2_image.dll")
+#include <SDL_mixer.h>
+#pragma comment(lib, "SDL2_mixer.dll")
 #pragma endregion
 
 #pragma region DirectX Headers
@@ -67,7 +69,6 @@
 #include <steam_api.h>
 #endif // USE_STEAM
 #pragma endregion
-
 #pragma endregion
 
 #endif // STDAFX_H
