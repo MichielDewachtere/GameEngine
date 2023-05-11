@@ -35,6 +35,12 @@
     <Filter Include="Steam">
       <UniqueIdentifier>{b92c3b69-9325-4f96-97d2-5cf88c558e7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{9a581ec7-aa8d-412c-a74b-456564b98a67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service">
+      <UniqueIdentifier>{4290f2a3-dccd-4434-a7be-50a8d91d65be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -111,6 +117,15 @@
     <ClInclude Include="ColliderComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Locator.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLAudio.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XInputController.cpp">
@@ -180,6 +195,15 @@
     </ClCompile>
     <ClCompile Include="ColliderComponent.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Locator.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLAudio.cpp">
+      <Filter>Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
