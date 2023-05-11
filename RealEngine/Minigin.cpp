@@ -3,6 +3,7 @@
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include <SDL_version.h>
 
 #include "Input.h"
@@ -11,13 +12,15 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameTime.h"
+#include "Locator.h"
+#include "SDLAudio.h"
 
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
 {
 	SDL_version version{};
-	SDL_VERSION(&version);
+	SDL_VERSION(&version)
 	printf("We compiled against SDL version %u.%u.%u ...\n",
 		version.major, version.minor, version.patch);
 
@@ -25,7 +28,7 @@ void PrintSDLVersion()
 	printf("We are linking against SDL version %u.%u.%u.\n",
 		version.major, version.minor, version.patch);
 
-	SDL_IMAGE_VERSION(&version);
+	SDL_IMAGE_VERSION(&version)
 	printf("We compiled against SDL_image version %u.%u.%u ...\n",
 		version.major, version.minor, version.patch);
 
@@ -39,6 +42,14 @@ void PrintSDLVersion()
 
 	version = *TTF_Linked_Version();
 	printf("We are linking against SDL_ttf version %u.%u.%u.\n",
+		version.major, version.minor, version.patch);
+
+	SDL_MIXER_VERSION(&version)
+	printf("We compiled against SDL_mixer version %u.%u.%u ...\n",
+		version.major, version.minor, version.patch);
+
+	version = *Mix_Linked_Version();
+	printf("We are linking against SDL_mixer version %u.%u.%u.\n",
 		version.major, version.minor, version.patch);
 }
 
@@ -71,6 +82,8 @@ real::Minigin::Minigin(const std::string &dataPath, const WindowSettings& window
 	Time::GetInstance().Init();
 
 	Input::GetInstance().Init();
+
+	Locator::RegisterAudioSystem(new SDLAudio());
 }
 
 real::Minigin::~Minigin()
@@ -87,9 +100,9 @@ void real::Minigin::Run(const std::function<void()>& load)
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
-	//auto& input = InputManager::GetInstance();
 	auto& input = Input::GetInstance();
 	auto& time = Time::GetInstance();
+	auto& audio = Locator::GetAudioSystem();
 
 	// todo: this update loop could use some work.
 	bool doContinue = true;
@@ -125,6 +138,7 @@ void real::Minigin::Run(const std::function<void()>& load)
 		time.Update();
 		sceneManager.Update();
 		renderer.Render();
+		audio.Update();
 
 		const auto sleepTime = currentTime + std::chrono::milliseconds(desiredFrameTime) - std::chrono::high_resolution_clock::now();
 		std::this_thread::sleep_for(sleepTime);
