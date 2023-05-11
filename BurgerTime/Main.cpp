@@ -219,22 +219,24 @@ void loadDemoScene()
 	pContinueText->AddComponent<real::TextComponent>()->SetFont(pFontLiveCounter);
 	pContinueText->GetComponent<real::TextComponent>()->SetText("To continue, press Space");
 
-	pInputMap->AddKeyboardCommands<LoadNextSceneCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, nullptr, "level");
-	pInputMap->AddControllerCommands<LoadNextSceneCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, (unsigned int)-1, nullptr, "level");
+	pInputMap->AddKeyboardCommands<LoadNextSceneCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, nullptr, Scenes::level01);
+	pInputMap->AddControllerCommands<LoadNextSceneCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, (unsigned int)-1, nullptr, Scenes::level01);
 }
 
 void loadLevelScene()
 {
-	auto& scene = real::SceneManager::GetInstance().CreateScene("level", "level");
+	auto& scene = real::SceneManager::GetInstance().CreateScene(Scenes::level01, InputMaps::gameplay);
 	scene.SetDebugRendering(true);
 	auto& input = real::Input::GetInstance();
-	const auto pInputMap = input.AddInputMap("level");
+	const auto pInputMap = input.AddInputMap(InputMaps::gameplay);
 
 	const auto pLevel = LevelParser::ParseLevel(scene, "Level01.json");
 
-	const auto pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("PeterPepper.png");
+	//auto& audio = real::Locator::GetAudioSystem();
 
 #pragma region player
+	const auto pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("PeterPepper.png");
+
 	const auto pCharacter = pLevel->CreateGameObject();
 	pCharacter->SetTag(Tags::player);
 	pCharacter->GetComponent<real::TransformComponent>()->SetLocalPosition(288, 423);
