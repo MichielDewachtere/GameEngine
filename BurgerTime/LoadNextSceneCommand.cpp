@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "LoadNextSceneCommand.h"
 
+#include <Locator.h>
+
+#include "GameInfo.h"
 #include "Input.h"
 #include "SceneManager.h"
 #include "Scene.h"
@@ -15,4 +18,7 @@ void LoadNextSceneCommand::Execute()
 {
 	real::SceneManager::GetInstance().SetSceneActive(m_Name);
 	real::Input::GetInstance().SetInputMapActive(real::SceneManager::GetInstance().GetActiveScene().GetDefaultInputMap());
+
+	if (m_Name.find("Level") != std::string::npos)
+		real::Locator::GetAudioSystem().Play(Sounds::background);
 }
