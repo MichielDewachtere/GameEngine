@@ -232,8 +232,6 @@ void loadLevelScene()
 
 	const auto pLevel = LevelParser::ParseLevel(scene, "Level01.json");
 
-	//auto& audio = real::Locator::GetAudioSystem();
-
 #pragma region player
 	const auto pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("PeterPepper.png");
 
