@@ -23,12 +23,23 @@ public:
 
 	void PartIsTriggered();
 
-private:
-	void Fall();
+	void SetIsFalling(bool isFalling) { m_IsFalling = isFalling; }
+	bool GetIsFalling() const { return m_IsFalling; }
 
+private:
 	int m_AmountOfPartsTriggered{};
 	std::vector<real::ColliderComponent*> m_PartPtrs;
 
+	bool m_IsFalling{};
+	const int m_FallSpeed{ 100 };
+
+	int m_PlatformsToSkip{};
+	int m_PlatformsCrossed{};
+	unsigned short m_CurrentPlatform{ 0 };
+
+	void InitCurrentPlatform();
+	void ResetBurger();
+	void Fall();
 	void NotifyParts(bool playerOnBurger, real::ColliderComponent* pFeet) const;
 };
 
