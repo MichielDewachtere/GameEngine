@@ -9,6 +9,12 @@ namespace real
 	{
 	public:
 		//TODO : LOG TO FILE?
+		/**
+		 * \brief A simple logger to log info.
+		 * \tparam Args 
+		 * \param message Message that should be displayed. Use {} to attach your arguments. 
+		 * \param args The variables you want to display in your message.
+		 */
 		template <typename... Args>
 		static void LogInfo(const std::string& message, Args&&... args)
 		{
@@ -17,6 +23,12 @@ namespace real
 			LogImpl(oss, message, std::forward<Args>(args)...);
 			std::cout << "\033[36m" << oss.str() << "\033[0m\n";
 		}
+		/**
+		 * \brief A simple logger to log a warning.
+		 * \tparam Args
+		 * \param message Message that should be displayed. Use {} to attach your arguments.
+		 * \param args The variables you want to display in your message.
+		 */
 		template <typename... Args>
 		static void LogWarning(const std::string& message, Args&&... args)
 		{
@@ -25,6 +37,12 @@ namespace real
 			LogImpl(oss, message, std::forward<Args>(args)...);
 			std::cout << "\033[33m" << oss.str() << "\033[0m\n";
 		}
+		/**
+		* \brief A simple logger to log an error.
+		* \tparam Args
+		* \param message Message that should be displayed. Use {} to attach your arguments.
+		* \param args The variables you want to display in your message.
+		*/
 		template <typename... Args>
 		static void LogError(const std::string& message, Args&&... args)
 		{
@@ -58,19 +76,13 @@ namespace real
 
 		static std::string GetTime()
 		{
-			//const auto now = std::chrono::system_clock::now();
-
-			//const std::time_t time = std::chrono::system_clock::to_time_t(now);
-			//std::string timeStr = std::ctime_r(&time);
-
-			//timeStr.erase(std::ranges::remove(timeStr, '\n').begin(), timeStr.end());
-			//return '[' + timeStr + ']';
-
 			const auto now = std::chrono::system_clock::now();
 			const std::time_t time = std::chrono::system_clock::to_time_t(now);
+
 			char timeStr[26];
 			ctime_s(timeStr, sizeof timeStr, &time);
 			timeStr[strlen(timeStr) - 1] = '\0'; // remove newline character
+
 			return "[" + std::string(timeStr) + "]";
 		}
 	};
