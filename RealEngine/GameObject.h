@@ -110,13 +110,24 @@ namespace real
 		if (HasComponent<T>() == false)
 			throw std::runtime_error("Error: Could not find component on GameObject - no component of this type is attached. Please ensure the GameObject has a component of the correct type attached.");
 
-		for (auto it = m_ComponentPtrs.begin(); it != m_ComponentPtrs.end(); ++it)
+		for (auto it = m_ComponentPtrs.begin(); it != m_ComponentPtrs.end(); /*++it*/)
 		{
-			T* otherComponent = dynamic_cast<T*>(*it->get());
+			//T* otherComponent = dynamic_cast<T*>(*it->get());
+			//if (otherComponent != nullptr)
+			//{
+			//	it = m_ComponentPtrs.erase(it);
+			//	break;
+			//}
+
+			T* otherComponent = dynamic_cast<T*>(it->get());
 			if (otherComponent != nullptr)
 			{
 				it = m_ComponentPtrs.erase(it);
 				break;
+			}
+			else
+			{
+				++it;
 			}
 		}
 	}
