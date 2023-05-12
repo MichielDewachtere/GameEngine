@@ -12,6 +12,7 @@
 #include "Floor.h"
 #include "GameInfo.h"
 #include "IngredientPrefab.h"
+#include "Plate.h"
 #include "Stair.h"
 
 real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string& file)
@@ -39,7 +40,7 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     const auto pBackGroundTexture = real::ResourceManager::GetInstance().LoadTexture(value.GetString());
 
     const auto pLevel = pScene.CreateGameObject();
-    pLevel->GetComponent<real::TransformComponent>()->Translate(48, 32);
+    //pLevel->GetComponent<real::TransformComponent>()->Translate(48, 32);
     pLevel->AddComponent<real::TextureComponent>()->SetTexture(pBackGroundTexture);
 
     const auto pLevelBoundaries = pLevel->CreateGameObject();
@@ -50,7 +51,7 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
 
     // FLOORS
     for (const auto& floor : document["floors"].GetArray())
-        Floor::CreateFloor(pLevel, { floor[0].GetDouble(), floor[1].GetDouble() }, static_cast<float>(floor[2].GetDouble()), false);
+        Floor::CreateFloor(pLevel, { floor[0].GetDouble(), floor[1].GetDouble() }, static_cast<float>(floor[2].GetDouble()), true);
     // STAIRS
     for (const auto& stair : document["stairs"].GetArray())
         Stair::CreateStair(pLevel, { stair[0].GetDouble(), stair[1].GetDouble() }, static_cast<float>(stair[2].GetDouble()), false);
@@ -64,6 +65,9 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     ParseIngredient(pLevel, document, "patty");
     // BUN_BOTTOM
     ParseIngredient(pLevel, document, "bun_bottom");
+    //PLATES
+    for (const auto& plate : document["plates"].GetArray())
+        Plate::CreatePlate(pLevel, { plate[0].GetDouble(), plate[1].GetDouble() }, true);
 
     return pLevel;
 }
@@ -73,5 +77,5 @@ void LevelParser::ParseIngredient(real::GameObject* pGameObject, const rapidjson
     const rapidjson::Value& bunBottomValue = document[part.c_str()];
     const std::string bunBottomTexturePath = bunBottomValue["texturePath"].GetString();
     for (const auto& bunBottom : bunBottomValue["position"].GetArray())
-        IngredientPrefab::CreateIngredient(pGameObject, bunBottomTexturePath, { bunBottom[0].GetDouble(), bunBottom[1].GetDouble() }, false);
+        IngredientPrefab::CreateIngredient(pGameObject, bunBottomTexturePath, { bunBottom[0].GetDouble(), bunBottom[1].GetDouble() }, true);
 }
