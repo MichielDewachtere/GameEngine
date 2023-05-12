@@ -14,12 +14,14 @@ namespace real
 	class Texture2D;
 	class Component;
 
+	using gameobject_id = unsigned short;
+
 	class GameObject final
 	{
 	public:
 		explicit GameObject() = default;
 		explicit GameObject(Scene* pScene, const std::string& tag = "empty") 
-			: m_pScene(pScene), m_Tag(tag) {}
+			: m_pScene(pScene), m_Tag(tag), m_Id(++m_NextId) {}
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject& operator=(const GameObject& rhs) = delete;
@@ -37,6 +39,7 @@ namespace real
 
 		void SetTag(const std::string& newTag) { m_Tag = newTag; }
 		std::string GetTag() const { return m_Tag; }
+		gameobject_id GetId() const { return m_Id; }
 
 		//Component Logic
 		template <class T, typename... Args>
@@ -56,7 +59,7 @@ namespace real
 		GameObject* GetChildAt(const unsigned int idx) const { return m_ChildrenPtrs[idx].get(); }
 		std::vector<GameObject*> GetChildren() const;
 
-	protected:
+	private:
 		Scene* m_pScene{ nullptr };
 		std::string m_Tag;
 		TransformComponent* m_pTransform{ nullptr };
@@ -65,6 +68,10 @@ namespace real
 
 		GameObject* m_pParent{ nullptr };
 		std::vector<std::unique_ptr<GameObject>> m_ChildrenPtrs{};
+
+
+		gameobject_id m_Id;
+		static inline gameobject_id m_NextId = 0;
 	};
 
 #pragma region ComponentLogic
