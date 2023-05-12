@@ -126,6 +126,12 @@
     <ClInclude Include="SDLAudio.h">
       <Filter>Audio</Filter>
     </ClInclude>
+    <ClInclude Include="LoggingAudio.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XInputController.cpp">
@@ -204,6 +210,12 @@
     </ClCompile>
     <ClCompile Include="SDLAudio.cpp">
       <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggingAudio.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
