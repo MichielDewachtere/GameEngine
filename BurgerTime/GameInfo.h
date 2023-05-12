@@ -7,13 +7,15 @@
 
 struct Tags
 {
+	inline static const std::string empty = "Empty";
 	inline static const std::string player = "Player";
 	inline static const std::string stair = "Stair";
 	inline static const std::string floor = "Floor";
 	inline static const std::string boundary = "Boundary";
-	inline static const std::string hotDog = "HotDog";
+	inline static const std::string hot_dog = "HotDog";
 	inline static const std::string egg = "Egg";
 	inline static const std::string ingredient = "Ingredient";
+	inline static const std::string plate = "Plate";
 };
 
 struct Colors
@@ -44,8 +46,6 @@ struct InputMaps
 
 struct Sounds
 {
-	using sound_id = unsigned short;
-	
 	inline static const real::Sound background = { 1, MIX_MAX_VOLUME, -1, "../data/audio/11_main.ogg" };
 };
 
