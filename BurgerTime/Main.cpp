@@ -66,7 +66,7 @@ int main(int, char* [])
 
 	g_window.title = "BurgerTime | Exam Assignment";
 	g_window.width = 624 + 48 * 2;
-	g_window.height = 640;
+	g_window.height = 710;
 
 	real::Minigin engine("../Data/", g_window);
 	engine.Run(load);
@@ -231,6 +231,7 @@ void loadLevelScene()
 	const auto pInputMap = input.AddInputMap(InputMaps::gameplay);
 
 	const auto pLevel = LevelParser::ParseLevel(scene, "Level01.json");
+	pLevel->GetComponent<real::TransformComponent>()->Translate(48, 62);
 
 #pragma region player
 	const auto pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("PeterPepper.png");
