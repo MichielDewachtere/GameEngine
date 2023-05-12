@@ -20,6 +20,7 @@ namespace real
 		void Render() const override;
 
 		void SetTexture(std::shared_ptr<Texture2D> pTexture) { m_pTexture = std::move(pTexture); }
+		Texture2D* GetTexture() const { return m_pTexture.get(); }
 
 		bool CanRender() const override { return true; }
 
