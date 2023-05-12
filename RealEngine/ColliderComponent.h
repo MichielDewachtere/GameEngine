@@ -26,7 +26,7 @@ namespace real
 		void Translate(float x, float y) { Translate({ x,y }); }
 		void Translate(const glm::vec2& t) { m_Offset += t; }
 		glm::vec2 GetPosition() const { return m_Pos + m_Offset; }
-		void SetSize(const glm::vec2& size) { m_Size = size; }
+		void SetSize(const glm::vec2& size);
 		void SetSize(float width, float height) { SetSize({ width, height }); }
 		glm::vec2 GetSize() const { return m_Size; }
 
@@ -59,7 +59,7 @@ namespace real
 	private:
 		glm::vec2 m_Pos{};
 		glm::vec2 m_Offset{};
-		glm::vec2 m_Size;
+		glm::vec2 m_Size{};
 
 		bool m_DrawDebug{ false };
 		glm::vec4 m_Color{ 0,255,0,255 };

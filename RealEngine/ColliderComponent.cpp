@@ -1,17 +1,19 @@
 #include "stdafx.h"
 #include "ColliderComponent.h"
 
+#include "Logger.h"
 #include "Renderer.h"
 #include "TransformComponent.h"
 
 real::ColliderComponent::ColliderComponent(GameObject* pOwner, const glm::vec2& size)
 	: Component(pOwner)
-	, m_Size(size)
 {
 	if (GetOwner() != nullptr)
 		m_Pos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
 	else
 		m_Pos = { 0,0 };
+
+	SetSize(size);
 }
 
 real::ColliderComponent::ColliderComponent(GameObject* pOwner, float width, float height)
@@ -39,6 +41,23 @@ void real::ColliderComponent::DebugRender() const
 
 	SDL_SetRenderDrawColor(renderer, static_cast<Uint8>(m_Color.r), static_cast<Uint8>(m_Color.g), static_cast<Uint8>(m_Color.b), static_cast<Uint8>(m_Color.a));
 	SDL_RenderDrawRect(renderer, &rect);
+}
+
+void real::ColliderComponent::SetSize(const glm::vec2& size)
+{
+	if (size.y < 0)
+	{
+		Logger::LogError("In ColliderComponent, the size of a collider must be positive => size.y was {}", size.y);
+		return;
+	}
+
+	if (size.x < 0)
+	{
+		Logger::LogError("In ColliderComponent, the size of a collider must be positive => size.x was {}", size.x);
+		return;
+	}
+
+	m_Size = size;
 }
 
 bool real::ColliderComponent::IsOverlapping(const ColliderComponent& other) const
