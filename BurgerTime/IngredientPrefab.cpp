@@ -49,8 +49,8 @@ void IngredientPrefab::InitComponents(real::GameObject* pOwner, const std::strin
 	pOwner->SetTag(Tags::ingredient);
 	pOwner->GetComponent<real::TransformComponent>()->SetLocalPosition(pos.x, pos.y - static_cast<float>(leftTexture->GetSize().y));
 	const int ingredientWidth = leftTexture->GetSize().x * 4;
-	pOwner->AddComponent<real::ColliderComponent>(glm::vec2{ ingredientWidth, 48 })->EnableDebugRendering(drawDebug, Colors::appelblauwzeegroen);
-	pOwner->GetComponent<real::ColliderComponent>()->Translate(0, -33);
+	pOwner->AddComponent<real::ColliderComponent>(glm::vec2{ ingredientWidth, leftTexture->GetSize().y })->EnableDebugRendering(drawDebug, Colors::appelblauwzeegroen);
+	pOwner->GetComponent<real::ColliderComponent>()->Translate(0, 0);
 	pOwner->AddComponent<Ingredient>();
 
 	const auto pIngredientLeft = pOwner->CreateGameObject();

@@ -5,10 +5,11 @@
 #include <ColliderComponent.h>
 #include <Logger.h>
 #include <GameTime.h>
+#include <TextureComponent.h>
+#include <TransformComponent.h>
 
 #include "GameInfo.h"
 #include "IngredientPart.h"
-#include "TransformComponent.h"
 
 void Ingredient::Start()
 {
@@ -51,11 +52,8 @@ void Ingredient::PartIsTriggered()
 
 	++m_AmountOfPartsTriggered;
 
-	real::Logger::LogInfo("Part {} has been triggered.", m_AmountOfPartsTriggered);
-
 	if (m_AmountOfPartsTriggered == amountOfParts)
 	{
-		real::Logger::LogInfo("All parts have been triggered");
 		m_IsFalling = true;
 		//TODO: this will depend on the weight/amount of enemies on burger.
 		m_PlatformsToSkip = 1;
@@ -71,7 +69,7 @@ void Ingredient::InitCurrentPlatform()
 	{
 		const auto pPlatformCollider = pPlatform->GetComponent<real::ColliderComponent>();
 
-		if (pPlatformCollider->IsEntireColliderOverlapping(*pCollider))
+		if (pPlatformCollider->IsOverlapping(*pCollider))
 		{
 			m_CurrentPlatform = pPlatform->GetId();
 		}
@@ -82,16 +80,16 @@ void Ingredient::ResetBurger()
 {
 	real::Logger::LogInfo("BurgerParts should move up");
 
-	const auto transform = GetOwner()->GetComponent<real::TransformComponent>();
+	//const auto transform = GetOwner()->GetComponent<real::TransformComponent>();
 
 	for (const auto& child : GetOwner()->GetChildren())
 	{
-		const auto pChildTransform = child->GetComponent<real::TransformComponent>();
-		const auto pChildCollider = child->GetComponent<real::ColliderComponent>();
+		//const auto pChildTransform = child->GetComponent<real::TransformComponent>();
+		//const auto pChildCollider = child->GetComponent<real::ColliderComponent>();
 		const auto pIngredientPart = child->GetComponent<IngredientPart>();
 
-		pChildTransform->SetWorldPosition(pChildTransform->GetWorldPosition().x, transform->GetWorldPosition().y);
-		pChildCollider->SetPosition(pChildTransform->GetWorldPosition());
+		//pChildTransform->SetWorldPosition(pChildTransform->GetWorldPosition().x, transform->GetWorldPosition().y);
+		//pChildCollider->SetPosition(pChildTransform->GetWorldPosition());
 		pIngredientPart->SetIsTriggered(false);
 	}
 
@@ -102,37 +100,46 @@ void Ingredient::ResetBurger()
 void Ingredient::Fall()
 {
 	const auto pTransform = GetOwner()->GetComponent<real::TransformComponent>();
-	const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
-	const auto ingredientPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::ingredient);
-	const auto platformPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::floor);
 
 	const auto translation = glm::vec2{ 0, static_cast<float>(m_FallSpeed) * real::Time::GetInstance().GetElapsed() };
 	pTransform->Translate(translation);
 
-	for (const auto& pIngredient : ingredientPtrs)
-	{
-		const auto pIngredientCollider = pIngredient->GetComponent<real::ColliderComponent>();
+	const auto pIngredientCollider = GetOwner()->GetComponent<real::ColliderComponent>();
+	const auto pPartCollider = GetOwner()->GetChildAt(0)->GetComponent<real::ColliderComponent>();
+	const auto ingredientPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::ingredient);
+	const auto platformPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::floor);
+	const auto platePtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::plate);
 
-		if (pCollider == pIngredientCollider)
+	// if ingredientCollider overlaps with Ingredient collider => other ingredient should fall.
+	for (const auto& pOtherIngredient : ingredientPtrs)
+	{
+		if (pOtherIngredient->HasComponent<Ingredient>() == false)
 			continue;
 
-		if (pCollider->IsOverlapping(*pIngredientCollider))
+		if (GetOwner()->GetId() == pOtherIngredient->GetId())
+			continue;
+
+		const auto pIngredientOtherCollider = pOtherIngredient->GetComponent<real::ColliderComponent>();
+
+		if (pIngredientCollider->IsOverlapping(*pIngredientOtherCollider))
 		{
-			pIngredient->GetComponent<real::TransformComponent>()->Translate({ 0,1 });
-			pIngredient->GetComponent<Ingredient>()->SetIsFalling(true);
+			real::Logger::LogInfo("Falling ingredient has bounced on another ingredient");
+			pOtherIngredient->GetComponent<real::TransformComponent>()->Translate({ 0,2 });
+			pOtherIngredient->GetComponent<Ingredient>()->SetIsFalling(true);
 		}
 	}
 
+	// if ingredientPart collider overlaps with platform collider => ingredient is on platform & should stop moving
 	for (const auto& pPlatform : platformPtrs)
 	{
+		if (pPlatform->GetId() == m_CurrentPlatform)
+			continue;
+
 		const auto pPlatformCollider = pPlatform->GetComponent<real::ColliderComponent>();
 
-		if (pPlatformCollider->IsEntireColliderOverlapping(*pCollider))
+		if (pPlatformCollider->IsEntireColliderOverlapping(*pPartCollider))
 		{
 			//++m_PlatformsCrossed;
-
-			if (pPlatform->GetId() == m_CurrentPlatform)
-				continue;
 
 			m_CurrentPlatform = pPlatform->GetId();
 
@@ -140,9 +147,30 @@ void Ingredient::Fall()
 
 			//if (m_PlatformsCrossed > m_PlatformsToSkip)
 			{
-				real::Logger::LogInfo("Ingredient should stop falling");
+				real::Logger::LogInfo("Ingredient has landed on platform");
 				ResetBurger();
 			}
+		}
+	}
+
+	// if ingredientCollider overlaps with plate, this should get destroyed 
+	for (const auto& pPlate : platePtrs)
+	{
+		const auto pPlateCollider = pPlate->GetComponent<real::ColliderComponent>();
+
+		if (pIngredientCollider->IsOverlapping(*pPlateCollider))
+		{
+			ResetBurger();
+
+			constexpr float offset = 9;
+
+			const auto pPlateTransform = pPlate->GetComponent<real::TransformComponent>();
+			const auto size = GetOwner()->GetChildAt(0)->GetComponent<real::TextureComponent>()->GetTexture()->GetSize();
+			pPlateTransform->Translate({ 0, -size.y - offset });
+
+			real::Logger::LogInfo("Ingredient has landed on a plate");
+
+			GetOwner()->RemoveComponent<Ingredient>();
 		}
 	}
 }

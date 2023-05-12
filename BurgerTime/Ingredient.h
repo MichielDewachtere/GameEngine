@@ -28,6 +28,8 @@ public:
 	bool GetIsFalling() const { return m_IsFalling; }
 
 private:
+	//bool m_IsActive{ true };
+
 	int m_AmountOfPartsTriggered{};
 	std::vector<real::ColliderComponent*> m_PartPtrs;
 
