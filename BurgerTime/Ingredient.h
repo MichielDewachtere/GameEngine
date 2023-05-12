@@ -18,6 +18,7 @@ public:
 	Ingredient(Ingredient&& other) = delete;
 	Ingredient& operator=(Ingredient&& other) = delete;
 
+	void Start() override;
 	void Update() override;
 	bool CanRender() const override { return false; }
 

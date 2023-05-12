@@ -21,6 +21,7 @@ namespace real
 		void RemoveAll();
 		std::vector<GameObject*> FindObjectsWithTag(const std::string& tag) const;
 
+		void Start();
 		void Update();
 		void Render() const;
 

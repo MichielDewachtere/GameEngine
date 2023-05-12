@@ -15,6 +15,7 @@ namespace real
 		Component(Component&& other) = delete;
 		Component& operator=(Component&& rhs) = delete;
 
+		virtual void Start() {}
 		virtual void Update() = 0;
 		virtual void Render() const {}
 		virtual void DebugRender() const {}

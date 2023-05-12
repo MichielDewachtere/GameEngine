@@ -10,6 +10,11 @@
 #include "IngredientPart.h"
 #include "TransformComponent.h"
 
+void Ingredient::Start()
+{
+	//real::Logger::LogInfo("Called Ingredient Start function");
+}
+
 void Ingredient::Update()
 {
 	if (m_CurrentPlatform == 0)
@@ -51,7 +56,6 @@ void Ingredient::PartIsTriggered()
 	if (m_AmountOfPartsTriggered == amountOfParts)
 	{
 		real::Logger::LogInfo("All parts have been triggered");
-		//ResetBurger();
 		m_IsFalling = true;
 		//TODO: this will depend on the weight/amount of enemies on burger.
 		m_PlatformsToSkip = 1;

@@ -39,6 +39,7 @@ real::Scene& real::SceneManager::SetSceneActive(const std::string& name)
 		if (pScene->GetName() == name)
 		{
 			m_pActiveScene = pScene;
+			pScene->Start();
 			return *pScene;
 		}
 	}

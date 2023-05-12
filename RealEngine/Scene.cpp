@@ -57,9 +57,17 @@ std::vector<GameObject*> Scene::FindObjectsWithTag(const std::string& tag) const
 	return goPtrs;
 }
 
+void Scene::Start()
+{
+	for (const auto& object : m_objects)
+	{
+		object->Start();
+	}
+}
+
 void Scene::Update()
 {
-	for(auto& object : m_objects)
+	for(const auto& object : m_objects)
 	{
 		object->Update();
 	}

@@ -42,6 +42,15 @@ void real::GameObject::Init()
 	m_pTransform = AddComponent<TransformComponent>();
 }
 
+void real::GameObject::Start()
+{
+	for (const auto& pComponent : m_ComponentPtrs)
+		pComponent->Start();
+
+	for (const auto& pChild : m_ChildrenPtrs)
+		pChild->Start();
+}
+
 void real::GameObject::Update()
 {
 	for (const auto& pComponent : m_ComponentPtrs)

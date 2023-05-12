@@ -33,6 +33,7 @@ namespace real
 
 		void Init();
 
+		void Start();
 		void Update();
 		void Render() const;
 		void DebugRender() const;
