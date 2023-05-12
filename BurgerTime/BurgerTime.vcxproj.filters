@@ -78,6 +78,9 @@
     <ClCompile Include="IngredientPrefab.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
+    <ClCompile Include="Plate.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -125,6 +128,9 @@
       <Filter>Prefabs</Filter>
     </ClInclude>
     <ClInclude Include="Floor.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Plate.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
   </ItemGroup>
