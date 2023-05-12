@@ -9,10 +9,11 @@
 #include <TransformComponent.h>
 #include <ColliderComponent.h>
 
-#include "Floor.h"
 #include "GameInfo.h"
+#include "Floor.h"
 #include "IngredientPrefab.h"
 #include "Plate.h"
+#include "SpawnPoint.h"
 #include "Stair.h"
 
 real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string& file)
@@ -68,8 +69,11 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     //PLATES
     for (const auto& plate : document["plates"].GetArray())
         Plate::CreatePlate(pLevel, { plate[0].GetDouble(), plate[1].GetDouble() }, false);
-
-    return pLevel;
+    //SPAWNPOINT
+    for (const auto& spawnPoint : document["spawnpoint"].GetArray())
+        SpawnPoint::CreateSpawnPoint(pLevel, { spawnPoint[0].GetDouble(), spawnPoint[1].GetDouble() }, spawnPoint[2].GetString());
+    
+	return pLevel;
 }
 
 void LevelParser::ParseIngredient(real::GameObject* pGameObject, const rapidjson::Document& document, const std::string& part)
