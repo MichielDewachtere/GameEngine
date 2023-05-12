@@ -25,7 +25,16 @@ namespace real
 			m_Head = 0;
 			m_Tail = 0;
 		}
-		virtual ~SDLAudioImpl() override = default;
+		virtual ~SDLAudioImpl() override
+		{
+			for (const auto& [sound, chunk] : m_AudioClips)
+			{
+				Mix_FreeChunk(chunk);
+				//Mix_FreeChunk(chunk.get());
+			}
+
+			m_AudioClips.clear();
+		}
 		SDLAudioImpl(const SDLAudioImpl& other) = delete;
 		SDLAudioImpl operator=(const SDLAudioImpl& rhs) = delete;
 		SDLAudioImpl(SDLAudioImpl&& other) = delete;
@@ -46,7 +55,8 @@ namespace real
 			if (IsLoaded(sound) == false)
 				Load(sound);
 
-			const auto mixChunk = m_AudioClips[sound].get();
+			//const auto mixChunk = m_AudioClips[sound].get();
+			const auto mixChunk = m_AudioClips[sound];
 
 			const int result = Mix_PlayChannel(-1, mixChunk, sound.loops);
 			if (result == -1) {
@@ -79,30 +89,17 @@ namespace real
 
 			m_Tail = (m_Tail + 1) % max_pending;
 		}
-		void Stop(const sound_id /*id*/) override
+		void Stop(const Sound
+			/*id*/sound) override
 		{
 			//if (IsLoaded(id) == false)
 			//	return;
 
 			
 		}
-		void AddSound(const Sound sound) override
-		{
-			//m_AudioClips[id] = std::make_pair(filename, nullptr);
 
-			//TODO: check if the id isnt already added
-			for (const auto& [soundClip, mixChunk] : m_AudioClips)
-			{
-				if (soundClip.id == sound.id)
-				{
-					std::cerr << "Sound " << sound.id << " is already added\n";
-					return;
-				}
-			}
-
-			m_AudioClips[sound] = nullptr;
-		}
-		bool IsLoaded(const Sound sound) override
+	private:
+		bool IsLoaded(const Sound sound)
 		{
 			//if (m_AudioClips[id].second == nullptr)
 			if (m_AudioClips[sound] == nullptr)
@@ -113,7 +110,7 @@ namespace real
 			//const auto it = m_AudioClips.find(sound);
 			//return it != m_AudioClips.end() && it->second != nullptr;
 		}
-		void Load(const Sound sound) override
+		void Load(const Sound sound)
 		{
 			const auto mixChunk = Mix_LoadWAV(sound.fileName.c_str());
 
@@ -122,11 +119,13 @@ namespace real
 				return;
 			}
 
-			m_AudioClips[sound] = std::unique_ptr<Mix_Chunk>(mixChunk);
+			//m_AudioClips[sound] = std::unique_ptr<Mix_Chunk>(mixChunk);
+			m_AudioClips[sound] = mixChunk;
 		}
 
 	private:
-		std::map<Sound, std::unique_ptr<Mix_Chunk>> m_AudioClips;
+		std::map<Sound, Mix_Chunk*> m_AudioClips;
+		//std::map<Sound, std::unique_ptr<Mix_Chunk>> m_AudioClips;
 	};
 };
 
@@ -145,22 +144,7 @@ void real::SDLAudio::Play(const real::Sound sound, const int volume, const int l
 	m_pImpl->Play(sound, volume, loops);
 }
 
-void real::SDLAudio::Stop(const sound_id id)
+void real::SDLAudio::Stop(const real::Sound sound)
 {
-	m_pImpl->Stop(id);
-}
-
-void real::SDLAudio::AddSound(const real::Sound sound)
-{
-	m_pImpl->AddSound(sound);
-}
-
-bool real::SDLAudio::IsLoaded(const real::Sound sound)
-{
-	return m_pImpl->IsLoaded(sound);
-}
-
-void real::SDLAudio::Load(const real::Sound sound)
-{
-	m_pImpl->Load(sound);
+	m_pImpl->Stop(sound);
 }

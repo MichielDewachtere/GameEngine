@@ -33,18 +33,12 @@ namespace real
 		 * \param loops default = -1 : default value defined in struct is used, otherwise the value defined in the struct will be overriden;
 		 */
 		virtual void Play(const Sound sound, const int volume = -1, const int loops = -1) = 0;
-		virtual void Stop(const sound_id id) = 0;
-
-		virtual void AddSound(const Sound sound) = 0;
-
+		virtual void Stop(const Sound sound) = 0;
 	protected:
-		int m_Head, m_Tail;
+		int m_Head{}, m_Tail{};
 		static constexpr size_t max_pending = 16;
 		std::array<Sound, max_pending> m_Pending{};
 		int m_NumPending{};
-
-		virtual bool IsLoaded(const Sound sound) = 0;
-		virtual void Load(const Sound sound) = 0;
 	};
 }
 

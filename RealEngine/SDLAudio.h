@@ -18,13 +18,7 @@ namespace real
 		void Update() override;
 
 		void Play(const Sound sound, const int volume = -1, const int loops = -1) override;
-		void Stop(const sound_id id) override;
-
-		void AddSound(const Sound sound) override;
-
-	private:
-		bool IsLoaded(const Sound sound) override;
-		void Load(const Sound sound) override;
+		void Stop(const Sound sound) override;
 
 	private:
 		class SDLAudioImpl;
