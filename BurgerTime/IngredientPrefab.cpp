@@ -46,6 +46,7 @@ void IngredientPrefab::InitComponents(real::GameObject* pOwner, const std::strin
 	const auto leftRightTexture = real::ResourceManager::GetInstance().LoadTexture(texturePath + "middle02.png");
 	const auto rightTexture = real::ResourceManager::GetInstance().LoadTexture(texturePath + "right.png");
 
+	pOwner->SetTag(Tags::ingredient);
 	pOwner->GetComponent<real::TransformComponent>()->SetLocalPosition(pos.x, pos.y - static_cast<float>(leftTexture->GetSize().y));
 	const int ingredientWidth = leftTexture->GetSize().x * 4;
 	pOwner->AddComponent<real::ColliderComponent>(glm::vec2{ ingredientWidth, 48 })->EnableDebugRendering(drawDebug, Colors::appelblauwzeegroen);
