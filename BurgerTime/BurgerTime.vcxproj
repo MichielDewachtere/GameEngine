@@ -168,6 +168,7 @@
     <ClCompile Include="LoadNextSceneCommand.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
+    <ClCompile Include="Plate.cpp" />
     <ClCompile Include="PlayerCharacter.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="LivesDisplay.h" />
     <ClInclude Include="LoadNextSceneCommand.h" />
     <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="Plate.h" />
     <ClInclude Include="PlayerCharacter.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreDisplay.h" />
