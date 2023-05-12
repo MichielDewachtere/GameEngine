@@ -79,5 +79,4 @@ void MoveCommand::Execute()
     // Translate the TransformComponent to the new position.
     //pTransform->Translate(newPos);
     pTransform->SetWorldPosition(newPos);
-
 }
