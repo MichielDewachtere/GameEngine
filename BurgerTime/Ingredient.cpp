@@ -3,7 +3,6 @@
 
 #include <Scene.h>
 #include <ColliderComponent.h>
-#include <Logger.h>
 #include <GameTime.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
@@ -125,7 +124,6 @@ void Ingredient::Fall()
 
 		if (pIngredientCollider->IsOverlapping(*pIngredientOtherCollider))
 		{
-			real::Logger::LogInfo("Falling ingredient has bounced on another ingredient");
 			pOtherIngredient->GetComponent<real::TransformComponent>()->Translate({ 0,6 });
 			pOtherIngredient->GetComponent<Ingredient>()->SetIsFalling(true);
 		}
@@ -155,7 +153,6 @@ void Ingredient::Fall()
 
 			//if (m_PlatformsCrossed > m_PlatformsToSkip)
 			{
-				real::Logger::LogInfo("Ingredient has landed on platform");
 
 				pTransform->SetWorldPosition({ pTransform->GetWorldPosition().x, pPlatformCollider->GetPosition().y + 33 });
 				//pTransform->Translate({ 0,-1 });
@@ -178,8 +175,6 @@ void Ingredient::Fall()
 			const auto pPlateTransform = pPlate->GetComponent<real::TransformComponent>();
 			const auto size = GetOwner()->GetChildAt(0)->GetComponent<real::TextureComponent>()->GetTexture()->GetSize();
 			pPlateTransform->Translate({ 0, static_cast<float>(-size.y) - offset });
-
-			real::Logger::LogInfo("Ingredient has landed on a plate");
 
 			GetOwner()->RemoveComponent<Ingredient>();
 		}
