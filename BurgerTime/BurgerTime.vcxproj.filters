@@ -81,6 +81,10 @@
     <ClCompile Include="Plate.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
+    <ClCompile Include="SpawnPoint.cpp" />
+    <ClCompile Include="Spawner.cpp">
+      <Filter>Components\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -132,6 +136,10 @@
     </ClInclude>
     <ClInclude Include="Plate.h">
       <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnPoint.h" />
+    <ClInclude Include="Spawner.h">
+      <Filter>Components\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
