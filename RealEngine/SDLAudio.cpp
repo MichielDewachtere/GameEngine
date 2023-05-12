@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "SDLAudio.h"
 
-#include <thread>
-
 #define AMOUNT_OF_CHANNELS 2
 
 namespace real
@@ -53,7 +51,9 @@ namespace real
 			const auto sound = m_Pending[m_Head];
 
 			if (IsLoaded(sound) == false)
+			{
 				Load(sound);
+			}
 
 			//const auto mixChunk = m_AudioClips[sound].get();
 			const auto mixChunk = m_AudioClips[sound];
@@ -65,11 +65,11 @@ namespace real
 
 			Mix_Volume(result, sound.volume);
 
-			m_Head = (m_Head + 1) % max_pending;
+			m_Head = (m_Head + 1) % static_cast<int>(max_pending);
 		}
 		void Play(const Sound sound, const int volume = -1, const int loops = -1) override
 		{
-			for (int i = m_Head; i != m_Tail; i = (i + 1) % max_pending)
+			for (int i = m_Head; i != m_Tail; i = (i + 1) % static_cast<int>(max_pending))
 			{
 				if (m_Pending[i].id == sound.id)
 				{
@@ -87,10 +87,9 @@ namespace real
 			if (loops != -1)
 				m_Pending[m_Tail].loops = loops;
 
-			m_Tail = (m_Tail + 1) % max_pending;
+			m_Tail = (m_Tail + 1) % static_cast<int>(max_pending);
 		}
-		void Stop(const Sound
-			/*id*/sound) override
+		void Stop(const Sound sound) override
 		{
 			//if (IsLoaded(id) == false)
 			//	return;
@@ -122,6 +121,14 @@ namespace real
 			//m_AudioClips[sound] = std::unique_ptr<Mix_Chunk>(mixChunk);
 			m_AudioClips[sound] = mixChunk;
 		}
+		void LoadingThreadFunction()
+		{
+			
+		}
+		void PlayingThreadFunction()
+		{
+			
+		}
 
 	private:
 		std::map<Sound, Mix_Chunk*> m_AudioClips;
@@ -139,12 +146,12 @@ void real::SDLAudio::Update()
 	m_pImpl->Update();
 }
 
-void real::SDLAudio::Play(const real::Sound sound, const int volume, const int loops)
+void real::SDLAudio::Play(const Sound sound, const int volume, const int loops)
 {
 	m_pImpl->Play(sound, volume, loops);
 }
 
-void real::SDLAudio::Stop(const real::Sound sound)
+void real::SDLAudio::Stop(const Sound sound)
 {
 	m_pImpl->Stop(sound);
 }
