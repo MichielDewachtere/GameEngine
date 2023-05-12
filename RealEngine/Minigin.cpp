@@ -13,6 +13,7 @@
 #include "ResourceManager.h"
 #include "GameTime.h"
 #include "Locator.h"
+#include "LoggingAudio.h"
 #include "SDLAudio.h"
 
 SDL_Window* g_window{};
@@ -83,7 +84,11 @@ real::Minigin::Minigin(const std::string &dataPath, const WindowSettings& window
 
 	Input::GetInstance().Init();
 
+#if _DEBUG
+	Locator::RegisterAudioSystem(new LoggingAudio(new SDLAudio()));
+#else
 	Locator::RegisterAudioSystem(new SDLAudio());
+#endif
 }
 
 real::Minigin::~Minigin()
