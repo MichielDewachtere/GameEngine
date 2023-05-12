@@ -123,7 +123,7 @@ void Ingredient::Fall()
 	{
 		const auto pPlatformCollider = pPlatform->GetComponent<real::ColliderComponent>();
 
-		if (pPlatformCollider->IsEntireColliderOverlapping(*pCollider, translation))
+		if (pPlatformCollider->IsEntireColliderOverlapping(*pCollider))
 		{
 			//++m_PlatformsCrossed;
 
