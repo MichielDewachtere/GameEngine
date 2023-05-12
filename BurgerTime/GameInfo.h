@@ -14,6 +14,7 @@ struct Tags
 	inline static const std::string boundary = "Boundary";
 	inline static const std::string hot_dog = "HotDog";
 	inline static const std::string egg = "Egg";
+	inline static const std::string pickle = "Pickle";
 	inline static const std::string ingredient = "Ingredient";
 	inline static const std::string plate = "Plate";
 };
