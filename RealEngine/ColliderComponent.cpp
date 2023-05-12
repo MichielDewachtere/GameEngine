@@ -83,12 +83,12 @@ bool real::ColliderComponent::IsOverlapping(const ColliderComponent& other) cons
 	return true;
 }
 
-bool real::ColliderComponent::IsEntireColliderOverlapping(const ColliderComponent& other) const
+bool real::ColliderComponent::IsEntireColliderOverlapping(const ColliderComponent& other, const glm::vec2& offset) const
 {
 	const auto otherSize = other.GetSize();
 	const auto otherPos = other.GetPosition();
 
-	const auto pos = m_Pos + m_Offset;
+	const auto pos = m_Pos + m_Offset + offset;
 
 	if (static_cast<int>(pos.x) > static_cast<int>(otherPos.x))
 		return false;

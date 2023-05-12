@@ -34,7 +34,7 @@ private:
 	std::vector<real::ColliderComponent*> m_PartPtrs;
 
 	bool m_IsFalling{};
-	const int m_FallSpeed{ 100 };
+	const int m_FallSpeed{ 96 };
 
 	int m_PlatformsToSkip{};
 	int m_PlatformsCrossed{};

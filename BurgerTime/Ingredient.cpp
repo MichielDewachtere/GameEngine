@@ -78,21 +78,20 @@ void Ingredient::InitCurrentPlatform()
 
 void Ingredient::ResetBurger()
 {
-	real::Logger::LogInfo("BurgerParts should move up");
+	//real::Logger::LogInfo("BurgerParts should move up");
 
 	//const auto transform = GetOwner()->GetComponent<real::TransformComponent>();
 
 	for (const auto& child : GetOwner()->GetChildren())
 	{
-		//const auto pChildTransform = child->GetComponent<real::TransformComponent>();
-		//const auto pChildCollider = child->GetComponent<real::ColliderComponent>();
 		const auto pIngredientPart = child->GetComponent<IngredientPart>();
-
-		//pChildTransform->SetWorldPosition(pChildTransform->GetWorldPosition().x, transform->GetWorldPosition().y);
-		//pChildCollider->SetPosition(pChildTransform->GetWorldPosition());
-		pIngredientPart->SetIsTriggered(false);
+	
+		pIngredientPart->Reset();
 	}
 
+	//transform->Translate(0, 3);
+
+	m_PlatformsCrossed = 0;
 	m_AmountOfPartsTriggered = 0;
 	m_IsFalling = false;
 }
@@ -119,12 +118,15 @@ void Ingredient::Fall()
 		if (GetOwner()->GetId() == pOtherIngredient->GetId())
 			continue;
 
+		if (pOtherIngredient->GetComponent<real::TransformComponent>()->GetWorldPosition().y < pTransform->GetWorldPosition().y)
+			continue;
+
 		const auto pIngredientOtherCollider = pOtherIngredient->GetComponent<real::ColliderComponent>();
 
 		if (pIngredientCollider->IsOverlapping(*pIngredientOtherCollider))
 		{
 			real::Logger::LogInfo("Falling ingredient has bounced on another ingredient");
-			pOtherIngredient->GetComponent<real::TransformComponent>()->Translate({ 0,2 });
+			pOtherIngredient->GetComponent<real::TransformComponent>()->Translate({ 0,6 });
 			pOtherIngredient->GetComponent<Ingredient>()->SetIsFalling(true);
 		}
 	}
@@ -137,17 +139,26 @@ void Ingredient::Fall()
 
 		const auto pPlatformCollider = pPlatform->GetComponent<real::ColliderComponent>();
 
-		if (pPlatformCollider->IsEntireColliderOverlapping(*pPartCollider))
+		if (pPlatformCollider->IsEntireColliderOverlapping(*pPartCollider, { 0,1 }))
 		{
-			//++m_PlatformsCrossed;
+			++m_PlatformsCrossed;
 
 			m_CurrentPlatform = pPlatform->GetId();
 
-			pTransform->Translate({ 0,-1 });
+			//if (m_PlatformsCrossed <= m_PlatformsToSkip)
+			//	return;
+
+			// snap burger to the platform.
+			//const float offset = pTransform->GetWorldPosition().y - pPartCollider->GetPosition().y;
+			//real::Logger::LogInfo("Offset between transform and part is {}", offset);
+
 
 			//if (m_PlatformsCrossed > m_PlatformsToSkip)
 			{
 				real::Logger::LogInfo("Ingredient has landed on platform");
+
+				pTransform->SetWorldPosition({ pTransform->GetWorldPosition().x, pPlatformCollider->GetPosition().y + 33 });
+				//pTransform->Translate({ 0,-1 });
 				ResetBurger();
 			}
 		}
@@ -162,11 +173,11 @@ void Ingredient::Fall()
 		{
 			ResetBurger();
 
-			constexpr float offset = 9;
+			constexpr float offset = 3;
 
 			const auto pPlateTransform = pPlate->GetComponent<real::TransformComponent>();
 			const auto size = GetOwner()->GetChildAt(0)->GetComponent<real::TextureComponent>()->GetTexture()->GetSize();
-			pPlateTransform->Translate({ 0, -size.y - offset });
+			pPlateTransform->Translate({ 0, static_cast<float>(-size.y) - offset });
 
 			real::Logger::LogInfo("Ingredient has landed on a plate");
 

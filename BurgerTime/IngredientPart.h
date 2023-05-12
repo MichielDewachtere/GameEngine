@@ -26,10 +26,12 @@ public:
 
 	void IsPlayerOnBurger(bool onBurger, real::ColliderComponent* player) { m_PlayerIsOnBurger = onBurger; m_Player = player; }
 
+	void Reset();
 private:
 	bool m_IsTriggered{};
 	bool m_PlayerIsOnBurger{};
 	real::ColliderComponent* m_Player{};
+
 };
 
 #endif // INGREDIENTPART_H

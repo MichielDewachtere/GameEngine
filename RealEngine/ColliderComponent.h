@@ -43,7 +43,7 @@ namespace real
 		void SetColor(const glm::vec4& color) { m_Color = color; }
 
 		bool IsOverlapping(const ColliderComponent& other) const;
-		bool IsEntireColliderOverlapping(const ColliderComponent& other) const;
+		bool IsEntireColliderOverlapping(const ColliderComponent& other, const glm::vec2& offset = { 0,0 }) const;
 
 		/**
 		\brief Determines whether the current collider is overlapping with the expected game object, identified by its tag.
@@ -54,6 +54,7 @@ namespace real
 		or the tags don't match, the function returns FALSE.
 		*/
 		bool IsOverlappingWith(const ColliderComponent& other, const std::string& expectedTag) const;
+		//bool IsOverlappingOrUnder(const ColliderComponent& other);
 
 
 	private:

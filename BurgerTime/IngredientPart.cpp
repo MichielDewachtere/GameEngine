@@ -4,6 +4,7 @@
 #include <Scene.h>
 #include <ColliderComponent.h>
 #include <TransformComponent.h>
+#include <Logger.h>
 
 //#include "GameInfo.h"
 #include "Ingredient.h"
@@ -23,5 +24,15 @@ void IngredientPart::Update()
 
 		const auto parent = GetOwner()->GetParent()->GetComponent<Ingredient>();
 		parent->PartIsTriggered();
+	}
+}
+
+void IngredientPart::Reset()
+{
+	if (m_IsTriggered)
+	{
+		real::Logger::LogInfo("IngredientPart has reset.");
+		m_IsTriggered = false;
+		GetOwner()->GetComponent<real::TransformComponent>()->Translate({ 0,-3 });
 	}
 }
