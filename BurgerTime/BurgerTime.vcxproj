@@ -172,6 +172,8 @@
     <ClCompile Include="PlayerCharacter.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
+    <ClCompile Include="Spawner.cpp" />
+    <ClCompile Include="SpawnPoint.cpp" />
     <ClCompile Include="Stair.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
@@ -192,6 +194,8 @@
     <ClInclude Include="PlayerCharacter.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreDisplay.h" />
+    <ClInclude Include="Spawner.h" />
+    <ClInclude Include="SpawnPoint.h" />
     <ClInclude Include="Stair.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
