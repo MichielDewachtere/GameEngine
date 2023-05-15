@@ -41,8 +41,7 @@ namespace real
 		void Update() override
 		{
 			// TODO: eventqueue : https://gameprogrammingpatterns.com/event-queue.html
-
-			// use threads
+			// TODO: implement threading
 			// use Mix_FreeChunk when done playing.
 
 			if (m_Head == m_Tail)
@@ -78,18 +77,24 @@ namespace real
 				}
 			}
 
-			assert((m_Tail + 1) % max_pending != m_Head);
+			assert((m_Tail + 1) % static_cast<int>(max_pending) != m_Head);
 
-			m_Pending[m_Tail] = sound;
+			m_Pending[m_Tail].id = sound.id;
+			m_Pending[m_Tail].fileName = sound.fileName;
 
 			if (volume != -1)
 				m_Pending[m_Tail].volume = volume;
+			else
+				m_Pending[m_Tail].volume = sound.volume;
+
 			if (loops != -1)
 				m_Pending[m_Tail].loops = loops;
+			else
+				m_Pending[m_Tail].loops = sound.loops;
 
 			m_Tail = (m_Tail + 1) % static_cast<int>(max_pending);
 		}
-		void Stop(const Sound sound) override
+		void Stop(const Sound /*sound*/) override
 		{
 			//if (IsLoaded(id) == false)
 			//	return;
@@ -120,14 +125,6 @@ namespace real
 
 			//m_AudioClips[sound] = std::unique_ptr<Mix_Chunk>(mixChunk);
 			m_AudioClips[sound] = mixChunk;
-		}
-		void LoadingThreadFunction()
-		{
-			
-		}
-		void PlayingThreadFunction()
-		{
-			
 		}
 
 	private:
