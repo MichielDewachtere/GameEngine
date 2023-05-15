@@ -29,6 +29,9 @@
     <Filter Include="Parsers">
       <UniqueIdentifier>{250e9c9c-898e-498d-98ac-919f5b3aab2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\Enemies">
+      <UniqueIdentifier>{54a884e3-089c-4cfc-957f-2393ba84230d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -69,9 +72,6 @@
     <ClCompile Include="Stair.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
-    <ClCompile Include="LevelParser.cpp">
-      <Filter>Parsers</Filter>
-    </ClCompile>
     <ClCompile Include="Floor.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
@@ -81,9 +81,17 @@
     <ClCompile Include="Plate.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
-    <ClCompile Include="SpawnPoint.cpp" />
     <ClCompile Include="Spawner.cpp">
       <Filter>Components\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseEnemy.cpp">
+      <Filter>Components\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnPoint.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelParser.cpp">
+      <Filter>Parsers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,9 +133,6 @@
     <ClInclude Include="Stair.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
-    <ClInclude Include="LevelParser.h">
-      <Filter>Parsers</Filter>
-    </ClInclude>
     <ClInclude Include="IngredientPrefab.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
@@ -137,9 +142,17 @@
     <ClInclude Include="Plate.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
-    <ClInclude Include="SpawnPoint.h" />
     <ClInclude Include="Spawner.h">
       <Filter>Components\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseEnemy.h">
+      <Filter>Components\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnPoint.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelParser.h">
+      <Filter>Parsers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
