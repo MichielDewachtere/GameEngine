@@ -3,8 +3,13 @@
 
 #include <GameTime.h>
 #include <Logger.h>
+#include <ResourceManager.h>
+#include <TextureComponent.h>
+#include <TransformComponent.h>
 
-#include "TransformComponent.h"
+#include "BaseEnemy.h"
+#include "ColliderComponent.h"
+#include "GameInfo.h"
 
 void Spawner::Update()
 {
@@ -23,7 +28,7 @@ void Spawner::Update()
 		case EnemyTypes::hotDog:
 			real::Logger::LogInfo("Spawner => Hotdog should spawn");
 
-			GetOwner()->CreateGameObject();
+			SpawnHotDog();
 			break;
 		case EnemyTypes::egg:
 			real::Logger::LogInfo("Spawner => Egg should spawn");
@@ -47,4 +52,19 @@ void Spawner::SpawnEnemy()
 		m_NeedNewEnemy = true;
 	else
 		real::Logger::LogWarning("Spawner => A new enemy is already requested.");
+}
+
+void Spawner::SpawnHotDog()
+{
+	const auto hotDog = GetOwner()->CreateGameObject();
+	const auto pTexture = real::ResourceManager::GetInstance().LoadTexture("enemies/hotdog.png");
+
+	hotDog->SetTag(Tags::hot_dog);
+	hotDog->GetComponent<real::TransformComponent>()->SetWorldPosition(GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition());
+	hotDog->GetComponent<real::TransformComponent>()->Translate(0, static_cast<float>(-pTexture->GetSize().y + 1));
+	hotDog->AddComponent<real::TextureComponent>()->SetTexture(pTexture);
+	hotDog->AddComponent<real::ColliderComponent>(pTexture->GetSize())->EnableDebugRendering(true, Colors::white);
+	hotDog->AddComponent<BaseEnemy>();
+
+	hotDog->Start();
 }

@@ -26,11 +26,14 @@ public:
 	void SpawnEnemy();
 
 	void SetType(const EnemyTypes type) { m_Type = type; }
+
 private:
 	EnemyTypes m_Type{};
 	float m_AccuTime{};
 
 	bool m_NeedNewEnemy{};
+
+	void SpawnHotDog();
 };
 
 #endif // SPAWNER_H
