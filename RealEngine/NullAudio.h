@@ -12,8 +12,8 @@ namespace real
 		virtual ~NullAudio() override = default;
 
 		virtual void Update() override {}
-		virtual void Play(const Sound sound, const int volume, const int loops) override {}
-		virtual void Stop(const Sound sound) override {}
+		virtual void Play(const Sound, const int, const int) override {}
+		virtual void Stop(const Sound) override {}
 	};
 }
 #endif // NULLAUDIO_H
