@@ -41,7 +41,7 @@ void SpawnPoint::InitComponents(real::GameObject* pOwner, const glm::vec2 pos, c
 	}
 
 	pOwner->SetTag(type);
-	pOwner->GetComponent<real::TransformComponent>()->SetWorldPosition(pos);
+	pOwner->GetComponent<real::TransformComponent>()->SetLocalPosition(pos);
 
 	if (type == Tags::hot_dog)
 		pOwner->AddComponent<Spawner>(Spawner::EnemyTypes::hotDog)->SpawnEnemy();
