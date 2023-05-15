@@ -101,9 +101,6 @@
     <ClInclude Include="Achievements.h">
       <Filter>Observer</Filter>
     </ClInclude>
-    <ClInclude Include="DemoScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="InputMap.h">
       <Filter>Input</Filter>
@@ -191,9 +188,6 @@
     </ClCompile>
     <ClCompile Include="Achievements.cpp">
       <Filter>Observer</Filter>
-    </ClCompile>
-    <ClCompile Include="DemoScene.cpp">
-      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="InputMap.cpp">
