@@ -55,7 +55,7 @@ void Ingredient::PartIsTriggered()
 	{
 		m_IsFalling = true;
 		//TODO: this will depend on the weight/amount of enemies on burger.
-		m_PlatformsToSkip = 1;
+		//m_PlatformsToSkip = 1;
 	}
 }
 
@@ -92,6 +92,7 @@ void Ingredient::ResetBurger()
 
 	m_PlatformsCrossed = 0;
 	m_AmountOfPartsTriggered = 0;
+	m_PlatformsToSkip = 0;
 	m_IsFalling = false;
 }
 
@@ -139,25 +140,16 @@ void Ingredient::Fall()
 
 		if (pPlatformCollider->IsEntireColliderOverlapping(*pPartCollider, { 0,1 }))
 		{
-			++m_PlatformsCrossed;
-
 			m_CurrentPlatform = pPlatform->GetId();
 
-			//if (m_PlatformsCrossed <= m_PlatformsToSkip)
-			//	return;
-
-			// snap burger to the platform.
-			//const float offset = pTransform->GetWorldPosition().y - pPartCollider->GetPosition().y;
-			//real::Logger::LogInfo("Offset between transform and part is {}", offset);
-
-
-			//if (m_PlatformsCrossed > m_PlatformsToSkip)
+			if (m_PlatformsCrossed > m_PlatformsToSkip)
 			{
-
 				pTransform->SetWorldPosition({ pTransform->GetWorldPosition().x, pPlatformCollider->GetPosition().y + 33 });
 				//pTransform->Translate({ 0,-1 });
 				ResetBurger();
 			}
+
+			++m_PlatformsCrossed;
 		}
 	}
 

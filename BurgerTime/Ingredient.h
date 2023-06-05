@@ -22,6 +22,9 @@ public:
 	void Update() override;
 	bool CanRender() const override { return false; }
 
+	void IncreaseWeight() { ++m_PlatformsToSkip; }
+	void DecreaseWeight() { --m_PlatformsToSkip; }
+
 	void PartIsTriggered();
 
 	void SetIsFalling(bool isFalling) { m_IsFalling = isFalling; }
@@ -37,9 +40,9 @@ private:
 	bool m_IsFalling{};
 	const int m_FallSpeed{ 96 };
 
-	int m_PlatformsToSkip{};
-	int m_PlatformsCrossed{};
-	unsigned short m_CurrentPlatform{ 0 };
+	int m_PlatformsToSkip{ 0 };
+	int m_PlatformsCrossed{ 1 };
+	real::gameobject_id m_CurrentPlatform{ 0 };
 
 	void InitCurrentPlatform();
 	void ResetBurger();
