@@ -57,6 +57,19 @@ std::vector<GameObject*> Scene::FindObjectsWithTag(const std::string& tag) const
 	return goPtrs;
 }
 
+GameObject* Scene::FindObject(gameobject_id id) const
+{
+	for (const auto& gameObject : m_objects)
+	{
+		const auto go = gameObject->GetObject(id);
+
+		if (go != nullptr)
+			return go;
+	}
+
+	return nullptr;
+}
+
 void Scene::Start()
 {
 	for (const auto& object : m_objects)

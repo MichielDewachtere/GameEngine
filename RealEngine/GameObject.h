@@ -30,6 +30,7 @@ namespace real
 
 		GameObject* CreateGameObject();
 		std::vector<GameObject*> GetObjectsWithTag(const std::string& tag);
+		GameObject* GetObject(gameobject_id id);
 
 		void Init();
 

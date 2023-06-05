@@ -20,6 +20,7 @@ namespace real
 		void Remove(std::unique_ptr<GameObject> object);
 		void RemoveAll();
 		std::vector<GameObject*> FindObjectsWithTag(const std::string& tag) const;
+		GameObject* FindObject(gameobject_id id) const;
 
 		void Start();
 		void Update();

@@ -39,6 +39,22 @@ std::vector<real::GameObject*> real::GameObject::GetObjectsWithTag(const std::st
 	return goPtrs;
 }
 
+real::GameObject* real::GameObject::GetObject(gameobject_id id)
+{
+	if (id == m_Id)
+		return this;
+
+	GameObject* pGo{ nullptr };
+
+	for (const auto& go : m_ChildrenPtrs)
+	{
+		pGo = go->GetObject(id);
+	}
+
+	return pGo;
+}
+
+
 void real::GameObject::Init()
 {
 	m_pTransform = AddComponent<TransformComponent>();
