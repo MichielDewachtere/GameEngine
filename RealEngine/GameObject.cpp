@@ -44,14 +44,14 @@ real::GameObject* real::GameObject::GetObject(gameobject_id id)
 	if (id == m_Id)
 		return this;
 
-	GameObject* pGo{ nullptr };
-
 	for (const auto& go : m_ChildrenPtrs)
 	{
-		pGo = go->GetObject(id);
+		auto pGo = go->GetObject(id);
+		if (pGo != nullptr)
+			return pGo;
 	}
 
-	return pGo;
+	return nullptr;
 }
 
 
