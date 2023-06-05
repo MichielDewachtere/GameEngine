@@ -4,6 +4,8 @@
 #include <SDL_mixer.h>
 #include <map>
 #include <cassert>
+#include <mutex>
+#include <thread>
 
 #define AMOUNT_OF_CHANNELS 2
 
@@ -55,18 +57,19 @@ namespace real
 
 			if (IsLoaded(sound) == false)
 			{
-				Load(sound);
+				std::jthread loadingThread(&SDLAudioImpl::LoadSound, this, sound);
+				loadingThread.detach();
+				//LoadSound(sound);
+
+				std::unique_lock<std::mutex> lock(m_Mutex);
+				m_Condition.wait(lock, [this, sound]()
+					{
+						return IsLoaded(sound);
+					});
 			}
 
-			//const auto mixChunk = m_AudioClips[sound].get();
-			const auto mixChunk = m_AudioClips[sound];
-
-			const int result = Mix_PlayChannel(-1, mixChunk, sound.loops);
-			if (result == -1) {
-				printf("SDL_mixer could not play sound effect! SDL_mixer Error: %s\n", Mix_GetError());
-			}
-
-			Mix_Volume(result, sound.volume);
+			std::thread playingThread(&SDLAudioImpl::PlaySound, this, sound);
+			playingThread.detach();
 
 			m_Head = (m_Head + 1) % static_cast<int>(max_pending);
 		}
@@ -118,7 +121,7 @@ namespace real
 			//const auto it = m_AudioClips.find(sound);
 			//return it != m_AudioClips.end() && it->second != nullptr;
 		}
-		void Load(const Sound sound)
+		void LoadSound(const Sound sound)
 		{
 			const auto mixChunk = Mix_LoadWAV(sound.fileName.c_str());
 
@@ -127,13 +130,35 @@ namespace real
 				return;
 			}
 
+			std::lock_guard<std::mutex> lock(m_Mutex);
+
 			//m_AudioClips[sound] = std::unique_ptr<Mix_Chunk>(mixChunk);
 			m_AudioClips[sound] = mixChunk;
-		}
 
+			m_Condition.notify_all();
+		}
+		void PlaySound(const Sound sound)
+		{
+			//const auto mixChunk = m_AudioClips[sound].get();
+			const auto mixChunk = m_AudioClips[sound];
+
+			const int result = Mix_PlayChannel(-1, mixChunk, sound.loops);
+			if (result == -1) {
+				printf("SDL_mixer could not play sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+			}
+
+			Mix_Volume(result, sound.volume);
+		}
 	private:
 		std::map<Sound, Mix_Chunk*> m_AudioClips;
 		//std::map<Sound, std::unique_ptr<Mix_Chunk>> m_AudioClips;
+
+		std::mutex m_Mutex{};
+		std::condition_variable m_Condition{};
+		
+		static constexpr size_t max_pending = 16;
+		std::array<Sound, max_pending> m_Pending{};
+		int m_NumPending{};
 	};
 };
 
