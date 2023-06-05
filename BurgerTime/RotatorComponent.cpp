@@ -1,8 +1,12 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "RotatorComponent.h"
 
-#include "GameTime.h"
-#include "TransformComponent.h"
+#include <GameTime.h>
+#include <TransformComponent.h>
+
+#include <glm/vec3.hpp>
+#include <glm/trigonometric.hpp>
+#include <glm/geometric.hpp>
 
 void RotatorComponent::Update()
 {
