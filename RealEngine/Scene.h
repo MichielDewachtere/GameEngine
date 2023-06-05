@@ -24,6 +24,7 @@ namespace real
 		void Start();
 		void Update();
 		void Render() const;
+		void PostUpdate();
 
 		std::string GetName() const { return m_Name; }
 

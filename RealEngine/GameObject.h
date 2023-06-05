@@ -37,6 +37,10 @@ namespace real
 		void Update();
 		void Render() const;
 		void DebugRender() const;
+		void PostUpdate();
+
+		void Destroy();
+		bool IsMarkedForDestroy() const { return m_IsMarkedForDestroy; }
 
 		void SetTag(const std::string& newTag) { m_Tag = newTag; }
 		std::string GetTag() const { return m_Tag; }
@@ -49,6 +53,8 @@ namespace real
 		T* GetComponent();
 		template <class T>
 		void RemoveComponent();
+		template <class T>
+		void RemoveComponent(const T&);
 		template <class T>
 		bool HasComponent() const;
 
@@ -64,15 +70,17 @@ namespace real
 		Scene* m_pScene{ nullptr };
 		std::string m_Tag;
 		TransformComponent* m_pTransform{ nullptr };
+		bool m_IsMarkedForDestroy{};
 
 		std::vector<std::unique_ptr<Component>> m_ComponentPtrs{};
 
 		GameObject* m_pParent{ nullptr };
 		std::vector<std::unique_ptr<GameObject>> m_ChildrenPtrs{};
 
-
 		gameobject_id m_Id;
 		static inline gameobject_id m_NextId = 0;
+
+		void RemoveChild(std::unique_ptr<GameObject> gameObject);
 	};
 
 #pragma region ComponentLogic
@@ -130,6 +138,14 @@ namespace real
 				++it;
 			}
 		}
+	}
+
+	template <class T>
+	void GameObject::RemoveComponent(const T&)
+	{
+		static_assert(std::is_base_of<Component, T>::value, "T must be derived from Component");
+
+		RemoveComponent<T>();
 	}
 
 	template <class T>

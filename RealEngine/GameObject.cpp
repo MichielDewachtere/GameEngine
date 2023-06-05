@@ -1,6 +1,8 @@
 //#include "stdafx.h"
 #include "GameObject.h"
 
+#include <algorithm>
+
 #include "Scene.h"
 #include "TransformComponent.h"
 
@@ -85,6 +87,65 @@ void real::GameObject::DebugRender() const
 
 }
 
+void real::GameObject::PostUpdate()
+{
+	if (m_ChildrenPtrs.empty() == false)
+	{
+		for (auto it = m_ChildrenPtrs.begin(); it != m_ChildrenPtrs.end(); )
+		{
+			auto& pChild = *it;
+
+			// if (m_IsMarkedForDestroy)
+			//     pChild->Destroy();
+
+			pChild->PostUpdate();
+
+			if (pChild->IsMarkedForDestroy() && pChild->GetId() <= m_NextId)
+			{
+				it = m_ChildrenPtrs.erase(it); // Erase the element and update the iterator
+			}
+			else
+			{
+				++it; // Move to the next element
+			}
+		}
+	}
+
+	if (m_IsMarkedForDestroy)
+	{
+		//for (const auto& pComponent : m_ComponentPtrs)
+		//{
+		//	std::erase(m_ComponentPtrs, pComponent);
+		//}
+
+		for (auto& pComponent : m_ComponentPtrs)
+		{
+			RemoveComponent(*pComponent);
+		}
+
+		m_ComponentPtrs.clear();
+	}
+}
+
+void real::GameObject::Destroy()
+{
+	m_IsMarkedForDestroy = true;
+
+	for (const auto& pChild : m_ChildrenPtrs)
+	{
+		pChild->Destroy();
+	}
+
+	//m_ComponentPtrs.clear();
+
+	//for (const auto& pChild : m_ChildrenPtrs)
+	//{
+	//	pChild->Destroy();
+	//}
+
+	//m_pParent->RemoveChild(std::unique_ptr<GameObject>(this));
+}
+
 void real::GameObject::SetParent(GameObject* pParent, const bool keepWorldPosition)
 {
 	if (pParent == nullptr)
@@ -143,4 +204,13 @@ std::vector<real::GameObject*> real::GameObject::GetChildren() const
 	}
 
 	return childrenPtrs;
+}
+
+void real::GameObject::RemoveChild(std::unique_ptr<GameObject> gameObject)
+{
+	//for (const auto& pChild: gameObject->GetChildren())
+	//{
+	//	gameObject->RemoveChild(std::unique_ptr<GameObject>(pChild));
+	//}
+	std::erase(m_ChildrenPtrs, gameObject);
 }

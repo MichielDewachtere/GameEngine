@@ -84,3 +84,9 @@ void Scene::Render() const
 	}
 }
 
+void Scene::PostUpdate()
+{
+	for (const auto& object : m_objects)
+		object->PostUpdate();
+}
+

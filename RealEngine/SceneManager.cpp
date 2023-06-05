@@ -15,6 +15,12 @@ void real::SceneManager::Render()
 		m_pActiveScene->Render();
 }
 
+void real::SceneManager::PostUpdate()
+{
+	if (m_pActiveScene)
+		m_pActiveScene->PostUpdate();
+}
+
 real::Scene& real::SceneManager::CreateScene(const std::string& name, const std::string inputMapName)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name, inputMapName));

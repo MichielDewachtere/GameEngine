@@ -145,6 +145,8 @@ void real::Minigin::Run(const std::function<void()>& load)
 		renderer.Render();
 		audio.Update();
 
+		sceneManager.PostUpdate();
+
 		const auto sleepTime = currentTime + std::chrono::milliseconds(desiredFrameTime) - std::chrono::high_resolution_clock::now();
 		std::this_thread::sleep_for(sleepTime);
 	}
