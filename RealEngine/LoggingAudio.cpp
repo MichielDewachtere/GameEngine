@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "LoggingAudio.h"
 
 #include "Logger.h"

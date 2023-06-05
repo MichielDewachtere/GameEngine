@@ -1,7 +1,10 @@
 ﻿#ifndef LOGGER_H
 #define LOGGER_H
 
+#include <chrono>
 #include <ctime>
+#include <string>
+#include <iostream>
 
 namespace real
 {

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "GameTime.h"
 
 void real::Time::Init()

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Minigin.h"
 
 #include <SDL_image.h>

@@ -2,7 +2,6 @@
 #define INPUT_H
 
 #include <memory>
-#include <SDL_stdinc.h>
 #include <string>
 #include <vector>
 

@@ -2,6 +2,7 @@
 #define AUDIO_H
 
 #include <array>
+#include <string>
 
 namespace real
 {

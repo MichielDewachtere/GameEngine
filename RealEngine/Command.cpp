@@ -1,5 +1,7 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Command.h"
+
+#include <iostream>
 
 void real::TestCommand::Execute()
 {

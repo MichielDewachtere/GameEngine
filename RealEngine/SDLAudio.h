@@ -1,6 +1,8 @@
 #ifndef SDLAUDIO_H
 #define SDLAUDIO_H
 
+#include <memory>
+
 #include "Audio.h"
 
 namespace real

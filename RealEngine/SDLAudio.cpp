@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "SDLAudio.h"
 
 #define AMOUNT_OF_CHANNELS 2

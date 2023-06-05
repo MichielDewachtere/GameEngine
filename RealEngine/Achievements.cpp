@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Achievements.h"
 
 real::Achievements::~Achievements()

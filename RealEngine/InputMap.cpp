@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "InputMap.h"
 
 real::InputMap::ControllerCommandsMapRawPtr real::InputMap::GetControllerCommands() const

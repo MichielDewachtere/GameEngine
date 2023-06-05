@@ -1,6 +1,8 @@
 #ifndef LOGGINGAUDIO_H
 #define LOGGINGAUDIO_H
 
+#include <memory>
+
 #include "Audio.h"
 
 namespace real

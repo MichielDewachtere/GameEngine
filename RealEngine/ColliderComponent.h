@@ -1,6 +1,9 @@
 #ifndef COLLIDERCOMPONENT_H
 #define COLLIDERCOMPONENT_H
 
+#include <glm/vec2.hpp>
+#include <glm/vec4.hpp>
+
 #include "Component.h"
 
 namespace real

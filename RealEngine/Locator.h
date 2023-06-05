@@ -1,6 +1,8 @@
 #ifndef LOCATOR_H
 #define LOCATOR_H
 
+#include <memory>
+
 #include "Audio.h"
 #include "NullAudio.h"
 

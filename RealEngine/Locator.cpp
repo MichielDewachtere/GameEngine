@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Locator.h"
 
 void real::Locator::RegisterAudioSystem(Audio* audio)

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "TextComponent.h"
 
 #include <SDL_ttf.h>
