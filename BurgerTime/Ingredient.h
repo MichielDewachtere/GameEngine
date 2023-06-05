@@ -26,6 +26,7 @@ public:
 
 	void SetIsFalling(bool isFalling) { m_IsFalling = isFalling; }
 	bool GetIsFalling() const { return m_IsFalling; }
+	int GetFallSpeed() const { return m_FallSpeed; }
 
 private:
 	//bool m_IsActive{ true };

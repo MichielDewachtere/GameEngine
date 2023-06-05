@@ -176,6 +176,7 @@ void Ingredient::Fall()
 			const auto size = GetOwner()->GetChildAt(0)->GetComponent<real::TextureComponent>()->GetTexture()->GetSize();
 			pPlateTransform->Translate({ 0, static_cast<float>(-size.y) - offset });
 
+			GetOwner()->SetTag(Tags::empty);
 			GetOwner()->RemoveComponent<Ingredient>();
 		}
 	}
