@@ -11,6 +11,8 @@
 
 #include "GameInfo.h"
 #include "HealthComponent.h"
+#include "Ingredient.h"
+#include "Spawner.h"
 
 void BaseEnemy::Start()
 {
@@ -28,19 +30,30 @@ void BaseEnemy::Start()
 	{
 		m_FloorPtrs.push_back(std::unique_ptr<real::GameObject>(pFloor));
 	}
+
+	for (const auto pIngredient : real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::ingredient))
+	{
+		m_IngredientPtrs.push_back(std::unique_ptr<real::GameObject>(pIngredient));
+	}
 }
 
 void BaseEnemy::Update()
 {
+	if (m_IsFalling)
+	{
+		Fall();
+		return;
+	}
+
 	const auto playerPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::player);
-	real::GameObject* pPlayer;
+	real::GameObject* pPlayer{};
 
 	// if multiplayer => search closest player
-	if (m_PlayerPtrs.size() == 1)
-		pPlayer = m_PlayerPtrs[0].get();
+	if (playerPtrs.size() == 1)
+		pPlayer = playerPtrs[0];
 	else if (playerPtrs.size() > 1)
-		pPlayer = GetClosestPlayer(m_PlayerPtrs);
-	else
+		pPlayer = GetClosestPlayer(playerPtrs);
+	else if (playerPtrs.empty() || playerPtrs.size() > 2)
 	{
 		real::Logger::LogError("BaseEnemy => No players found");
 		return;
@@ -53,6 +66,8 @@ void BaseEnemy::Update()
 		pPlayer->GetComponent<HealthComponent>()->Damage();
 		// LevelManager -> reset level?
 	}
+
+	CheckForIngredients();
 
 	if (m_IsOnStair == false && m_IsOnFloor == false)
 	{
@@ -85,7 +100,7 @@ void BaseEnemy::Update()
 	MoveEnemy();
 }
 
-real::GameObject* BaseEnemy::GetClosestPlayer(const std::vector<std::unique_ptr<real::GameObject>>&)
+real::GameObject* BaseEnemy::GetClosestPlayer(const std::vector<real::GameObject*>&)
 {
 	return nullptr;
 }
@@ -183,10 +198,82 @@ bool BaseEnemy::CheckForPlatforms(real::TransformComponent* playerTransform)
 	return false;
 }
 
+void BaseEnemy::CheckForIngredients()
+{
+	const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
+	const auto pSubCollider = std::make_unique<real::ColliderComponent>(this->GetOwner(), pCollider->GetSize().x / 2, pCollider->GetSize().y);
+	pSubCollider->Translate(pCollider->GetSize().x / 4, 0);
+
+	if (m_IsOnIngredient == false || m_pCurrentIngredient->GetTag() != Tags::ingredient)
+	{
+		for (const auto& pIngredient : m_IngredientPtrs)
+		{
+			if (pIngredient->GetTag() != Tags::ingredient)
+				continue;
+
+			const auto pIngredientCollider = pIngredient->GetComponent<real::ColliderComponent>();
+
+			if (pIngredientCollider->IsOverlapping(*pSubCollider))
+			{
+				m_pCurrentIngredient = pIngredient.get();
+				m_IsOnIngredient = true;
+			}
+		}
+	}
+	else
+	{
+		if (m_pCurrentIngredient->GetComponent<Ingredient>()->GetIsFalling() == true)
+		{
+			real::Logger::LogInfo("BaseEnemy => Enemy {} should fall with burger", GetOwner()->GetId());
+			m_IsFalling = true;
+		}
+
+		const auto pIngredientCollider = m_pCurrentIngredient->GetComponent<real::ColliderComponent>();
+
+		if (pIngredientCollider->IsOverlapping(*pSubCollider) == false)
+		{
+			m_pCurrentIngredient = nullptr;
+			m_IsOnIngredient = false;
+		}
+	}
+}
+
 void BaseEnemy::MoveEnemy()
 {
 	const glm::vec2 translation = real::Time::GetInstance().GetElapsed() * m_Direction * m_Speed;
 	GetOwner()->GetComponent<real::TransformComponent>()->Translate(translation);
+}
+
+void BaseEnemy::Fall()
+{
+	if (m_pCurrentIngredient->HasComponent<Ingredient>() == false)
+	{
+		real::Logger::LogInfo("BaseEnemy => Enemy {} should be destroyed", GetOwner()->GetId());
+		m_IsFalling = false;
+
+		//const auto it = std::ranges::find_if(m_IngredientPtrs, [&](const std::unique_ptr<real::GameObject>& ptr) {
+		//	return ptr.get() == m_pCurrentIngredient;
+		//	});
+		//
+		//m_IngredientPtrs.erase(it);
+		//
+		m_pCurrentIngredient->SetTag(Tags::empty);
+
+		//GetOwner()->Destroy();
+		//GetOwner()->GetParent()->GetComponent<Spawner>()->SpawnEnemy();
+		return;
+	}
+
+	const auto pIngredient = m_pCurrentIngredient->GetComponent<Ingredient>();
+	if (pIngredient->GetIsFalling() == true)
+	{
+		const auto pTransform = GetOwner()->GetComponent<real::TransformComponent>();
+		pTransform->Translate(0, pIngredient->GetFallSpeed() * real::Time::GetInstance().GetElapsed());
+	}
+	else
+	{
+		m_IsFalling = false;
+	}
 }
 
 bool BaseEnemy::PlayerHit(real::GameObject* pPlayer) const

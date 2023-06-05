@@ -33,13 +33,22 @@ private:
 	bool m_IsOnFloor = false;
 	real::gameobject_id m_CurrentPlatform = 0;
 
+	std::vector<std::unique_ptr<real::GameObject>> m_IngredientPtrs;
+	bool m_IsOnIngredient = false;
+	bool m_IsFalling = false;
+	real::GameObject* m_pCurrentIngredient{};
+
 	glm::vec2 m_Direction{};
 
-	real::GameObject* GetClosestPlayer(const std::vector<std::unique_ptr<real::GameObject>>& playerPtrs);
+	real::GameObject* GetClosestPlayer(const std::vector<real::GameObject*>& playerPtrs);
+	bool PlayerHit(real::GameObject* pPlayer) const;
+
 	bool CheckForStairs(real::TransformComponent* playerTransform);
 	bool CheckForPlatforms(real::TransformComponent* playerTransform);
+	void CheckForIngredients();
+
 	void MoveEnemy();
-	bool PlayerHit(real::GameObject* pPlayer) const;
+	void Fall();
 
 	enum class Direction
 	{
