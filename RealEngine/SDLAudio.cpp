@@ -159,7 +159,7 @@ namespace real
 		int m_Head{}, m_Tail{};
 		static constexpr size_t max_pending = 16;
 		std::array<Sound, max_pending> m_Pending{};
-		int m_NumPending{};
+		//int m_NumPending{};
 	};
 };
 
