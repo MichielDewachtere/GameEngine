@@ -23,6 +23,9 @@ namespace real
 
 		virtual bool CanRender() const = 0;
 
+		bool GetIsActive() const { return m_IsActive; }
+		void SetIsActive(const bool value) { m_IsActive = value; }
+
 	protected:
 		GameObject* GetOwner() const { return m_pOwner/*.get()*/; }
 
@@ -31,6 +34,7 @@ namespace real
 	private:
 		//std::unique_ptr<GameObject> m_pOwner{};
 		GameObject* m_pOwner{};
+		bool m_IsActive{ true };
 	};
 }
 

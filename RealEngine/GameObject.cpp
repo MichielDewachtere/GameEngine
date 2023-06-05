@@ -72,7 +72,10 @@ void real::GameObject::Start()
 void real::GameObject::Update()
 {
 	for (const auto& pComponent : m_ComponentPtrs)
-		pComponent->Update();
+	{
+		if (pComponent->GetIsActive())
+			pComponent->Update();
+	}
 
 	for (const auto& pChild : m_ChildrenPtrs)
 		pChild->Update();
@@ -82,7 +85,7 @@ void real::GameObject::Render() const
 {
 	for (const auto& pComponent : m_ComponentPtrs)
 	{
-		if (pComponent->CanRender()) 
+		if (pComponent->CanRender() && pComponent->GetIsActive())
 			pComponent->Render();
 	}
 	
@@ -94,7 +97,7 @@ void real::GameObject::DebugRender() const
 {
 	for (const auto& pComponent : m_ComponentPtrs)
 	{
-		if (pComponent->CanRender())
+		if (pComponent->CanRender() && pComponent->GetIsActive())
 			pComponent->DebugRender();
 	}
 
