@@ -1,6 +1,10 @@
 //#include "stdafx.h"
 #include "SDLAudio.h"
 
+#include <SDL_mixer.h>
+#include <map>
+#include <cassert>
+
 #define AMOUNT_OF_CHANNELS 2
 
 namespace real
