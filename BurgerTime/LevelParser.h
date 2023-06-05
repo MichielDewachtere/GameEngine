@@ -1,7 +1,11 @@
 #ifndef LEVELPARSER_H
 #define LEVELPARSER_H
 
-#include <document.h>
+#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+#define _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING
+
+#pragma warning(disable : 4996)
+#include "document.h"
 #include <Scene.h>
 
 class LevelParser final

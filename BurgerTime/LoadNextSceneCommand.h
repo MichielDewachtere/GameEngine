@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "Command.h"
+#include <Command.h>
 
 class LoadNextSceneCommand final : public real::Command
 {

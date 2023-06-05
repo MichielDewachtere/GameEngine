@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+﻿//#include "stdafx.h"
 #include "BaseEnemy.h"
 
 #include <Scene.h>

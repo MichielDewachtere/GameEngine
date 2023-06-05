@@ -1,10 +1,9 @@
 ﻿#ifndef PLATE_H
 #define PLATE_H
 
-#include <GameObject.h>
+#include <glm/vec2.hpp>
 
-#include "HealthComponent.h"
-#include "HealthComponent.h"
+#include <GameObject.h>
 
 class Plate
 {

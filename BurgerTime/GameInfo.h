@@ -1,9 +1,12 @@
 #ifndef GAMEINFO_H
 #define GAMEINFO_H
 
+#include <glm/vec4.hpp>
+
 #include <string>
 
 #include <Audio.h>
+#include <SDL_mixer.h>
 
 struct Tags
 {

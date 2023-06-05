@@ -1,6 +1,8 @@
 #ifndef FLOOR_H
 #define FLOOR_H
 
+#include <glm/vec2.hpp>
+
 #include <GameObject.h>
 
 class Floor

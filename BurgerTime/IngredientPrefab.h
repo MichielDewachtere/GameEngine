@@ -1,6 +1,8 @@
 #ifndef INGREDIENTPREFAB_H
 #define INGREDIENTPREFAB_H
 
+#include <glm/vec2.hpp>
+
 #include <GameObject.h>
 
 class IngredientPrefab

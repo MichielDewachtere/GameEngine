@@ -1,14 +1,14 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "MoveCommand.h"
 
-#include "ColliderComponent.h"
-#include "GameInfo.h"
-#include "TransformComponent.h"
-#include "GameTime.h"
+#include <ColliderComponent.h>
+#include <TransformComponent.h>
+#include <GameTime.h>
+#include <Input.h>
+#include <Scene.h>
+#include <SceneManager.h>
 
-#include "Input.h"
-#include "Scene.h"
-#include "SceneManager.h"
+#include "GameInfo.h"
 
 MoveCommand::MoveCommand(real::GameObject* object, const glm::vec2& direction, const float speed)
     : Command(object)

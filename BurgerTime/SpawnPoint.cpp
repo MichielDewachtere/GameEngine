@@ -2,11 +2,11 @@
 #include "SpawnPoint.h"
 
 #include <Scene.h>
+#include <TransformComponent.h>
 
 #include "GameInfo.h"
 #include "Logger.h"
 #include "Spawner.h"
-#include "TransformComponent.h"
 
 real::GameObject* SpawnPoint::CreateSpawnPoint(real::Scene* pScene, const glm::vec2 pos, const std::string& type)
 {

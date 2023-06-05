@@ -1,7 +1,9 @@
 #ifndef MOVECOMMAND_H
 #define MOVECOMMAND_H
 
-#include "Command.h"
+#include <glm/vec2.hpp>
+
+#include <Command.h>
 
 class MoveCommand final : public real::Command
 {

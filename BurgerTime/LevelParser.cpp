@@ -1,8 +1,9 @@
+//#include "stdafx.h"
 
-#include "stdafx.h"
 #include "LevelParser.h"
 
 #include <fstream>
+#include <iostream>
 
 #include <TextureComponent.h>
 #include <ResourceManager.h>
@@ -52,10 +53,14 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
 
     // FLOORS
     for (const auto& floor : document["floors"].GetArray())
-        Floor::CreateFloor(pLevel, { floor[0].GetDouble(), floor[1].GetDouble() }, static_cast<float>(floor[2].GetDouble()), false);
+    {
+	    Floor::CreateFloor(pLevel, { floor[0].GetDouble(), floor[1].GetDouble() }, static_cast<float>(floor[2].GetDouble()), false);
+    }
     // STAIRS
     for (const auto& stair : document["stairs"].GetArray())
-        Stair::CreateStair(pLevel, { stair[0].GetDouble(), stair[1].GetDouble() }, static_cast<float>(stair[2].GetDouble()), false);
+    {
+	    Stair::CreateStair(pLevel, { stair[0].GetDouble(), stair[1].GetDouble() }, static_cast<float>(stair[2].GetDouble()), false);
+    }
     // BUN_TOP
     ParseIngredient(pLevel, document, "bun_top");
     // LETTUCE
@@ -68,11 +73,15 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     ParseIngredient(pLevel, document, "bun_bottom");
     //PLATES
     for (const auto& plate : document["plates"].GetArray())
-        Plate::CreatePlate(pLevel, { plate[0].GetDouble(), plate[1].GetDouble() }, false);
+    {
+	    Plate::CreatePlate(pLevel, { plate[0].GetDouble(), plate[1].GetDouble() }, false);
+    }
     //SPAWNPOINT
     for (const auto& spawnPoint : document["spawnpoint"].GetArray())
-        SpawnPoint::CreateSpawnPoint(pLevel, { spawnPoint[0].GetDouble(), spawnPoint[1].GetDouble() }, spawnPoint[2].GetString());
-    
+    {
+	    SpawnPoint::CreateSpawnPoint(pLevel, { spawnPoint[0].GetDouble(), spawnPoint[1].GetDouble() }, spawnPoint[2].GetString());
+    }
+
 	return pLevel;
 }
 

@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+﻿//#include "stdafx.h"
 #include "Spawner.h"
 
 #include <GameTime.h>
@@ -6,9 +6,9 @@
 #include <ResourceManager.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
+#include <ColliderComponent.h>
 
 #include "BaseEnemy.h"
-#include "ColliderComponent.h"
 #include "GameInfo.h"
 
 void Spawner::Update()

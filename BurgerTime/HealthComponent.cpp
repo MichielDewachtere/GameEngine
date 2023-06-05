@@ -1,10 +1,9 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "HealthComponent.h"
 
 #include <iostream>
 
-#include "LivesDisplay.h"
-#include "TransformComponent.h"
+#include <TransformComponent.h>
 
 HealthComponent::HealthComponent(real::GameObject* pOwner, int lives)
 	: Component(pOwner)

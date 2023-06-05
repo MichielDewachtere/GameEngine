@@ -1,10 +1,10 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Stair.h"
 
 #include <Scene.h>
 #include <ColliderComponent.h>
+#include <TransformComponent.h>
 
-#include "TransformComponent.h"
 #include "GameInfo.h"
 
 real::GameObject* Stair::CreateStair(real::Scene* pScene, const glm::vec2 pos, float height, bool drawDebug = false)

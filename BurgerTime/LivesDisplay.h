@@ -1,8 +1,8 @@
 #ifndef LIVESDISPLAY_H
 #define LIVESDISPLAY_H
 
-#include "Observer.h"
-#include "Component.h"
+#include <Observer.h>
+#include <Component.h>
 
 class HealthComponent;
 

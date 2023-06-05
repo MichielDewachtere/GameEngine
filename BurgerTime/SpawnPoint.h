@@ -1,6 +1,8 @@
 #ifndef SPAWNOINT_H
 #define SPAWNOINT_H
 
+#include <glm/vec2.hpp>
+
 #include <GameObject.h>
 
 class SpawnPoint final

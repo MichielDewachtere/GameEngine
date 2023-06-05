@@ -1,12 +1,13 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "LoadNextSceneCommand.h"
 
 #include <Locator.h>
 
+#include <Input.h>
+#include <SceneManager.h>
+#include <Scene.h>
+
 #include "GameInfo.h"
-#include "Input.h"
-#include "SceneManager.h"
-#include "Scene.h"
 
 LoadNextSceneCommand::LoadNextSceneCommand(real::GameObject* object, std::string name)
 	: Command(object)

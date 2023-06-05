@@ -1,8 +1,8 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "FPSCounterComponent.h"
 
-#include "TextComponent.h"
-#include "GameTime.h"
+#include <TextComponent.h>
+#include <GameTime.h>
 
 void FPSCounterComponent::Update()
 {

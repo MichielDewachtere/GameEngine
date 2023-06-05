@@ -1,6 +1,8 @@
 #ifndef STAIR_H
 #define STAIR_H
 
+#include <glm/vec2.hpp>
+
 #include <GameObject.h>
 
 class Stair

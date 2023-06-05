@@ -1,8 +1,9 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "LivesDisplay.h"
 
+#include <TextComponent.h>
+
 #include "HealthComponent.h"
-#include "TextComponent.h"
 
 LivesDisplay::LivesDisplay(real::GameObject* pOwner, HealthComponent* pHealth)
 	: Component(pOwner)

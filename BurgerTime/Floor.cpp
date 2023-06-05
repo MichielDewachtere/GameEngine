@@ -1,10 +1,10 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Floor.h"
 
 #include <Scene.h>
 #include <ColliderComponent.h>
+#include <TransformComponent.h>
 
-#include "TransformComponent.h"
 #include "GameInfo.h"
 
 real::GameObject* Floor::CreateFloor(real::Scene* pScene, const glm::vec2 pos, float width, bool drawDebug)

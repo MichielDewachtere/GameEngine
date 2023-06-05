@@ -1,7 +1,7 @@
 #ifndef DAMAGECOMMAND_H
 #define DAMAGECOMMAND_H
 
-#include "Command.h"
+#include <Command.h>
 
 class DamageCommand final : public real::Command
 {
