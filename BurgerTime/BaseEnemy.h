@@ -38,7 +38,7 @@ private:
 	};
 	EnemyState m_CurrentState{ EnemyState::outOfBounds };
 
-	std::vector<std::unique_ptr<real::GameObject>> m_PlayerPtrs;
+	std::vector<std::shared_ptr<real::GameObject>> m_PlayerPtrs;
 
 	float m_Speed{ 40 };
 	bool m_CanTurn = true;
