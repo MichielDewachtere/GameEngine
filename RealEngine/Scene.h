@@ -7,10 +7,15 @@
 namespace real
 {
 	//class GameObject;
-	class Scene final
+	class Scene
 	{
-		friend Scene& SceneManager::CreateScene(const std::string& name, std::string inputMapName);
 	public:
+		virtual ~Scene();
+		Scene(const Scene& other) = delete;
+		Scene(Scene&& other) = delete;
+		Scene& operator=(const Scene& other) = delete;
+		Scene& operator=(Scene&& other) = delete;
+
 		GameObject* CreateGameObject();
 
 		template <class T>
@@ -34,14 +39,13 @@ namespace real
 
 		void SetDebugRendering(bool enable) { m_DebugRender = enable; }
 
-		~Scene();
-		Scene(const Scene& other) = delete;
-		Scene(Scene&& other) = delete;
-		Scene& operator=(const Scene& other) = delete;
-		Scene& operator=(Scene&& other) = delete;
+		bool IsLoaded() { return m_IsLoaded; }
+		virtual void Load() = 0;
 
-	private: 
+
+	protected: 
 		explicit Scene(std::string name, std::string inputMapName = "empty");
+		friend Scene& SceneManager::AddScene(Scene* scene);
 
 		std::string m_Name;
 		std::string m_InputMapName;
@@ -50,6 +54,7 @@ namespace real
 		static unsigned int m_idCounter;
 
 		bool m_DebugRender{};
+		bool m_IsLoaded{};
 	};
 
 	template <class T>
