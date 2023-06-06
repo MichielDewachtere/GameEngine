@@ -179,6 +179,7 @@
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="Plate.cpp" />
     <ClCompile Include="PlayerCharacter.cpp" />
+    <ClCompile Include="PlayerManager.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
     <ClCompile Include="Spawner.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="Plate.h" />
     <ClInclude Include="PlayerCharacter.h" />
+    <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreDisplay.h" />
     <ClInclude Include="Spawner.h" />
