@@ -50,7 +50,10 @@ real::Scene& real::SceneManager::SetSceneActive(const std::string& name)
 				pScene->Load();
 
 			if (m_pActiveScene != nullptr)
+			{
+				onSceneExit.Notify(*m_pActiveScene);
 				m_pActiveScene->RemoveAll();
+			}
 
 			m_pActiveScene = pScene;
 			//pScene->Start();

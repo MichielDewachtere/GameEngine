@@ -23,6 +23,7 @@ namespace real
 		void Render();
 		void PostUpdate();
 
+		Subject<Scene&> onSceneExit{};
 		Subject<Scene&> onSceneLoaded{};
 	private:
 		friend class Singleton<SceneManager>;
