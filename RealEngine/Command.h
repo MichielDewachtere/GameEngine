@@ -16,6 +16,8 @@ namespace real
 		Command(Command&& other) = delete;
 		Command& operator=(Command&& rhs) = delete;
 
+		virtual void Start() {}
+
 		virtual void Execute() = 0;
 
 		void SetInputController(XInputController* controller) { m_pController = controller; }

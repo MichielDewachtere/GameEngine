@@ -17,6 +17,8 @@ public:
 	MoveCommand(MoveCommand&& other) = delete;
 	MoveCommand operator=(MoveCommand&& rhs) = delete;
 
+	virtual void Start() override;
+
 	void Execute() override;
 	void SetDirection(const glm::vec2& direction) { m_Direction = direction; }
 	void SetSpeed(const float speed) { m_Speed = speed; }

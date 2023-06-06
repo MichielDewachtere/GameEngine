@@ -20,7 +20,7 @@ namespace real
 		~Input() override;
 
 		void Init();
-
+		void ReloadCommands();
 		void Update();
 
 		void EnableCoOp(const bool enable) { m_EnableCoOp = enable; }

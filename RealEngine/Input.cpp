@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 
 #include "InputMap.h"
+#include "Logger.h"
 
 real::Input::~Input()
 {
@@ -23,6 +24,22 @@ void real::Input::Init()
 	//
 	//ControllerKey controllerPair = std::make_pair(0, XInputController::ControllerButton::ButtonDown);
 	//m_ControllerCommands.insert({ controllerPair, std::make_unique<TestCommand>(new GameObject()) });
+}
+
+void real::Input::ReloadCommands()
+{
+	for (const auto& inputMap : m_InputMapPtrs)
+	{
+		for (const auto& [first, command] : inputMap->GetControllerCommands())
+		{
+			command.first->Start();
+		}
+
+		for (const auto& [first, command] : inputMap->GetKeyboardCommands())
+		{
+			command->Start();
+		}
+	}
 }
 
 real::Command* real::Input::HandleInput()
@@ -198,14 +215,17 @@ real::InputMap* real::Input::AddInputMap(const std::string& name)
 
 void real::Input::SetInputMapActive(const std::string& name)
 {
-	for (const auto& pInputMap : m_InputMapPtrs)
+   	for (const auto& pInputMap : m_InputMapPtrs)
 	{
 		if (pInputMap->GetName() == name)
 		{
 			//m_pActiveInputMap = pInputMap.get();
 			m_pActiveInputMap = pInputMap;
+			return;
 		}
 	}
+
+	Logger::LogWarning("InputManager => No input map found with the name {}", name);
 }
 
 void real::Input::Update()

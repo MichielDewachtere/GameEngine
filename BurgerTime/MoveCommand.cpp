@@ -20,16 +20,17 @@ MoveCommand::MoveCommand(real::GameObject* object, const glm::vec2& direction, c
     m_Direction.y *= -1;
 }
 
+void MoveCommand::Start()
+{
+    m_StairPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::stair);
+    m_FloorPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::floor);
+    const auto boundaryPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::boundary);
+    if (boundaryPtrs.empty() == false)
+        m_Boundary = boundaryPtrs[0];
+}
+
 void MoveCommand::Execute()
 {
-    if (m_StairPtrs.empty())
-    {
-        m_StairPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::stair);
-        m_FloorPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::floor);
-        const auto boundaryPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::boundary);
-        if (boundaryPtrs.empty() == false)
-            m_Boundary = boundaryPtrs[0];
-    }
 
     // Get the TransformComponent of the game object associated with this MoveCommand.
     const auto pTransform = GetOwner()->GetComponent<real::TransformComponent>();
