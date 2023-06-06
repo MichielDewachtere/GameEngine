@@ -43,7 +43,7 @@ void Stair::InitComponentsHidden(real::GameObject* pOwner, const glm::vec2 pos, 
 
 	pOwner->SetTag(Tags::hidden_stair);
 	pOwner->GetComponent<real::TransformComponent>()->SetLocalPosition(pos.x, pos.y);
-	pOwner->AddComponent<real::ColliderComponent>(glm::vec2{ characterHeight, height })->EnableDebugRendering(drawDebug, Colors::purple);
+	pOwner->AddComponent<real::ColliderComponent>(glm::vec2{ characterHeight, height })->EnableDebugRendering(drawDebug, Colors::appelblauwzeegroen);
 }
 
 void Stair::InitComponentsNormal(real::GameObject* pOwner, const glm::vec2 pos, float height, bool drawDebug)
