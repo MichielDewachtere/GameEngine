@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "Singleton.h"
+#include "Subject.h"
 
 namespace real
 {
@@ -21,6 +22,8 @@ namespace real
 		void Update();
 		void Render();
 		void PostUpdate();
+
+		Subject<Scene&> onSceneLoaded{};
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;

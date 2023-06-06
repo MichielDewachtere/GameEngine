@@ -55,6 +55,8 @@ real::Scene& real::SceneManager::SetSceneActive(const std::string& name)
 			m_pActiveScene = pScene;
 			//pScene->Start();
 
+			onSceneLoaded.Notify(*m_pActiveScene);
+
 			Input::GetInstance().ReloadCommands();
 
 			return *pScene;
