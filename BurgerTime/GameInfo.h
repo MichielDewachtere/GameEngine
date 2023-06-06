@@ -13,6 +13,7 @@ struct Tags
 	inline static const std::string empty = "Empty";
 	inline static const std::string player = "Player";
 	inline static const std::string stair = "Stair";
+	inline static const std::string hidden_stair = "HiddenStair";
 	inline static const std::string floor = "Floor";
 	inline static const std::string boundary = "Boundary";
 	inline static const std::string hot_dog = "HotDog";
