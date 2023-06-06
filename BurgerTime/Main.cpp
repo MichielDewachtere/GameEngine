@@ -257,6 +257,7 @@ void loadLevelScene()
 	const auto pPepperArea = pCharacter->CreateGameObject();
 	pPepperArea->SetTag(Tags::pepper);
 	pPepperArea->SetIsActive(false);
+	pPepperArea->GetComponent<real::TransformComponent>()->SetIgnoreParent(true);
 	pPepperArea->AddComponent<real::TextureComponent>()->SetTexture(pPepperTexture);
 	pPepperArea->AddComponent<real::ColliderComponent>(pPepperTexture->GetSize())->EnableDebugRendering(true, Colors::red);
 	
