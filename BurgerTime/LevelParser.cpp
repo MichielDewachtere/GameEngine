@@ -48,8 +48,14 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     const auto pLevelBoundaries = pLevel->CreateGameObject();
     pLevelBoundaries->SetTag(Tags::boundary);
     pLevelBoundaries->GetComponent<real::TransformComponent>()->SetLocalPosition(0, -9);
-    glm::vec2 levelBoundaries = { pBackGroundTexture->GetSize().x, 480 };
+    glm::vec2 levelBoundaries = { pBackGroundTexture->GetSize().x, pBackGroundTexture->GetSize().y };
     pLevelBoundaries->AddComponent<real::ColliderComponent>(levelBoundaries)->EnableDebugRendering(true, Colors::red);
+
+    // PLAYER SPAWN
+    const rapidjson::Value& playerPos = document["player_spawn"].GetArray();
+    const auto pPlayerSpawn = pLevel->CreateGameObject();
+    pPlayerSpawn->SetTag(Tags::player_spawn);
+    pPlayerSpawn->GetComponent<real::TransformComponent>()->SetLocalPosition(playerPos[0].GetFloat(), playerPos[1].GetFloat() - 47.f);
 
     // FLOORS
     for (const auto& floor : document["floors"].GetArray())
