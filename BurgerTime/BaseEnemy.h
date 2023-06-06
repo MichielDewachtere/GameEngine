@@ -4,6 +4,7 @@
 #include <Observer.h>
 #include <Component.h>
 #include <ColliderComponent.h>
+#include <TransformComponent.h>
 
 class BaseEnemy : public real::Component,
 	public real::Observer<bool>
