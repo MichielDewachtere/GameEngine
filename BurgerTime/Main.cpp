@@ -30,6 +30,8 @@
 #include "LevelParser.h"
 #include "LoadNextSceneCommand.h"
 #include "MoveCommand.h"
+#include "PlayerCharacter.h"
+#include "StunCommand.h"
 
 real::WindowSettings g_window;
 
@@ -234,7 +236,8 @@ void loadLevelScene()
 	pLevel->GetComponent<real::TransformComponent>()->Translate(48, 62);
 
 #pragma region player
-	const auto pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("PeterPepper.png");
+	const auto pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("characters/PeterPepper.png");
+	const auto pPepperTexture = real::ResourceManager::GetInstance().LoadTexture("characters/pepper.png");
 
 	const auto pCharacter = pLevel->CreateGameObject();
 	pCharacter->SetTag(Tags::player);
@@ -242,6 +245,7 @@ void loadLevelScene()
 	pCharacter->AddComponent<real::TextureComponent>()->SetTexture(pCharacterTexture);
 	pCharacter->AddComponent<HealthComponent>()->SetLives(4);
 	pCharacter->GetComponent<HealthComponent>()->SetSpawnPoint(pCharacter->GetComponent<real::TransformComponent>()->GetWorldPosition());
+	pCharacter->AddComponent<PlayerCharacter>();
 	pCharacter->AddComponent<real::ColliderComponent>(pCharacterTexture->GetSize())->EnableDebugRendering(true);
 
 	const auto pFeet = pCharacter->CreateGameObject();
@@ -249,6 +253,13 @@ void loadLevelScene()
 	pFeet->GetComponent<real::TransformComponent>()->SetLocalPosition(12, 0);
 	pFeet->AddComponent<real::ColliderComponent>(glm::vec2{ 24, 48 })->EnableDebugRendering(true, Colors::purple);
 	//pFeet->GetComponent<real::ColliderComponent>()->Translate(12, 0);
+
+	const auto pPepperArea = pCharacter->CreateGameObject();
+	pPepperArea->SetTag(Tags::pepper);
+	pPepperArea->SetIsActive(false);
+	pPepperArea->AddComponent<real::TextureComponent>()->SetTexture(pPepperTexture);
+	pPepperArea->AddComponent<real::ColliderComponent>(pPepperTexture->GetSize())->EnableDebugRendering(true, Colors::red);
+	
 #pragma endregion player
 
 	input.EnableCoOp(true);
@@ -258,10 +269,12 @@ void loadLevelScene()
 	{
 		// only keyboard
 		input.UseKeyboard(true);
-		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_A, KEYPRESSED, pCharacter, glm::vec2{ -1,0 });
-		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_D, KEYPRESSED, pCharacter, glm::vec2{ 1,0 });
-		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_S, KEYPRESSED, pCharacter, glm::vec2{ 0,-1 });
-		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_W, KEYPRESSED, pCharacter, glm::vec2{ 0,1 });
+		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_LEFT, KEYPRESSED, pCharacter, glm::vec2{ -1,0 });
+		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_RIGHT, KEYPRESSED, pCharacter, glm::vec2{ 1,0 });
+		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_DOWN, KEYPRESSED, pCharacter, glm::vec2{ 0,-1 });
+		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_UP, KEYPRESSED, pCharacter, glm::vec2{ 0,1 });
+		pInputMap->AddKeyboardCommands<StunCommand>(SDL_SCANCODE_Z, SDL_KEYUP, pCharacter);
+		pInputMap->AddKeyboardCommands<StunCommand>(SDL_SCANCODE_X, SDL_KEYUP, pCharacter);
 	}
 	else if (!controllerIdcs.empty())
 	{
@@ -273,6 +286,8 @@ void loadLevelScene()
 		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadRight, InputType::pressed, controllerIdcs[0], pCharacter, glm::vec2{ 1,0 }, 25.f);
 		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadUp, InputType::pressed, controllerIdcs[0], pCharacter, glm::vec2{ 0,1 }, 25.f);
 		pInputMap->AddControllerCommands<MoveCommand>(ControllerButton::DPadDown, InputType::pressed, controllerIdcs[0], pCharacter, glm::vec2{ 0,-1 }, 25.f);
+		pInputMap->AddControllerCommands<real::TestCommand>(ControllerButton::ButtonRight, InputType::pressed, controllerIdcs[0], pCharacter);
+		pInputMap->AddControllerCommands<real::TestCommand>(ControllerButton::ButtonDown, InputType::pressed, controllerIdcs[0], pCharacter);
 
 		//if (input.IsCoOpEnabled() == true)
 		//{
