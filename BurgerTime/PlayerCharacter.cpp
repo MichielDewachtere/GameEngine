@@ -41,7 +41,7 @@ void PlayerCharacter::ThrowPepper()
 	const auto pepperSize = GetOwner()->GetChildAt(1)->GetComponent<real::TextureComponent>()->GetTexture()->GetSize();
 
 	const auto newPos = glm::vec2{ static_cast<float>(pepperSize.x) * m_CurrentDirection.x,
-		 static_cast<float>(pepperSize.y) * m_CurrentDirection.y } /*+ playerPos*/;
+		 static_cast<float>(pepperSize.y) * m_CurrentDirection.y } + playerPos;
 	pPepperTransform->SetLocalPosition(newPos);
 
 	GetOwner()->GetChildAt(1)->SetIsActive(true);
