@@ -5,16 +5,14 @@
 #include <Logger.h>
 #include <SceneManager.h>
 #include <GameObject.h>
-#include <TransformComponent.h>
-#include <ColliderComponent.h>
 #include <GameTime.h>
+#include <TextureComponent.h>
 
 #include "GameInfo.h"
 #include "HealthComponent.h"
 #include "Ingredient.h"
 #include "PlayerCharacter.h"
 #include "Spawner.h"
-#include "TextureComponent.h"
 
 BaseEnemy::BaseEnemy(real::GameObject* pOwner)
 	: Component(pOwner)
