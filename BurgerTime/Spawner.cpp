@@ -70,11 +70,11 @@ void Spawner::SpawnHotDog() const
 	hotDog->GetComponent<real::TransformComponent>()->SetWorldPosition(GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition());
 	hotDog->GetComponent<real::TransformComponent>()->Translate(0, static_cast<float>(-pTexture->GetSize().y + 1));
 	hotDog->AddComponent<real::TextureComponent>()->SetTexture(pTexture);
-	hotDog->AddComponent<real::ColliderComponent>(pTexture->GetSize())->EnableDebugRendering(true, Colors::white);
+	hotDog->AddComponent<real::ColliderComponent>(pTexture->GetSize())->EnableDebugRendering(false, Colors::white);
 	hotDog->AddComponent<BaseEnemy>();
 
 	const auto core = hotDog->CreateGameObject();
-	core->AddComponent<real::ColliderComponent>(glm::vec2{24, 24})->EnableDebugRendering(true, Colors::purple);
+	core->AddComponent<real::ColliderComponent>(glm::vec2{24, 24})->EnableDebugRendering(false, Colors::purple);
 	core->GetComponent<real::TransformComponent>()->Translate(12, 12);
 
 	hotDog->Start();
