@@ -32,6 +32,9 @@ namespace real
 		void Translate(float x, float y);
 		void Translate(const glm::vec2& translation);
 
+		void SetIgnoreParent(bool ignoreParent) { m_IgnoreParent = ignoreParent; }
+		bool GetIgnoreParent() const { return m_IgnoreParent; }
+
 		bool CanRender() const override { return false; }
 
 	private:
@@ -39,6 +42,7 @@ namespace real
 		glm::vec2 m_WorldPosition{};
 
 		bool m_PositionIsDirty = true;
+		bool m_IgnoreParent{};
 
 		void UpdateWorldPosition();
 		void SetPositionDirty();
