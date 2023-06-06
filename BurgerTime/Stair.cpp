@@ -7,31 +7,46 @@
 
 #include "GameInfo.h"
 
-real::GameObject* Stair::CreateStair(real::Scene* pScene, const glm::vec2 pos, float height, bool drawDebug = false)
+real::GameObject* Stair::CreateStair(real::Scene* pScene, const glm::vec2 pos, float height, bool drawDebug, bool isHidden)
 {
 	if (pScene == nullptr)
 		return nullptr;
 
 	const auto pGo = pScene->CreateGameObject();
 
-	InitComponents(pGo, pos, height, drawDebug);
+	if (isHidden)
+		InitComponentsHidden(pGo, pos, height, drawDebug);
+	else
+		InitComponentsNormal(pGo, pos, height, drawDebug);
 
 	return pGo;
 }
 
-real::GameObject* Stair::CreateStair(real::GameObject* pGameObject, const glm::vec2 pos, float height, bool drawDebug = false)
+real::GameObject* Stair::CreateStair(real::GameObject* pGameObject, const glm::vec2 pos, float height, bool drawDebug, bool isHidden)
 {
 	if (pGameObject == nullptr)
 		return nullptr;
 
 	const auto pGo = pGameObject->CreateGameObject();
 
-	InitComponents(pGo, pos, height, drawDebug);
+	if (isHidden)
+		InitComponentsHidden(pGo, pos, height, drawDebug);
+	else
+		InitComponentsNormal(pGo, pos, height, drawDebug);
 
 	return pGo;
 }
 
-void Stair::InitComponents(real::GameObject* pOwner, const glm::vec2 pos, float height, bool drawDebug)
+void Stair::InitComponentsHidden(real::GameObject* pOwner, const glm::vec2 pos, float height, bool drawDebug)
+{
+	constexpr float characterHeight = 48;
+
+	pOwner->SetTag(Tags::hidden_stair);
+	pOwner->GetComponent<real::TransformComponent>()->SetLocalPosition(pos.x, pos.y);
+	pOwner->AddComponent<real::ColliderComponent>(glm::vec2{ characterHeight, height })->EnableDebugRendering(drawDebug, Colors::purple);
+}
+
+void Stair::InitComponentsNormal(real::GameObject* pOwner, const glm::vec2 pos, float height, bool drawDebug)
 {
 	constexpr float characterHeight = 48;
 

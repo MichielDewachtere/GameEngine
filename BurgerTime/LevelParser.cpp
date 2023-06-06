@@ -48,8 +48,8 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     const auto pLevelBoundaries = pLevel->CreateGameObject();
     pLevelBoundaries->SetTag(Tags::boundary);
     pLevelBoundaries->GetComponent<real::TransformComponent>()->SetLocalPosition(0, -9);
-    glm::vec2 levelBoundaries = pBackGroundTexture->GetSize();
-    pLevelBoundaries->AddComponent<real::ColliderComponent>(levelBoundaries)->EnableDebugRendering(false, Colors::red);
+    glm::vec2 levelBoundaries = { pBackGroundTexture->GetSize().x, 480 };
+    pLevelBoundaries->AddComponent<real::ColliderComponent>(levelBoundaries)->EnableDebugRendering(true, Colors::red);
 
     // FLOORS
     for (const auto& floor : document["floors"].GetArray())
@@ -60,6 +60,10 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     for (const auto& stair : document["stairs"].GetArray())
     {
 	    Stair::CreateStair(pLevel, { stair[0].GetDouble(), stair[1].GetDouble() }, static_cast<float>(stair[2].GetDouble()), false);
+    }
+    for (const auto& stair : document["invisible_stairs"].GetArray())
+    {
+        Stair::CreateStair(pLevel, { stair[0].GetDouble(), stair[1].GetDouble() }, static_cast<float>(stair[2].GetDouble()), true, true);
     }
     // BUN_TOP
     ParseIngredient(pLevel, document, "bun_top");
