@@ -93,6 +93,9 @@
     <ClCompile Include="LevelParser.cpp">
       <Filter>Parsers</Filter>
     </ClCompile>
+    <ClCompile Include="StunCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -153,6 +156,9 @@
     </ClInclude>
     <ClInclude Include="LevelParser.h">
       <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="StunCommand.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

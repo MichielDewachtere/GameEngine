@@ -21,6 +21,7 @@ struct Tags
 	inline static const std::string pickle = "Pickle";
 	inline static const std::string ingredient = "Ingredient";
 	inline static const std::string plate = "Plate";
+	inline static const std::string pepper = "Pepper";
 };
 
 struct Colors

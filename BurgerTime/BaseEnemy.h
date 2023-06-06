@@ -1,14 +1,16 @@
 ﻿#ifndef BASEENEMY_H
 #define BASEENEMY_H
 
+#include <Observer.h>
 #include <Component.h>
 #include <ColliderComponent.h>
 
-class BaseEnemy : public real::Component
+class BaseEnemy : public real::Component,
+	public real::Observer<bool>
 {
 public:
-	explicit BaseEnemy(real::GameObject* pOwner) : Component(pOwner) {}
-	virtual ~BaseEnemy() override = default;
+	explicit BaseEnemy(real::GameObject* pOwner);
+	virtual ~BaseEnemy() override;
 	BaseEnemy(const BaseEnemy& other) = delete;
 	BaseEnemy operator=(const BaseEnemy& rhs) = delete;
 	BaseEnemy(BaseEnemy&& other) = delete;
@@ -18,6 +20,9 @@ public:
 
 	void Update() override;
 	bool CanRender() const override { return false; }
+
+	void HandleEvent(bool) override;
+	void OnSubjectDestroy() override {}
 
 private:
 	enum class EnemyState
@@ -36,9 +41,13 @@ private:
 
 	float m_Speed{ 40 };
 	bool m_CanTurn = true;
+	bool m_CheckForPepper{};
 
 	float m_DeathTimer{};
 	float m_MaxDeathTime{ 3.f };
+
+	float m_StunTimer{};
+	float m_MaxStunTime{ 5.f };
 
 	std::vector<std::unique_ptr<real::GameObject>> m_StairPtrs;
 	std::vector<std::unique_ptr<real::GameObject>> m_HiddenStairPtrs;
@@ -60,6 +69,7 @@ private:
 	bool CheckForHiddenStairs();
 	bool CheckForPlatforms(real::TransformComponent* playerTransform);
 	void CheckForIngredients();
+	void CheckForPepper();
 
 	void MoveEnemy();
 	void Fall();

@@ -1,6 +1,8 @@
 #ifndef MOVECOMMAND_H
 #define MOVECOMMAND_H
 
+#include <vector>
+
 #include <glm/vec2.hpp>
 
 #include <Command.h>
@@ -22,6 +24,10 @@ public:
 private:
 	glm::vec2 m_Direction;
 	float m_Speed{};
+
+	std::vector<real::GameObject*> m_StairPtrs{};
+	std::vector<real::GameObject*> m_FloorPtrs{};
+	real::GameObject* m_Boundary{};
 };
 
 #endif // MOVECOMMAND_H

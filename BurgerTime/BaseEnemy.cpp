@@ -12,8 +12,22 @@
 #include "GameInfo.h"
 #include "HealthComponent.h"
 #include "Ingredient.h"
+#include "PlayerCharacter.h"
 #include "Spawner.h"
 #include "TextureComponent.h"
+
+BaseEnemy::BaseEnemy(real::GameObject* pOwner)
+	: Component(pOwner)
+{
+}
+
+BaseEnemy::~BaseEnemy()
+{
+	for (const auto& pPlayer : m_PlayerPtrs)
+	{
+		pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.RemoveObserver(this);
+	}
+}
 
 void BaseEnemy::Start()
 {
@@ -43,6 +57,11 @@ void BaseEnemy::Start()
 	}
 
 	m_pWorldBorder = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::boundary)[0]->GetComponent<real::ColliderComponent>();
+
+	for (const auto& pPlayer : m_PlayerPtrs)
+	{
+		pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.AddObserver(this);
+	}
 }
 
 void BaseEnemy::Update()
@@ -94,6 +113,9 @@ void BaseEnemy::Update()
 	}
 	case EnemyState::moveX:
 	{
+		if (m_CheckForPepper)
+			CheckForPepper();
+
 		if (PlayerHit(pPlayer))
 		{
 			pPlayer->GetComponent<HealthComponent>()->Damage();
@@ -121,6 +143,9 @@ void BaseEnemy::Update()
 	}
 	case EnemyState::moveY:
 	{
+		if (m_CheckForPepper)
+			CheckForPepper();
+
 		if (PlayerHit(pPlayer))
 		{
 			pPlayer->GetComponent<HealthComponent>()->Damage();
@@ -190,6 +215,13 @@ void BaseEnemy::Update()
 	}
 	case EnemyState::stun:
 	{
+		m_StunTimer += real::Time::GetInstance().GetElapsed();
+
+		if (m_StunTimer > m_MaxStunTime)
+		{
+			m_StunTimer = 0;
+			m_CurrentState = EnemyState::moveY;
+		}
 
 		break;
 	}
@@ -215,6 +247,11 @@ void BaseEnemy::Update()
 		break;
 	}
 	}
+}
+
+void BaseEnemy::HandleEvent(bool pepperActive)
+{
+	m_CheckForPepper = pepperActive;
 }
 
 real::GameObject* BaseEnemy::GetClosestPlayer(const std::vector<real::GameObject*>&)
@@ -395,6 +432,23 @@ void BaseEnemy::CheckForIngredients()
 		if (pIngredientCollider->IsOverlapping(*pCoreCollider))
 		{
 			m_CurrentState = EnemyState::crushed;
+			return;
+		}
+	}
+}
+
+void BaseEnemy::CheckForPepper()
+{
+	const auto pepperPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::pepper);
+
+	for (const auto& pPepper : pepperPtrs)
+	{
+		const auto pEnemyCollider = GetOwner()->GetComponent<real::ColliderComponent>();
+		const auto pPepperCollider = pPepper->GetComponent<real::ColliderComponent>();
+
+		if (pPepperCollider->IsOverlapping(*pEnemyCollider))
+		{
+			m_CurrentState = EnemyState::stun;
 			return;
 		}
 	}
