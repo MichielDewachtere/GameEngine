@@ -47,6 +47,9 @@ namespace real
 		std::string GetTag() const { return m_Tag; }
 		gameobject_id GetId() const { return m_Id; }
 
+		bool GetIsActive() const { return m_IsActive; }
+		void SetIsActive(const bool value);
+
 		//Component Logic
 		template <class T, typename... Args>
 		T* AddComponent(Args&&... args);
@@ -72,6 +75,7 @@ namespace real
 		std::string m_Tag;
 		TransformComponent* m_pTransform{ nullptr };
 		bool m_IsMarkedForDestroy{};
+		bool m_IsActive{ true };
 
 		std::vector<std::unique_ptr<Component>> m_ComponentPtrs{};
 

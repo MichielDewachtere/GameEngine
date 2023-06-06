@@ -62,6 +62,9 @@ void real::GameObject::Init()
 
 void real::GameObject::Start()
 {
+	if (m_IsActive == false)
+		return;
+
 	for (const auto& pComponent : m_ComponentPtrs)
 		pComponent->Start();
 
@@ -71,6 +74,9 @@ void real::GameObject::Start()
 
 void real::GameObject::Update()
 {
+	if (m_IsActive == false)
+		return;
+
 	for (const auto& pComponent : m_ComponentPtrs)
 	{
 		if (pComponent->GetIsActive())
@@ -83,6 +89,9 @@ void real::GameObject::Update()
 
 void real::GameObject::Render() const
 {
+	if (m_IsActive == false)
+		return;
+
 	for (const auto& pComponent : m_ComponentPtrs)
 	{
 		if (pComponent->CanRender() && pComponent->GetIsActive())
@@ -95,6 +104,9 @@ void real::GameObject::Render() const
 
 void real::GameObject::DebugRender() const
 {
+	if (m_IsActive == false)
+		return;
+
 	for (const auto& pComponent : m_ComponentPtrs)
 	{
 		if (pComponent->CanRender() && pComponent->GetIsActive())
@@ -117,7 +129,8 @@ void real::GameObject::PostUpdate()
 			// if (m_IsMarkedForDestroy)
 			//     pChild->Destroy();
 
-			pChild->PostUpdate();
+			if (m_IsActive)
+				pChild->PostUpdate();
 
 			if (pChild->IsMarkedForDestroy() && pChild->GetId() <= m_NextId)
 			{
@@ -163,6 +176,16 @@ void real::GameObject::Destroy()
 	//}
 
 	//m_pParent->RemoveChild(std::unique_ptr<GameObject>(this));
+}
+
+void real::GameObject::SetIsActive(const bool value)
+{
+	m_IsActive = value;
+
+	for (const auto& pChild : m_ChildrenPtrs)
+	{
+		pChild->SetIsActive(value);
+	}
 }
 
 void real::GameObject::SetParent(GameObject* pParent, const bool keepWorldPosition)
