@@ -54,9 +54,14 @@ void real::TransformComponent::Translate(float x, float y)
 
 void real::TransformComponent::Translate(const glm::vec2& translation)
 {
-	m_LocalPosition += translation;
+	//if (m_PositionIsDirty)
+	//	m_LocalPosition += translation + GetWorldPosition();
+	//else
+	//	m_LocalPosition += translation;
 
-	SetPositionDirty();
+	SetWorldPosition(GetWorldPosition() + translation);
+
+	//SetPositionDirty();
 }
 
 void real::TransformComponent::UpdateWorldPosition()
