@@ -28,7 +28,7 @@ namespace real
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
 		std::vector<std::shared_ptr<Scene>> m_ScenePtrs;
-		std::shared_ptr<Scene> m_pActiveScene;
+		std::shared_ptr<Scene> m_pActiveScene{nullptr};
 	};
 }
 
