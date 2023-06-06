@@ -13,6 +13,7 @@
 #include "HealthComponent.h"
 #include "Ingredient.h"
 #include "Spawner.h"
+#include "TextureComponent.h"
 
 void BaseEnemy::Start()
 {
@@ -26,6 +27,11 @@ void BaseEnemy::Start()
 		m_StairPtrs.push_back(std::unique_ptr<real::GameObject>(pStair));
 	}
 
+	for (const auto pStair : real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::hidden_stair))
+	{
+		m_HiddenStairPtrs.push_back(std::unique_ptr<real::GameObject>(pStair));
+	}
+
 	for (const auto pFloor : real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::floor))
 	{
 		m_FloorPtrs.push_back(std::unique_ptr<real::GameObject>(pFloor));
@@ -35,16 +41,13 @@ void BaseEnemy::Start()
 	{
 		m_IngredientPtrs.push_back(std::unique_ptr<real::GameObject>(pIngredient));
 	}
+
+	m_pWorldBorder = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::boundary)[0]->GetComponent<real::ColliderComponent>();
 }
 
 void BaseEnemy::Update()
 {
-	if (m_IsFalling)
-	{
-		Fall();
-		return;
-	}
-
+	// check for targetted player
 	const auto playerPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::player);
 	real::GameObject* pPlayer{};
 
@@ -60,44 +63,158 @@ void BaseEnemy::Update()
 	}
 
 	const auto pPlayerTransform = pPlayer->GetComponent<real::TransformComponent>();
+	const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
+	const auto playerPos = pPlayerTransform->GetWorldPosition();
+	const auto enemyPos = GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition();
 
-	if (PlayerHit(pPlayer))
+	switch (m_CurrentState)
 	{
-		pPlayer->GetComponent<HealthComponent>()->Damage();
-		// LevelManager -> reset level?
-	}
-
-	CheckForIngredients();
-
-	if (m_IsOnStair == false && m_IsOnFloor == false)
+	case EnemyState::outOfBounds:
 	{
-		const auto playerPos = pPlayerTransform->GetWorldPosition();
-		const auto enemyPos = GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition();
+		CheckForIngredients();
+
+		if (m_pWorldBorder->IsEntireColliderOverlapping(*pCollider))
+			m_CurrentState = EnemyState::moveY;
+
+		if (CheckForHiddenStairs())
+		{
+ 			m_CurrentState = EnemyState::moveY;
+			MoveEnemy();
+			break;
+		}
+
 		if (playerPos.x < enemyPos.x)
 			m_Direction = { -1,0 };
 		else
 			m_Direction = { 1,0 };
-	}
 
-	if (m_IsOnStair == false)
+		MoveEnemy();
+
+		break;
+	}
+	case EnemyState::moveX:
 	{
+		if (PlayerHit(pPlayer))
+		{
+			pPlayer->GetComponent<HealthComponent>()->Damage();
+			// LevelManager -> reset level?
+		}
+
+		CheckForIngredients();
+
 		if (CheckForStairs(pPlayerTransform))
 		{
+			m_CurrentState = EnemyState::moveY;
 			MoveEnemy();
-			return;
+			break;
 		}
-	}
 
-	if (m_IsOnFloor == false)
+		// turn enemy around if it is gonna be out of bounds.
+		if (CanMoveTo(enemyPos, pCollider->GetSize(), *m_pWorldBorder, Direction::left) == false)
+			m_Direction = { 1,0 };
+
+		if (CanMoveTo(enemyPos, pCollider->GetSize(), *m_pWorldBorder, Direction::right) == false)
+			m_Direction = { -1,0 };
+
+		MoveEnemy();
+		break;
+	}
+	case EnemyState::moveY:
 	{
+		if (PlayerHit(pPlayer))
+		{
+			pPlayer->GetComponent<HealthComponent>()->Damage();
+			// LevelManager -> reset level?
+		}
+
+		CheckForIngredients();
+
+		if (m_CurrentStair != 0)
+		{
+			const auto pCurrentStairCollider = real::SceneManager::GetInstance().GetActiveScene().FindObject(m_CurrentStair)->GetComponent<real::ColliderComponent>();
+
+			// if enemy goes up, check if it can continue go up if the player is higher then the enemy
+			if (m_Direction == glm::vec2{0, -1})
+			{
+				if (CanMoveTo(enemyPos, pCollider->GetSize(), *pCurrentStairCollider, Direction::up)
+					&& static_cast<int>(enemyPos.y) > static_cast<int>(playerPos.y))
+				{
+					MoveEnemy();
+					break;
+				}
+			}
+			else
+			{
+				if (CanMoveTo(enemyPos, pCollider->GetSize(), *pCurrentStairCollider, Direction::down)
+				   && static_cast<int>(enemyPos.y) < static_cast<int>(playerPos.y))
+				{
+					MoveEnemy();
+					break;
+				}
+			}
+		}
+
 		if (CheckForPlatforms(pPlayerTransform))
 		{
+			m_CurrentState = EnemyState::moveX;
 			MoveEnemy();
-			return;
+			break;
 		}
-	}
 
-	MoveEnemy();
+		MoveEnemy();
+		break;
+	}
+	case EnemyState::fall:
+	{
+		Fall();
+		break;
+	}
+	case EnemyState::crushed:
+	{
+		GetOwner()->GetComponent<real::TextureComponent>()->SetIsActive(false);
+
+		//TODO: add points to score
+		//real::Logger::LogInfo("BaseEnemy => Enemy {} is crushed", GetOwner()->GetId());
+
+		m_DeathTimer += real::Time::GetInstance().GetElapsed();
+
+		if (m_DeathTimer > m_MaxDeathTime)
+		{
+			m_DeathTimer = 0;
+			GetOwner()->GetComponent<real::TextureComponent>()->SetIsActive(true);
+			GetOwner()->GetParent()->GetComponent<Spawner>()->ReSpawnEnemy(GetOwner());
+			m_CurrentState = EnemyState::outOfBounds;
+		}
+
+		break;
+	}
+	case EnemyState::stun:
+	{
+
+		break;
+	}
+	case EnemyState::dead:
+	{
+		GetOwner()->GetComponent<real::TextureComponent>()->SetIsActive(false);
+		//TODO: add points to score
+
+		m_DeathTimer += real::Time::GetInstance().GetElapsed();
+
+		if (m_DeathTimer > m_MaxDeathTime)
+		{
+			GetOwner()->GetComponent<real::TextureComponent>()->SetIsActive(true);
+
+			if (IsInBounds() == false|| m_pCurrentIngredient->GetTag() == Tags::empty)
+				m_CurrentState = EnemyState::outOfBounds;
+			else
+				m_CurrentState = EnemyState::moveX;
+
+			m_DeathTimer = 0;
+		}
+
+		break;
+	}
+	}
 }
 
 real::GameObject* BaseEnemy::GetClosestPlayer(const std::vector<real::GameObject*>&)
@@ -124,10 +241,10 @@ bool BaseEnemy::CheckForStairs(real::TransformComponent* playerTransform)
 		if (canGoUp == false && canGoDown == false)
 			continue;
 
-		m_IsOnStair = true;
+		//m_IsOnStair = true;
 		m_CurrentStair = pStair->GetId();
 
-		m_IsOnFloor = false;
+		//m_IsOnFloor = false;
 		m_CanTurn = true;
 
 		if (canGoUp && canGoDown)
@@ -152,12 +269,30 @@ bool BaseEnemy::CheckForStairs(real::TransformComponent* playerTransform)
 	return false;
 }
 
+bool BaseEnemy::CheckForHiddenStairs()
+{
+	for (const auto& pStair : m_HiddenStairPtrs)
+	{
+		const auto pStairCollider = pStair->GetComponent<real::ColliderComponent>();
+		const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
+
+		if (pStairCollider->IsEntireColliderOverlapping(*pCollider))
+		{
+			m_Direction = { 0,-1 };
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool BaseEnemy::CheckForPlatforms(real::TransformComponent* playerTransform)
 {
 	const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
 
 	for (const auto& pPlatform : m_FloorPtrs)
 	{
+		// if we are on the same platform, continue
 		if (pPlatform->GetId() == m_CurrentPlatform)
 			continue;
 
@@ -170,10 +305,10 @@ bool BaseEnemy::CheckForPlatforms(real::TransformComponent* playerTransform)
 		if (canGoRight == false && canGoLeft == false)
 			continue;
 
-		m_IsOnFloor = true;
+		//m_IsOnFloor = true;
 		m_CurrentPlatform = pPlatform->GetId();
 
-		m_IsOnStair = false;
+		//m_IsOnStair = false;
 		m_CanTurn = true;
 
 		if (canGoRight && canGoLeft)
@@ -200,9 +335,10 @@ bool BaseEnemy::CheckForPlatforms(real::TransformComponent* playerTransform)
 
 void BaseEnemy::CheckForIngredients()
 {
-	const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
-	const auto pSubCollider = std::make_unique<real::ColliderComponent>(this->GetOwner(), pCollider->GetSize().x / 2, pCollider->GetSize().y);
-	pSubCollider->Translate(pCollider->GetSize().x / 4, 0);
+	//const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
+	//const auto pSubCollider = std::make_unique<real::ColliderComponent>(this->GetOwner(), pCollider->GetSize().x / 2, pCollider->GetSize().y);
+	//pSubCollider->Translate(pCollider->GetSize().x / 4, 0);
+	const auto pSubCollider = GetOwner()->GetChildAt(0)->GetComponent<real::ColliderComponent>();
 
 	if (m_IsOnIngredient == false || m_pCurrentIngredient->GetTag() != Tags::ingredient)
 	{
@@ -213,10 +349,12 @@ void BaseEnemy::CheckForIngredients()
 
 			const auto pIngredientCollider = pIngredient->GetComponent<real::ColliderComponent>();
 
-			if (pIngredientCollider->IsOverlapping(*pSubCollider))
+			if (pIngredientCollider->IsEntireColliderOverlapping(*pSubCollider))
 			{
 				m_pCurrentIngredient = pIngredient.get();
 				m_IsOnIngredient = true;
+
+				m_pCurrentIngredient->GetComponent<Ingredient>()->IncreaseWeight();
 			}
 		}
 	}
@@ -225,15 +363,39 @@ void BaseEnemy::CheckForIngredients()
 		if (m_pCurrentIngredient->GetComponent<Ingredient>()->GetIsFalling() == true)
 		{
 			real::Logger::LogInfo("BaseEnemy => Enemy {} should fall with burger", GetOwner()->GetId());
-			m_IsFalling = true;
+			m_CurrentState = EnemyState::fall;
 		}
 
 		const auto pIngredientCollider = m_pCurrentIngredient->GetComponent<real::ColliderComponent>();
 
 		if (pIngredientCollider->IsOverlapping(*pSubCollider) == false)
 		{
+			m_pCurrentIngredient->GetComponent<Ingredient>()->DecreaseWeight();
+
 			m_pCurrentIngredient = nullptr;
 			m_IsOnIngredient = false;
+		}
+	}
+
+	for (const auto& pIngredient : m_IngredientPtrs)
+	{
+		if (pIngredient->GetTag() != Tags::ingredient)
+			continue;
+
+		const auto pIngredientComponent = pIngredient->GetComponent<Ingredient>();
+
+		if (pIngredientComponent->GetIsFalling() == false)
+			continue;
+
+		//real::Logger::LogInfo("Burger is falling");
+
+		const auto pIngredientCollider = pIngredient->GetComponent<real::ColliderComponent>();
+		const auto pCoreCollider = GetOwner()->GetChildAt(0)->GetComponent<real::ColliderComponent>();
+		
+		if (pIngredientCollider->IsOverlapping(*pCoreCollider))
+		{
+			m_CurrentState = EnemyState::crushed;
+			return;
 		}
 	}
 }
@@ -249,7 +411,8 @@ void BaseEnemy::Fall()
 	if (m_pCurrentIngredient->HasComponent<Ingredient>() == false)
 	{
 		real::Logger::LogInfo("BaseEnemy => Enemy {} should be destroyed", GetOwner()->GetId());
-		m_IsFalling = false;
+		//m_IsFalling = false;
+		m_CurrentState = EnemyState::dead;
 
 		//const auto it = std::ranges::find_if(m_IngredientPtrs, [&](const std::unique_ptr<real::GameObject>& ptr) {
 		//	return ptr.get() == m_pCurrentIngredient;
@@ -257,6 +420,8 @@ void BaseEnemy::Fall()
 		//
 		//m_IngredientPtrs.erase(it);
 		//
+		
+		//m_CurrentState = EnemyState::outOfBounds;
 		m_pCurrentIngredient->SetTag(Tags::empty);
 
 		//GetOwner()->Destroy();
@@ -272,23 +437,23 @@ void BaseEnemy::Fall()
 	}
 	else
 	{
-		m_IsFalling = false;
+		m_CurrentState = EnemyState::dead;
 	}
 }
 
 bool BaseEnemy::PlayerHit(real::GameObject* pPlayer) const
 {
-	const auto pPlayerCollider = pPlayer->GetComponent<real::ColliderComponent>();
-	const auto pEnemyCollider = GetOwner()->GetComponent<real::ColliderComponent>();
+	const auto pPlayerFeetCollider = pPlayer->GetChildAt(0)->GetComponent<real::ColliderComponent>();
+	const auto pEnemyCoreCollider = GetOwner()->GetChildAt(0)->GetComponent<real::ColliderComponent>();
 
-	if (pPlayerCollider->IsOverlapping(*pEnemyCollider))
+	if (pPlayerFeetCollider->IsOverlapping(*pEnemyCoreCollider))
 		return true;
 	
 	return false;
 }
 
 bool BaseEnemy::CanMoveTo(const glm::vec2& enemyPos, const glm::vec2& enemyColliderSize,
-                          const real::ColliderComponent& structureCollider, Direction direction) const
+                          const real::ColliderComponent& structureCollider, Direction direction, bool entireCollider) const
 {
 	const auto pFutureCollider = std::make_unique<real::ColliderComponent>(nullptr, enemyColliderSize);
 
@@ -303,13 +468,19 @@ bool BaseEnemy::CanMoveTo(const glm::vec2& enemyPos, const glm::vec2& enemyColli
 	case Direction::left:
 		pFutureCollider->SetPosition(enemyPos.x - 1, enemyPos.y);
 		break;
-	case Direction::right: 
+	case Direction::right:
 		pFutureCollider->SetPosition(enemyPos.x + 1, enemyPos.y);
 		break;
 	}
 
-	if (structureCollider.IsEntireColliderOverlapping(*pFutureCollider))
-		return true;
+	if (entireCollider)
+		return structureCollider.IsEntireColliderOverlapping(*pFutureCollider);
 
-	return false;
+	return structureCollider.IsOverlapping(*pFutureCollider);
+}
+
+bool BaseEnemy::IsInBounds() const
+{
+	const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
+	return m_pWorldBorder->IsEntireColliderOverlapping(*pCollider);
 }
