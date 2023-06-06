@@ -33,9 +33,6 @@ real::Scene& real::SceneManager::AddScene(real::Scene* scene)
 
 	m_ScenePtrs.push_back(newScene);
 
-	if (m_ScenePtrs.size() == 1)
-		m_pActiveScene = newScene;
-
 	return *newScene;
 }
 
@@ -51,6 +48,9 @@ real::Scene& real::SceneManager::SetSceneActive(const std::string& name)
 
 			if (pScene->IsLoaded() == false)
 				pScene->Load();
+
+			if (m_pActiveScene != nullptr)
+				m_pActiveScene->RemoveAll();
 
 			m_pActiveScene = pScene;
 			//pScene->Start();
