@@ -5,11 +5,12 @@
 #include <vector>
 #include <stdexcept>
 
+//#include "TransformComponent.h"
 #include "Component.h"
 
 namespace real
 {
-	class TransformComponent;
+	//class TransformComponent;
 	class Scene;
 	class Texture2D;
 	class Component;
@@ -32,7 +33,7 @@ namespace real
 		std::vector<GameObject*> GetObjectsWithTag(const std::string& tag);
 		GameObject* GetObject(gameobject_id id);
 
-		void Init();
+		//void Init();
 
 		void Start();
 		void Update();
@@ -49,6 +50,8 @@ namespace real
 
 		bool GetIsActive() const { return m_IsActive; }
 		void SetIsActive(const bool value);
+
+		void SetCanBeDestroyed(const bool value) { m_CanBeDestroyed = value; }
 
 		//Component Logic
 		template <class T, typename... Args>
@@ -73,9 +76,11 @@ namespace real
 	private:
 		Scene* m_pScene{ nullptr };
 		std::string m_Tag;
-		TransformComponent* m_pTransform{ nullptr };
+		//TransformComponent* m_pTransform{ nullptr };
+		//std::unique_ptr<TransformComponent> m_pTransform;
 		bool m_IsMarkedForDestroy{};
 		bool m_IsActive{ true };
+		bool m_CanBeDestroyed{ true };
 
 		std::vector<std::unique_ptr<Component>> m_ComponentPtrs{};
 

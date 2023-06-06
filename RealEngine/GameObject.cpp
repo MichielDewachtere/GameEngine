@@ -4,14 +4,20 @@
 #include <algorithm>
 
 #include "Scene.h"
+//#include "Component.h"
 #include "TransformComponent.h"
 
-real::GameObject::~GameObject() = default;
+real::GameObject::~GameObject()
+{
+	//delete m_pTransform;
+	//delete m_pParent;
+}
 
 real::GameObject* real::GameObject::CreateGameObject()
 {
 	auto pGameObject{ std::make_unique<GameObject>(m_pScene) };
-	pGameObject->Init();
+	//pGameObject->Init();
+	pGameObject->AddComponent<TransformComponent>();
 
 	const auto pGameObjectPtr{ pGameObject.get() };
 	
@@ -55,10 +61,13 @@ real::GameObject* real::GameObject::GetObject(gameobject_id id)
 }
 
 
-void real::GameObject::Init()
-{
-	m_pTransform = AddComponent<TransformComponent>();
-}
+//void real::GameObject::Init()
+//{
+//	//m_pTransform = AddComponent<TransformComponent>();
+//	TransformComponent* pTransform = AddComponent<TransformComponent>();
+//
+//	m_pTransform = std::unique_ptr<TransformComponent>(pTransform);
+//}
 
 void real::GameObject::Start()
 {
@@ -161,6 +170,9 @@ void real::GameObject::PostUpdate()
 
 void real::GameObject::Destroy()
 {
+	if (m_CanBeDestroyed == false)
+		return;
+
 	m_IsMarkedForDestroy = true;
 
 	for (const auto& pChild : m_ChildrenPtrs)
@@ -191,11 +203,11 @@ void real::GameObject::SetIsActive(const bool value)
 void real::GameObject::SetParent(GameObject* pParent, const bool keepWorldPosition)
 {
 	if (pParent == nullptr)
-		m_pTransform->SetLocalPosition(m_pTransform->GetWorldPosition());
+		GetComponent<TransformComponent>()->SetLocalPosition(GetComponent<TransformComponent>()->GetWorldPosition());
 	else
 	{
 		if (keepWorldPosition)
-			m_pTransform->SetLocalPosition(m_pTransform->GetLocalPosition() - pParent->m_pTransform->GetWorldPosition());
+			GetComponent<TransformComponent>()->SetLocalPosition(GetComponent<TransformComponent>()->GetLocalPosition() - pParent->GetComponent<TransformComponent>()->GetWorldPosition());
 	}
 
 	if (GameObject* pOldParent = m_pParent)

@@ -1,6 +1,8 @@
 //#include "stdafx.h"
 #include "Scene.h"
 
+#include "TransformComponent.h"
+
 using namespace real;
 
 unsigned int Scene::m_idCounter = 0;
@@ -16,7 +18,8 @@ Scene::~Scene() = default;
 GameObject* Scene::CreateGameObject()
 {
 	auto pGameObject{ std::make_unique<GameObject>(this) };
-	pGameObject->Init();
+	//pGameObject->Init();
+	pGameObject->AddComponent<TransformComponent>();
 
 	GameObject* pGameObjectPtr{ pGameObject.get() };
 
@@ -24,18 +27,24 @@ GameObject* Scene::CreateGameObject()
 	return pGameObjectPtr;
 }
 
-void Scene::Add(std::unique_ptr<GameObject> object)
+void Scene::Add(std::shared_ptr<GameObject> object)
 {
-	m_objects.emplace_back(std::move(object));
+	m_objects.emplace_back(object);
 }
 
-void Scene::Remove(std::unique_ptr<GameObject> object)
+void Scene::Remove(std::shared_ptr<GameObject> object)
 {
 	std::erase(m_objects, object);
 }
 
 void Scene::RemoveAll()
 {
+	//m_objects.clear();
+	for (const auto& gameObject : m_objects)
+	{
+		gameObject->Destroy();
+	}
+
 	m_objects.clear();
 }
 

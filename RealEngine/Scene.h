@@ -21,8 +21,8 @@ namespace real
 		template <class T>
 		T* CreateGameObject();
 
-		void Add(std::unique_ptr<GameObject> object);
-		void Remove(std::unique_ptr<GameObject> object);
+		void Add(std::shared_ptr<GameObject> object);
+		void Remove(std::shared_ptr<GameObject> object);
 		void RemoveAll();
 		std::vector<GameObject*> FindObjectsWithTag(const std::string& tag) const;
 		GameObject* FindObject(gameobject_id id) const;
@@ -49,7 +49,7 @@ namespace real
 
 		std::string m_Name;
 		std::string m_InputMapName;
-		std::vector < std::unique_ptr<GameObject>> m_objects{};
+		std::vector < std::shared_ptr<GameObject>> m_objects{};
 
 		static unsigned int m_idCounter;
 
