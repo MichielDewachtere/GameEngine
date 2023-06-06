@@ -17,6 +17,7 @@ namespace real
 
 		virtual void Start() {}
 		virtual void Update() = 0;
+		virtual void PostUpdate() {}
 		virtual void Render() const {}
 		virtual void DebugRender() const {}
 		//virtual void FixedUpdate() = 0;

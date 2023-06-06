@@ -152,13 +152,13 @@ void real::GameObject::PostUpdate()
 		}
 	}
 
+	for (const auto& pComponent : m_ComponentPtrs)
+	{
+		pComponent->PostUpdate();
+	}
+
 	if (m_IsMarkedForDestroy)
 	{
-		//for (const auto& pComponent : m_ComponentPtrs)
-		//{
-		//	std::erase(m_ComponentPtrs, pComponent);
-		//}
-
 		for (auto& pComponent : m_ComponentPtrs)
 		{
 			RemoveComponent(*pComponent);
