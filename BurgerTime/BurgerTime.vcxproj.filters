@@ -32,6 +32,9 @@
     <Filter Include="Components\Enemies">
       <UniqueIdentifier>{54a884e3-089c-4cfc-957f-2393ba84230d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{78863fea-b5aa-497c-b21d-9e08c57898ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -96,6 +99,15 @@
     <ClCompile Include="StunCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="Level01.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Level02.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -159,6 +171,15 @@
     </ClInclude>
     <ClInclude Include="StunCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Level01.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Level02.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
