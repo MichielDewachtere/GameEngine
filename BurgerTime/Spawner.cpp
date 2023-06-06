@@ -54,7 +54,14 @@ void Spawner::SpawnEnemy()
 		real::Logger::LogWarning("Spawner => A new enemy is already requested.");
 }
 
-void Spawner::SpawnHotDog()
+void Spawner::ReSpawnEnemy(real::GameObject* pEnemy) const
+{
+	const auto spawnPos = GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition();
+	pEnemy->GetComponent<real::TransformComponent>()->SetWorldPosition(spawnPos.x, spawnPos.y - 47);
+	//pEnemy->GetComponent<real::TransformComponent>()->Translate(0, static_cast<float>(-48 + 1));
+}
+
+void Spawner::SpawnHotDog() const
 {
 	const auto hotDog = GetOwner()->CreateGameObject();
 	const auto pTexture = real::ResourceManager::GetInstance().LoadTexture("enemies/hotdog.png");
@@ -65,6 +72,10 @@ void Spawner::SpawnHotDog()
 	hotDog->AddComponent<real::TextureComponent>()->SetTexture(pTexture);
 	hotDog->AddComponent<real::ColliderComponent>(pTexture->GetSize())->EnableDebugRendering(true, Colors::white);
 	hotDog->AddComponent<BaseEnemy>();
+
+	const auto core = hotDog->CreateGameObject();
+	core->AddComponent<real::ColliderComponent>(glm::vec2{24, 24})->EnableDebugRendering(true, Colors::purple);
+	core->GetComponent<real::TransformComponent>()->Translate(12, 12);
 
 	hotDog->Start();
 }

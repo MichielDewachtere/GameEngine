@@ -24,6 +24,7 @@ public:
 	bool CanRender() const override { return false; }
 
 	void SpawnEnemy();
+	void ReSpawnEnemy(real::GameObject* pEnemy) const;
 
 	void SetType(const EnemyTypes type) { m_Type = type; }
 
@@ -33,7 +34,7 @@ private:
 
 	bool m_NeedNewEnemy{};
 
-	void SpawnHotDog();
+	void SpawnHotDog() const;
 };
 
 #endif // SPAWNER_H
