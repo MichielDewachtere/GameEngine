@@ -35,6 +35,9 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{78863fea-b5aa-497c-b21d-9e08c57898ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{29dd9626-b8a6-4d13-a60b-ae25b8a11f20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -108,7 +111,9 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerManager.cpp" />
+    <ClCompile Include="PlayerManager.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -121,7 +126,6 @@
     <ClInclude Include="MoveCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="GameInfo.h" />
     <ClInclude Include="FPSCounterComponent.h">
       <Filter>Components\HUD</Filter>
     </ClInclude>
@@ -182,6 +186,11 @@
     <ClInclude Include="MainMenu.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerManager.h" />
+    <ClInclude Include="GameInfo.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerManager.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
