@@ -54,8 +54,6 @@ void Ingredient::PartIsTriggered()
 	if (m_AmountOfPartsTriggered == amountOfParts)
 	{
 		m_IsFalling = true;
-		//TODO: this will depend on the weight/amount of enemies on burger.
-		//m_PlatformsToSkip = 1;
 	}
 }
 
