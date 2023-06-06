@@ -9,6 +9,7 @@
 
 #include "LoadNextSceneCommand.h"
 #include "GameInfo.h"
+#include "PlayerManager.h"
 
 MainMenu::MainMenu()
 	: Scene(Scenes::main_menu, InputMaps::menu)
@@ -112,4 +113,6 @@ void MainMenu::Load()
 	pInputMap->AddControllerCommands<LoadNextSceneCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, (unsigned int)-1, nullptr, Scenes::level01);
 
 	m_IsLoaded = true;
+
+	PlayerManager::GetInstance().AddPlayer();
 }
