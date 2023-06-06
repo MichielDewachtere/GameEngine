@@ -30,6 +30,10 @@ void IngredientPart::Reset()
 	if (m_IsTriggered)
 	{
 		m_IsTriggered = false;
-		GetOwner()->GetComponent<real::TransformComponent>()->Translate({ 0,-3 });
+		const float yPos = GetOwner()->GetParent()->GetComponent<real::TransformComponent>()->GetWorldPosition().y;
+
+		const auto worldPos = GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition();
+
+		GetOwner()->GetComponent<real::TransformComponent>()->SetWorldPosition(worldPos.x, yPos);
 	}
 }
