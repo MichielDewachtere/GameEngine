@@ -17,41 +17,61 @@
 BaseEnemy::BaseEnemy(real::GameObject* pOwner)
 	: Component(pOwner)
 {
+	real::SceneManager::GetInstance().onSceneExit.AddObserver(this);
 }
 
 BaseEnemy::~BaseEnemy()
 {
-	for (const auto& pPlayer : m_PlayerPtrs)
-	{
-		pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.RemoveObserver(this);
-	}
+	//for (const auto& pPlayer : m_PlayerPtrs)
+	//{
+	//	pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.RemoveObserver(this);
+	//}
+
+	//if (m_pWorldBorder != nullptr)
+	//{
+	//	delete m_pWorldBorder;
+	//	m_pWorldBorder = nullptr;
+	//}
+
+
+	//if (m_pCurrentIngredient != nullptr)
+	//{
+	//	delete m_pCurrentIngredient;
+	//	m_pCurrentIngredient = nullptr;
+	//}
+
+	//m_FloorPtrs.clear();
+	//m_HiddenStairPtrs.clear();
+	//m_IngredientPtrs.clear();
+	//m_PlayerPtrs.clear();
+	//m_StairPtrs.clear();
 }
 
 void BaseEnemy::Start()
 {
 	for (const auto pPlayer: real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::player))
 	{
-		m_PlayerPtrs.push_back(std::unique_ptr<real::GameObject>(pPlayer));
+		m_PlayerPtrs.push_back(/*std::unique_ptr<real::GameObject>*/(pPlayer));
 	}
 
 	for (const auto pStair : real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::stair))
 	{
-		m_StairPtrs.push_back(std::unique_ptr<real::GameObject>(pStair));
+		m_StairPtrs.push_back(/*std::unique_ptr<real::GameObject>*/(pStair));
 	}
 
 	for (const auto pStair : real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::hidden_stair))
 	{
-		m_HiddenStairPtrs.push_back(std::unique_ptr<real::GameObject>(pStair));
+		m_HiddenStairPtrs.push_back(/*std::unique_ptr<real::GameObject>*/(pStair));
 	}
 
 	for (const auto pFloor : real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::floor))
 	{
-		m_FloorPtrs.push_back(std::unique_ptr<real::GameObject>(pFloor));
+		m_FloorPtrs.push_back(/*std::unique_ptr<real::GameObject>*/(pFloor));
 	}
 
 	for (const auto pIngredient : real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::ingredient))
 	{
-		m_IngredientPtrs.push_back(std::unique_ptr<real::GameObject>(pIngredient));
+		m_IngredientPtrs.push_back(/*std::unique_ptr<real::GameObject>*/(pIngredient));
 	}
 
 	m_pWorldBorder = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::boundary)[0]->GetComponent<real::ColliderComponent>();
@@ -184,6 +204,15 @@ void BaseEnemy::Update()
 			break;
 		}
 
+		const auto currentStairCollider = real::SceneManager::GetInstance().GetActiveScene().FindObject(m_CurrentStair)->GetComponent<real::ColliderComponent>();
+
+		// turn enemy around if it is gonna be out of bounds.
+		if (CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::down) == false)
+			m_Direction = { 0, 1 };
+
+		if (CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::up) == false)
+			m_Direction = { 0, -1 };
+
 		MoveEnemy();
 		break;
 	}
@@ -250,6 +279,16 @@ void BaseEnemy::Update()
 void BaseEnemy::HandleEvent(bool pepperActive)
 {
 	m_CheckForPepper = pepperActive;
+}
+
+void BaseEnemy::HandleEvent(real::Scene&)
+{
+	for (const auto& pPlayer : m_PlayerPtrs)
+	{
+		pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.RemoveObserver(this);
+	}
+
+	real::SceneManager::GetInstance().onSceneExit.RemoveObserver(this);
 }
 
 real::GameObject* BaseEnemy::GetClosestPlayer(const std::vector<real::GameObject*>&)
@@ -386,7 +425,7 @@ void BaseEnemy::CheckForIngredients()
 
 			if (pIngredientCollider->IsEntireColliderOverlapping(*pSubCollider))
 			{
-				m_pCurrentIngredient = pIngredient.get();
+				m_pCurrentIngredient = pIngredient/*.get()*/;
 				m_IsOnIngredient = true;
 
 				m_pCurrentIngredient->GetComponent<Ingredient>()->IncreaseWeight();

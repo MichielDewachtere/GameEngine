@@ -5,9 +5,11 @@
 #include <Component.h>
 #include <ColliderComponent.h>
 #include <TransformComponent.h>
+#include <Scene.h>
 
 class BaseEnemy : public real::Component,
-	public real::Observer<bool>
+	public real::Observer<bool>,
+	public real::Observer<real::Scene&>
 {
 public:
 	explicit BaseEnemy(real::GameObject* pOwner);
@@ -20,9 +22,11 @@ public:
 	void Start() override;
 
 	void Update() override;
+
 	bool CanRender() const override { return false; }
 
 	void HandleEvent(bool) override;
+	void HandleEvent(real::Scene&) override;
 	void OnSubjectDestroy() override {}
 
 private:
@@ -38,7 +42,8 @@ private:
 	};
 	EnemyState m_CurrentState{ EnemyState::outOfBounds };
 
-	std::vector<std::shared_ptr<real::GameObject>> m_PlayerPtrs;
+	//std::vector<std::shared_ptr<real::GameObject>> m_PlayerPtrs;
+	std::vector</*std::unique_ptr<*/real::GameObject*/*>*/> m_PlayerPtrs;
 
 	float m_Speed{ 40 };
 	bool m_CanTurn = true;
@@ -50,14 +55,15 @@ private:
 	float m_StunTimer{};
 	float m_MaxStunTime{ 5.f };
 
-	std::vector<std::unique_ptr<real::GameObject>> m_StairPtrs;
-	std::vector<std::unique_ptr<real::GameObject>> m_HiddenStairPtrs;
+	std::vector</*std::unique_ptr<*/real::GameObject*/*>*/> m_StairPtrs;
+	std::vector</*std::unique_ptr<*/real::GameObject*/*>*/> m_HiddenStairPtrs;
 	real::gameobject_id m_CurrentStair = 0;
 
-	std::vector<std::unique_ptr<real::GameObject>> m_FloorPtrs;
+	std::vector</*std::unique_ptr<*/real::GameObject*/*>*/> m_FloorPtrs;
 	real::gameobject_id m_CurrentPlatform = 0;
 
-	std::vector<std::unique_ptr<real::GameObject>> m_IngredientPtrs;
+	std::vector</*std::unique_ptr<*/real::GameObject*/*>*/> m_IngredientPtrs;
+	//std::vector<std::unique_ptr<real::GameObject>> m_IngredientPtrs;
 	bool m_IsOnIngredient = false;
 	real::GameObject* m_pCurrentIngredient{};
 
