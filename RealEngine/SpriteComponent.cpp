@@ -20,10 +20,13 @@ real::SpriteComponent::SpriteComponent(GameObject* pOwner, SpriteSheet spriteShe
 
 void real::SpriteComponent::Update()
 {
-	if (m_Pause || m_Stop)
-		return;
-
 	m_RenderPos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
+
+	if (m_Pause || m_Stop)
+	{
+		m_IsAnimationPlaying = false;
+		return;
+	}
 
 	m_AccuTime += Time::GetInstance().GetElapsed();
 
@@ -76,11 +79,33 @@ void real::SpriteComponent::PlayAnimation(int startIdx, int endIdx, int loops)
 
 	m_Pause = false;
 	m_Stop = false;
+	m_IsAnimationPlaying = true;
+
+	m_Flip = SDL_FLIP_NONE;
+}
+
+void real::SpriteComponent::UpdateAnimation(int startIdx, int endIdx, int loops)
+{
+	m_AccuTime = 0.f;
+
+	m_StartIdx = startIdx;
+	m_EndIdx = endIdx;
+	m_CurrIdx = m_StartIdx;
+
+	m_Loops = loops;
 }
 
 void real::SpriteComponent::Pause(bool value)
 {
 	m_Pause = value;
+}
+
+void real::SpriteComponent::Stop(bool value)
+{
+	m_Stop = value;
+
+	if (m_Stop)
+		m_IsAnimationPlaying = false;
 }
 
 void real::SpriteComponent::FlipTexture(SDL_RendererFlip flip)

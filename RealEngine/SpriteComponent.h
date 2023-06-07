@@ -36,9 +36,11 @@ namespace real
 		void Render() const override;
 		bool CanRender() const override { return !m_Stop; }
 
-		//void SetTexture(std::shared_ptr<Texture2D> pTexture) { m_Texture = std::move(pTexture); }
 		void PlayAnimation(int startIdx = 0, int endIdx = 0, int loops = -1);
+		void UpdateAnimation(int startIdx = 0, int endIdx = 0, int loops = -1);
+		bool IsAnimationPlaying() const { return m_IsAnimationPlaying; }
 		void Pause(bool value);
+		void Stop(bool value);
 		void FlipTexture(SDL_RendererFlip flip);
 
 		glm::vec2 GetSpriteSize() const; 
@@ -56,6 +58,7 @@ namespace real
 		float m_AccuTime{};
 
 		bool m_Pause{};
+		bool m_IsAnimationPlaying{};
 		bool m_Stop{};
 
 		glm::vec2 m_RenderPos{};
