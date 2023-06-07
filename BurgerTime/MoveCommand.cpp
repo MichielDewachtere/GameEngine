@@ -5,6 +5,7 @@
 #include <TransformComponent.h>
 #include <GameTime.h>
 #include <Input.h>
+#include <iostream>
 #include <Scene.h>
 #include <SceneManager.h>
 
@@ -31,8 +32,7 @@ void MoveCommand::Start()
 
 void MoveCommand::Execute()
 {
-
-    // Get the TransformComponent of the game object associated with this MoveCommand.
+	// Get the TransformComponent of the game object associated with this MoveCommand.
     const auto pTransform = GetOwner()->GetComponent<real::TransformComponent>();
 
     // Check if the TransformComponent is valid.
