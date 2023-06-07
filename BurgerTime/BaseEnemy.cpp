@@ -136,12 +136,23 @@ void BaseEnemy::Update()
 			break;
 		}
 
-		// turn enemy around if it is gonna be out of bounds.
-		if (CanMoveTo(enemyPos, pCollider->GetSize(), *m_pWorldBorder, Direction::left) == false)
-			m_Direction = { 1,0 };
+		const auto currentFloorCollider = real::SceneManager::GetInstance().GetActiveScene().FindObject(m_CurrentPlatform)->GetComponent<real::ColliderComponent>();
 
-		if (CanMoveTo(enemyPos, pCollider->GetSize(), *m_pWorldBorder, Direction::right) == false)
+		// turn enemy around if it is gonna be out of bounds.
+		if (m_Direction == glm::vec2{-1, 0}
+			&& CanMoveTo(enemyPos, pCollider->GetSize(), *currentFloorCollider, Direction::left) == false
+			&& WillHitStair() == false)
+		{
+			m_CurrentStair = 0;
+			m_Direction = { 1,0 };
+		}
+		if (m_Direction == glm::vec2{1, 0}
+			&& CanMoveTo(enemyPos, pCollider->GetSize(), *currentFloorCollider, Direction::right) == false
+			&& WillHitStair() == false)
+		{
+			m_CurrentStair = 0;
 			m_Direction = { -1,0 };
+		}
 
 		MoveEnemy();
 		break;
@@ -193,11 +204,21 @@ void BaseEnemy::Update()
 
 		const auto currentStairCollider = real::SceneManager::GetInstance().GetActiveScene().FindObject(m_CurrentStair)->GetComponent<real::ColliderComponent>();
 
-		/// turn enemy around if it is gonna be out of bounds.
-		if (CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::down) == false && m_Direction == glm::vec2{ 0, 1 })
-			m_Direction = { 0, 1 };
-		if (CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::up) == false && m_Direction == glm::vec2{ 0, -1 })
-			m_Direction = { 0, -1 };
+		// turn enemy around if it is gonna be out of bounds.
+			if (m_Direction == glm::vec2{ 0, 1 }
+				&& CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::down) == false
+				&& WillHitPlatform() == false)
+			{
+				m_CurrentPlatform = 0;
+				m_Direction = { 0, -1 };
+			}
+			if (m_Direction == glm::vec2{ 0, -1 }
+				&& CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::up) == false
+				&& WillHitPlatform() == false)
+			{
+				m_CurrentPlatform = 0;
+				m_Direction = { 0, 1 };
+			}
 
 		MoveEnemy();
 		break;
@@ -560,4 +581,35 @@ bool BaseEnemy::IsInBounds() const
 {
 	const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
 	return m_pWorldBorder->IsEntireColliderOverlapping(*pCollider);
+}
+
+bool BaseEnemy::WillHitPlatform() const
+{
+	const auto pEnemyCollider = GetOwner()->GetComponent<real::ColliderComponent>();
+
+	for (const auto& pFloor : m_FloorPtrs)
+	{
+		const auto pFloorCollider = pFloor->GetComponent<real::ColliderComponent>();
+
+		if (pFloorCollider->IsOverlapping(*pEnemyCollider))
+			return true;
+	}
+
+	return false;
+}
+
+bool BaseEnemy::WillHitStair() const
+{
+	const auto pEnemyCollider = GetOwner()->GetComponent<real::ColliderComponent>();
+
+	for (const auto& pStair : m_StairPtrs)
+	{
+		const auto pStairCollider = pStair->GetComponent<real::ColliderComponent>();
+
+		if (pStairCollider->IsOverlapping(*pEnemyCollider))
+			return true;
+	}
+
+	return false;
+
 }

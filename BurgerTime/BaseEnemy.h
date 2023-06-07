@@ -83,6 +83,8 @@ private:
 
 	real::ColliderComponent* m_pWorldBorder{};
 	bool IsInBounds() const;
+	bool WillHitPlatform() const;
+	bool WillHitStair() const;
 
 	enum class Direction
 	{
