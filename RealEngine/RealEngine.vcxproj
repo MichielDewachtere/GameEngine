@@ -235,6 +235,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SDLAudio.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SteamAchievements.h" />
     <ClInclude Include="Subject.h" />
@@ -266,6 +267,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SDLAudio.cpp" />
+    <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
