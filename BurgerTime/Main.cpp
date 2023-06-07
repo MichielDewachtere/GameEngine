@@ -13,6 +13,7 @@
 #include "MainMenu.h"
 #include "Level01.h"
 #include "Level02.h"
+#include "Level03.h"
 #include "GameInfo.h"
 #include "PlayerManager.h"
 
@@ -25,7 +26,7 @@ void load()
 	real::SceneManager::GetInstance().AddScene(new MainMenu());
 	real::SceneManager::GetInstance().AddScene(new Level01());
 	real::SceneManager::GetInstance().AddScene(new Level02());
-	//real::SceneManager::GetInstance().AddScene(new Level03());
+	real::SceneManager::GetInstance().AddScene(new Level03());
 
 	real::SceneManager::GetInstance().SetSceneActive(Scenes::main_menu);
 	real::Input::GetInstance().SetInputMapActive(InputMaps::menu);
