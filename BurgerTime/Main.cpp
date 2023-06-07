@@ -23,7 +23,7 @@ void load()
 {
 	PlayerManager::GetInstance().Init();
 
-	real::SceneManager::GetInstance().AddScene(new MainMenu());
+	real::SceneManager::GetInstance().AddScene(new MainMenu(g_window));
 	real::SceneManager::GetInstance().AddScene(new Level01());
 	real::SceneManager::GetInstance().AddScene(new Level02());
 	real::SceneManager::GetInstance().AddScene(new Level03());
@@ -50,7 +50,7 @@ int main(int, char* [])
 #endif // USE _STEAM
 
 	g_window.title = "BurgerTime | Exam Assignment";
-	g_window.width = 624 + 48 * 2;
+	g_window.width = 720;
 	g_window.height = 710;
 
 	real::Minigin engine("../Data/", g_window);
