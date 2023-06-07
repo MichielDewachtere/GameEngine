@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <string>
+#include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 
 #include "Component.h"
@@ -14,7 +15,14 @@ namespace real
 	class TextComponent final : public Component
 	{
 	public:
-		explicit TextComponent(GameObject* pOwner) : Component(pOwner) {}
+		enum class Alignment
+		{
+			left,
+			center,
+			right
+		};
+
+		explicit TextComponent(GameObject* pOwner);
 		virtual ~TextComponent() override = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent& operator=(const TextComponent& other) = delete;
@@ -32,7 +40,7 @@ namespace real
 		void SetColor(const glm::vec4& color);
 		void SetColor(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a = 0);
 
-		void CenterText(bool centerText);
+		void ChangeAlignment(Alignment newAlignment);
 
 		bool CanRender() const override { return false; }
 
@@ -42,8 +50,8 @@ namespace real
 		std::shared_ptr<Font> m_pFont{};
 		SDL_Color m_Color{ 255,255,255 };
 
-		bool m_CenterText{};
-		bool m_IsCentered{};
+		glm::vec2 m_OriginalPos{};
+		Alignment m_CurrentAlignment{ Alignment::left };
 	};
 }
 #endif // TEXTCOMPONENT_H

@@ -9,6 +9,12 @@
 #include "TextureComponent.h"
 #include "TransformComponent.h"
 
+real::TextComponent::TextComponent(GameObject* pOwner)
+	: Component(pOwner)
+{
+	m_OriginalPos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
+}
+
 void real::TextComponent::Update()
 {
 	if (m_NeedsUpdate)
@@ -34,15 +40,26 @@ void real::TextComponent::Update()
 
 		pTextureRenderer->SetTexture(pTexture);
 
-		if (m_CenterText && m_IsCentered == false)
+		switch (m_CurrentAlignment)
 		{
-			m_IsCentered = true;
-			GetOwner()->GetComponent<TransformComponent>()->Translate(-static_cast<float>(pTexture->GetSize().x) / 2.f, 0);
+		case Alignment::left:
+		{
+			const auto newPos = m_OriginalPos;
+			GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+			break;
 		}
-		else if (m_CenterText == false && m_IsCentered)
+		case Alignment::center:
 		{
-			m_IsCentered = false;
-			GetOwner()->GetComponent<TransformComponent>()->Translate(static_cast<float>(pTexture->GetSize().x) / 2.f, 0);
+			const auto newPos = m_OriginalPos - glm::vec2{static_cast<float>(pTexture->GetSize().x) / 2.f, 0};
+			GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+			break;
+		}
+		case Alignment::right:
+		{
+			const auto newPos = m_OriginalPos - glm::vec2{static_cast<float>(pTexture->GetSize().x), 0 };
+			GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+			break;
+		}
 		}
 
 		m_NeedsUpdate = false;
@@ -53,14 +70,12 @@ void real::TextComponent::Update()
 void real::TextComponent::SetText(const std::string& text)
 {
 	m_pText = text;
-	m_IsCentered = false;
 	m_NeedsUpdate = true;
 }
 
 void real::TextComponent::SetFont(const std::shared_ptr<Font>& pFont)
 {
 	m_pFont = pFont;
-	m_IsCentered = false;
 	m_NeedsUpdate = true;
 }
 
@@ -86,8 +101,11 @@ void real::TextComponent::SetColor(const Uint8 r, const Uint8 g, const Uint8 b, 
 }
 
 
-void real::TextComponent::CenterText(bool centerText)
+void real::TextComponent::ChangeAlignment(Alignment newAlignment)
 {
-	m_CenterText = centerText;
-	m_NeedsUpdate = true;
+	if (m_CurrentAlignment != newAlignment)
+	{
+		m_CurrentAlignment = newAlignment;
+		m_NeedsUpdate = true;
+	}
 }
