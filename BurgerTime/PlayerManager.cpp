@@ -92,13 +92,13 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 	pCharacter->AddComponent<HealthComponent>()->SetLives(4);
 	pCharacter->GetComponent<HealthComponent>()->SetSpawnPoint(pCharacter->GetComponent<real::TransformComponent>()->GetWorldPosition());
 	pCharacter->AddComponent<PlayerCharacter>();
-	pCharacter->AddComponent<real::ColliderComponent>(pCharacterTexture->GetSize())->EnableDebugRendering(true);
+	pCharacter->AddComponent<real::ColliderComponent>(pCharacterTexture->GetSize())->EnableDebugRendering(false);
 
 	const auto pFeet = pCharacter->CreateGameObject();
 	pFeet->SetCanBeDestroyed(false);
 	//pFeet->SetTag(Tags::player);
 	pFeet->GetComponent<real::TransformComponent>()->SetLocalPosition(12, 0);
-	pFeet->AddComponent<real::ColliderComponent>(glm::vec2{ 24, 48 })->EnableDebugRendering(true, Colors::purple);
+	pFeet->AddComponent<real::ColliderComponent>(glm::vec2{ 24, 48 })->EnableDebugRendering(false, Colors::purple);
 	//pFeet->GetComponent<real::ColliderComponent>()->Translate(12, 0);
 
 	const auto pPepperArea = pCharacter->CreateGameObject();
@@ -107,7 +107,7 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 	pPepperArea->SetIsActive(false);
 	pPepperArea->GetComponent<real::TransformComponent>()->SetIgnoreParent(true);
 	pPepperArea->AddComponent<real::TextureComponent>()->SetTexture(pPepperTexture);
-	pPepperArea->AddComponent<real::ColliderComponent>(pPepperTexture->GetSize())->EnableDebugRendering(true, Colors::red);
+	pPepperArea->AddComponent<real::ColliderComponent>(pPepperTexture->GetSize())->EnableDebugRendering(false, Colors::red);
 
 	if (useKeyboard && m_KeyboardInUse == false)
 	{
@@ -143,9 +143,9 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 
 void PlayerManager::InitHud()
 {
-	const auto pFont = real::ResourceManager::GetInstance().LoadFont("8-bit-hud.ttf", 10);
-	const auto pMiddleFont = real::ResourceManager::GetInstance().LoadFont("8-bit-hud.ttf", 16);
-	const auto pTitleFont = real::ResourceManager::GetInstance().LoadFont("8-bit-hud.ttf", 32);
+	const auto pFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
+	const auto pMiddleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
+	const auto pTitleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 32);
 
 	using alignment = real::TextComponent::Alignment;
 

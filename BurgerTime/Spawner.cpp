@@ -88,13 +88,13 @@ void Spawner::SpawnEnemyType(const std::string& type, int /*points*/)
 	enemy->GetComponent<real::TransformComponent>()->SetWorldPosition(GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition());
 	enemy->AddComponent<real::SpriteComponent>(spriteSheet);
 	const auto spriteSize = enemy->GetComponent<real::SpriteComponent>()->GetSpriteSize();
-	enemy->AddComponent<real::ColliderComponent>(spriteSize)->EnableDebugRendering(true, Colors::white);
+	enemy->AddComponent<real::ColliderComponent>(spriteSize)->EnableDebugRendering(false, Colors::white);
 	enemy->AddComponent<BaseEnemy>();
 	enemy->GetComponent<real::TransformComponent>()->Translate(0, -spriteSize.y + 1);
 
 	const auto core = enemy->CreateGameObject();
 	core->GetComponent<real::TransformComponent>()->SetLocalPosition(spriteSize.x / 4, spriteSize.y / 4);
-	core->AddComponent<real::ColliderComponent>(glm::vec2{spriteSize.x / 2, spriteSize.y / 2})->EnableDebugRendering(true, Colors::purple);
+	core->AddComponent<real::ColliderComponent>(glm::vec2{spriteSize.x / 2, spriteSize.y / 2})->EnableDebugRendering(false, Colors::purple);
 
 	enemy->Start();
 }

@@ -26,9 +26,9 @@ void MainMenu::Load()
 
 	using alignment = real::TextComponent::Alignment;
 
-	const auto pFont = real::ResourceManager::GetInstance().LoadFont("8-bit-hud.ttf", 10);
-	const auto pMiddleFont = real::ResourceManager::GetInstance().LoadFont("8-bit-hud.ttf", 16);
-	const auto pTitleFont = real::ResourceManager::GetInstance().LoadFont("8-bit-hud.ttf", 32);
+	const auto pFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
+	const auto pMiddleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
+	const auto pTitleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 32);
 
 	const auto pTitleText = CreateGameObject();
 	pTitleText->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 30);
