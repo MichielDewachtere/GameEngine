@@ -36,6 +36,7 @@ namespace real
 		std::vector<XInputController*> GetControllers() const;
 
 		InputMap* AddInputMap(const std::string& name);
+		InputMap* GetInputMap(const std::string& name) const;
 		void SetInputMapActive(const std::string& name);
 
 	private:
