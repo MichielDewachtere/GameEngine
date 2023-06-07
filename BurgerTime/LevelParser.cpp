@@ -49,7 +49,7 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     pLevelBoundaries->SetTag(Tags::boundary);
     pLevelBoundaries->GetComponent<real::TransformComponent>()->SetLocalPosition(0, -9);
     glm::vec2 levelBoundaries = { pBackGroundTexture->GetSize().x, pBackGroundTexture->GetSize().y };
-    pLevelBoundaries->AddComponent<real::ColliderComponent>(levelBoundaries)->EnableDebugRendering(true, Colors::red);
+    pLevelBoundaries->AddComponent<real::ColliderComponent>(levelBoundaries)->EnableDebugRendering(false, Colors::red);
 
     // PLAYER SPAWN
     const rapidjson::Value& playerPos = document["player_spawn"].GetArray();
@@ -60,16 +60,16 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     // FLOORS
     for (const auto& floor : document["floors"].GetArray())
     {
-	    Floor::CreateFloor(pLevel, { floor[0].GetDouble(), floor[1].GetDouble() }, static_cast<float>(floor[2].GetDouble()), true);
+	    Floor::CreateFloor(pLevel, { floor[0].GetDouble(), floor[1].GetDouble() }, static_cast<float>(floor[2].GetDouble()), false);
     }
     // STAIRS
     for (const auto& stair : document["stairs"].GetArray())
     {
-	    Stair::CreateStair(pLevel, { stair[0].GetDouble(), stair[1].GetDouble() }, static_cast<float>(stair[2].GetDouble()), true);
+	    Stair::CreateStair(pLevel, { stair[0].GetDouble(), stair[1].GetDouble() }, static_cast<float>(stair[2].GetDouble()), false);
     }
     for (const auto& stair : document["invisible_stairs"].GetArray())
     {
-        Stair::CreateStair(pLevel, { stair[0].GetDouble(), stair[1].GetDouble() }, static_cast<float>(stair[2].GetDouble()), true, true);
+        Stair::CreateStair(pLevel, { stair[0].GetDouble(), stair[1].GetDouble() }, static_cast<float>(stair[2].GetDouble()), false, true);
     }
     // BUN_TOP
     ParseIngredient(pLevel, document, "bun_top");
@@ -86,12 +86,19 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     //PLATES
     for (const auto& plate : document["plates"].GetArray())
     {
-	    Plate::CreatePlate(pLevel, { plate[0].GetDouble(), plate[1].GetDouble() }, true);
+	    Plate::CreatePlate(pLevel, { plate[0].GetDouble(), plate[1].GetDouble() }, false);
     }
     //SPAWNPOINT
     for (const auto& spawnPoint : document["spawnpoint"].GetArray())
     {
-	    SpawnPoint::CreateSpawnPoint(pLevel, { spawnPoint[0].GetDouble(), spawnPoint[1].GetDouble() }, spawnPoint[2].GetString());
+        std::vector<std::string> enemiePtrs;
+
+        for (const auto& pEnemy : spawnPoint[2].GetArray())
+        {
+	        enemiePtrs.emplace_back(pEnemy.GetString());
+        }
+
+	    SpawnPoint::CreateSpawnPoint(pLevel, { spawnPoint[0].GetDouble(), spawnPoint[1].GetDouble() }, enemiePtrs);
     }
 
 	return pLevel;
@@ -102,5 +109,5 @@ void LevelParser::ParseIngredient(real::GameObject* pGameObject, const rapidjson
     const rapidjson::Value& bunBottomValue = document[part.c_str()];
     const std::string bunBottomTexturePath = bunBottomValue["texturePath"].GetString();
     for (const auto& bunBottom : bunBottomValue["position"].GetArray())
-        IngredientPrefab::CreateIngredient(pGameObject, bunBottomTexturePath, { bunBottom[0].GetDouble(), bunBottom[1].GetDouble() }, true);
+        IngredientPrefab::CreateIngredient(pGameObject, bunBottomTexturePath, { bunBottom[0].GetDouble(), bunBottom[1].GetDouble() }, false);
 }
