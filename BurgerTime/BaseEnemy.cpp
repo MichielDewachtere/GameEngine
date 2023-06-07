@@ -6,13 +6,13 @@
 #include <SceneManager.h>
 #include <GameObject.h>
 #include <GameTime.h>
-#include <TextureComponent.h>
 
 #include "GameInfo.h"
 #include "HealthComponent.h"
 #include "Ingredient.h"
 #include "PlayerCharacter.h"
 #include "Spawner.h"
+#include "SpriteComponent.h"
 
 BaseEnemy::BaseEnemy(real::GameObject* pOwner)
 	: Component(pOwner)
@@ -97,20 +97,67 @@ void BaseEnemy::Update()
 	{
 		CheckForIngredients();
 
-		if (m_pWorldBorder->IsEntireColliderOverlapping(*pCollider))
-			m_CurrentState = EnemyState::moveY;
+		//if (m_pWorldBorder->IsEntireColliderOverlapping(*pCollider))
+		//	m_CurrentState = EnemyState::moveY;
 
-		if (CheckForHiddenStairs())
+		if (CheckForStairs(pPlayerTransform))
 		{
- 			m_CurrentState = EnemyState::moveY;
+			if (static_cast<int>(m_Direction.y) == 1)
+			{
+				GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(0, 2);
+			}
+			else if (static_cast<int>(m_Direction.y) == -1)
+			{
+				GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(4, 6);
+			}
+
+			m_CurrentState = EnemyState::moveY;
 			MoveEnemy();
 			break;
 		}
 
-		if (playerPos.x < enemyPos.x)
+		if (CheckForHiddenStairs())
+		{
+			MoveEnemy();
+			break;
+		}
+
+
+		//if (CheckForHiddenStairs())
+		//{
+		//	if (static_cast<int>(m_Direction.y) == 1)
+		//	{
+		//		GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(4, 6);
+		//	}
+		//	else if (static_cast<int>(m_Direction.y) == -1)
+		//	{
+		//		GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(0, 2);
+		//	}
+
+ 		//	m_CurrentState = EnemyState::moveY;
+		//	MoveEnemy();
+		//	break;
+		//}
+
+
+		if (playerPos.x < enemyPos.x && m_Direction == glm::vec2{0, 0})
+		{
+			if (GetOwner()->GetComponent<real::SpriteComponent>()->IsAnimationPlaying() == false)
+			{
+				GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(2, 4);
+			}
+
 			m_Direction = { -1,0 };
-		else
+		}
+		else if (m_Direction == glm::vec2{0, 0})
+		{
+			if (GetOwner()->GetComponent<real::SpriteComponent>()->IsAnimationPlaying() == false)
+			{
+				GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(2, 4);
+				GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(SDL_FLIP_HORIZONTAL);
+			}
 			m_Direction = { 1,0 };
+		}
 
 		MoveEnemy();
 
@@ -131,6 +178,11 @@ void BaseEnemy::Update()
 
 		if (CheckForStairs(pPlayerTransform))
 		{
+			if (static_cast<int>(m_Direction.y) == 1)
+				GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(0, 2);
+			else if (static_cast<int>(m_Direction.y) == -1)
+				GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(4, 6);
+
 			m_CurrentState = EnemyState::moveY;
 			MoveEnemy();
 			break;
@@ -143,6 +195,9 @@ void BaseEnemy::Update()
 			&& CanMoveTo(enemyPos, pCollider->GetSize(), *currentFloorCollider, Direction::left) == false
 			&& WillHitStair() == false)
 		{
+			GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(SDL_FLIP_HORIZONTAL);
+			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(2, 4);
+
 			m_CurrentStair = 0;
 			m_Direction = { 1,0 };
 		}
@@ -150,8 +205,17 @@ void BaseEnemy::Update()
 			&& CanMoveTo(enemyPos, pCollider->GetSize(), *currentFloorCollider, Direction::right) == false
 			&& WillHitStair() == false)
 		{
+			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(2, 4);
+
 			m_CurrentStair = 0;
 			m_Direction = { -1,0 };
+		}
+
+		if (GetOwner()->GetComponent<real::SpriteComponent>()->IsAnimationPlaying() == false)
+		{
+			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(2, 4);
+			if (static_cast<int>(m_Direction.x) == 1)
+				GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(SDL_FLIP_HORIZONTAL);
 		}
 
 		MoveEnemy();
@@ -169,6 +233,14 @@ void BaseEnemy::Update()
 		}
 
 		CheckForIngredients();
+
+		if (GetOwner()->GetComponent<real::SpriteComponent>()->IsAnimationPlaying() == false)
+		{
+			if (static_cast<int>(m_Direction.y) == 1)
+				GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(0, 2);
+			else
+				GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(4, 6);
+		}
 
 		if (m_CurrentStair != 0)
 		{
@@ -197,6 +269,11 @@ void BaseEnemy::Update()
 
 		if (CheckForPlatforms(pPlayerTransform))
 		{
+			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(2, 4);
+
+			if (static_cast<int>(m_Direction.x) == 1)
+				GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(SDL_FLIP_HORIZONTAL);
+
 			m_CurrentState = EnemyState::moveX;
 			MoveEnemy();
 			break;
@@ -230,8 +307,6 @@ void BaseEnemy::Update()
 	}
 	case EnemyState::crushed:
 	{
-		GetOwner()->GetComponent<real::TextureComponent>()->SetIsActive(false);
-
 		//TODO: add points to score
 		//real::Logger::LogInfo("BaseEnemy => Enemy {} is crushed", GetOwner()->GetId());
 
@@ -240,8 +315,13 @@ void BaseEnemy::Update()
 		if (m_DeathTimer > m_MaxDeathTime)
 		{
 			m_DeathTimer = 0;
-			GetOwner()->GetComponent<real::TextureComponent>()->SetIsActive(true);
+
 			GetOwner()->GetParent()->GetComponent<Spawner>()->ReSpawnEnemy(GetOwner());
+			GetOwner()->GetComponent<real::SpriteComponent>()->Stop(true);
+
+			m_Direction = glm::vec2{ 0,0 };
+			m_CurrentStair = 0;
+			m_CurrentPlatform = 0;
 			m_CurrentState = EnemyState::outOfBounds;
 		}
 
@@ -254,26 +334,37 @@ void BaseEnemy::Update()
 		if (m_StunTimer > m_MaxStunTime)
 		{
 			m_StunTimer = 0;
-			m_CurrentState = EnemyState::moveY;
+
+			GetOwner()->GetComponent<real::SpriteComponent>()->Stop(true);
+
+			if (static_cast<int>(m_Direction.x) == 0)
+				m_CurrentState = EnemyState::moveY;
+			else
+				m_CurrentState = EnemyState::moveX;
 		}
 
 		break;
 	}
 	case EnemyState::dead:
 	{
-		GetOwner()->GetComponent<real::TextureComponent>()->SetIsActive(false);
 		//TODO: add points to score
+
+		GetOwner()->GetComponent<real::SpriteComponent>()->Stop(true);
 
 		m_DeathTimer += real::Time::GetInstance().GetElapsed();
 
 		if (m_DeathTimer > m_MaxDeathTime)
 		{
-			GetOwner()->GetComponent<real::TextureComponent>()->SetIsActive(true);
-
-			if (IsInBounds() == false|| m_pCurrentIngredient->GetTag() == Tags::empty)
-				m_CurrentState = EnemyState::outOfBounds;
-			else
+			if (CheckForPlatforms(pPlayerTransform))
+			{
 				m_CurrentState = EnemyState::moveX;
+			}
+			else
+			{
+				m_Direction = glm::vec2{ 0, 0 };
+				m_CurrentStair = 0;
+				m_CurrentState = EnemyState::outOfBounds;
+			}
 
 			m_DeathTimer = 0;
 		}
@@ -359,7 +450,12 @@ bool BaseEnemy::CheckForHiddenStairs()
 
 		if (pStairCollider->IsEntireColliderOverlapping(*pCollider))
 		{
-			m_Direction = { 0,-1 };
+			if (m_Direction != glm::vec2{ 0,-1 })
+			{
+				GetOwner()->GetComponent<real::SpriteComponent>()->UpdateAnimation(4, 6);
+				m_Direction = { 0,-1 };
+			}
+
 			return true;
 		}
 	}
@@ -428,14 +524,21 @@ void BaseEnemy::CheckForIngredients()
 			if (pIngredient->GetTag() != Tags::ingredient)
 				continue;
 
-			const auto pIngredientCollider = pIngredient->GetComponent<real::ColliderComponent>();
+			if (pIngredient->GetComponent<Ingredient>()->GetIsFalling())
+				continue;
 
-			if (pIngredientCollider->IsEntireColliderOverlapping(*pSubCollider))
+			for (const auto& pPart : pIngredient->GetChildren())
 			{
-				m_pCurrentIngredient = pIngredient/*.get()*/;
-				m_IsOnIngredient = true;
+				const auto pPartCollider = pPart->GetComponent<real::ColliderComponent>();
+				if (pPartCollider->IsOverlapping(*pSubCollider))
+				{
+					m_pCurrentIngredient = pIngredient/*.get()*/;
+					m_IsOnIngredient = true;
 
-				m_pCurrentIngredient->GetComponent<Ingredient>()->IncreaseWeight();
+					m_pCurrentIngredient->GetComponent<Ingredient>()->IncreaseWeight();
+					break;
+				}
+
 			}
 		}
 	}
@@ -444,24 +547,51 @@ void BaseEnemy::CheckForIngredients()
 		if (m_pCurrentIngredient->GetComponent<Ingredient>()->GetIsFalling() == true)
 		{
 			real::Logger::LogInfo("BaseEnemy => Enemy {} should fall with burger", GetOwner()->GetId());
+			GetOwner()->GetComponent<real::SpriteComponent>()->Pause(true);
 			m_CurrentState = EnemyState::fall;
+			return;
 		}
 
-		const auto pIngredientCollider = m_pCurrentIngredient->GetComponent<real::ColliderComponent>();
+		//const auto pIngredientCollider = m_pCurrentIngredient->GetComponent<real::ColliderComponent>();
 
-		if (pIngredientCollider->IsOverlapping(*pSubCollider) == false)
+		//if (pIngredientCollider->IsOverlapping(*pSubCollider) == false)
+		//{
+		//	m_pCurrentIngredient->GetComponent<Ingredient>()->DecreaseWeight();
+
+		//	m_pCurrentIngredient = nullptr;
+		//	m_IsOnIngredient = false;
+		//}
+
+		bool isOnBurger = false;
+		for (const auto& pPart : m_pCurrentIngredient->GetChildren())
+		{
+			const auto pPartCollider = pPart->GetComponent<real::ColliderComponent>();
+			if (pPartCollider->IsOverlapping(*pSubCollider) /*== false*/)
+			{
+				isOnBurger = true;
+				break;
+			}
+		}
+
+		if (isOnBurger == false)
 		{
 			m_pCurrentIngredient->GetComponent<Ingredient>()->DecreaseWeight();
-
 			m_pCurrentIngredient = nullptr;
 			m_IsOnIngredient = false;
 		}
 	}
 
+	if (m_CurrentState == EnemyState::fall)
+		return;
+
 	for (const auto& pIngredient : m_IngredientPtrs)
 	{
 		if (pIngredient->GetTag() != Tags::ingredient)
 			continue;
+
+		const auto pIngredientTransform = pIngredient->GetComponent<real::TransformComponent>();
+		if (pIngredientTransform->GetWorldPosition().y > GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition().y)
+			return;
 
 		const auto pIngredientComponent = pIngredient->GetComponent<Ingredient>();
 
@@ -475,6 +605,7 @@ void BaseEnemy::CheckForIngredients()
 		
 		if (pIngredientCollider->IsOverlapping(*pCoreCollider))
 		{
+			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(6, 10, 0);
 			m_CurrentState = EnemyState::crushed;
 			return;
 		}
@@ -492,6 +623,7 @@ void BaseEnemy::CheckForPepper()
 
 		if (pPepperCollider->IsOverlapping(*pEnemyCollider))
 		{
+			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(10, 12, -1);
 			m_CurrentState = EnemyState::stun;
 			return;
 		}
