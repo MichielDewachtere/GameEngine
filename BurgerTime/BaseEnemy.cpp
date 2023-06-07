@@ -184,10 +184,10 @@ void BaseEnemy::Update()
 					break;
 				}
 			}
-			else
+			else if (m_Direction == glm::vec2{0, 1})
 			{
 				if (CanMoveTo(enemyPos, pCollider->GetSize(), *pCurrentStairCollider, Direction::down)
-				   && static_cast<int>(enemyPos.y) < static_cast<int>(playerPos.y))
+					&& static_cast<int>(enemyPos.y) < static_cast<int>(playerPos.y))
 				{
 					MoveEnemy();
 					break;
@@ -205,20 +205,20 @@ void BaseEnemy::Update()
 		const auto currentStairCollider = real::SceneManager::GetInstance().GetActiveScene().FindObject(m_CurrentStair)->GetComponent<real::ColliderComponent>();
 
 		// turn enemy around if it is gonna be out of bounds.
-			if (m_Direction == glm::vec2{ 0, 1 }
-				&& CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::down) == false
-				&& WillHitPlatform() == false)
-			{
-				m_CurrentPlatform = 0;
-				m_Direction = { 0, -1 };
-			}
-			if (m_Direction == glm::vec2{ 0, -1 }
-				&& CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::up) == false
-				&& WillHitPlatform() == false)
-			{
-				m_CurrentPlatform = 0;
-				m_Direction = { 0, 1 };
-			}
+		if (m_Direction == glm::vec2{ 0, 1 }
+			&& CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::down) == false
+			&& WillHitPlatform() == false)
+		{
+			m_CurrentPlatform = 0;
+			m_Direction = { 0, -1 };
+		}
+		if (m_Direction == glm::vec2{ 0, -1 }
+			&& CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::up) == false
+			&& WillHitPlatform() == false)
+		{
+			m_CurrentPlatform = 0;
+			m_Direction = { 0, 1 };
+		}
 
 		MoveEnemy();
 		break;
@@ -326,7 +326,7 @@ bool BaseEnemy::CheckForStairs(real::TransformComponent* playerTransform)
 		m_CurrentStair = pStair->GetId();
 
 		//m_IsOnFloor = false;
-		m_CanTurn = true;
+		//m_CanTurn = true;
 
 		if (canGoUp && canGoDown)
 		{
@@ -390,7 +390,7 @@ bool BaseEnemy::CheckForPlatforms(real::TransformComponent* playerTransform)
 		m_CurrentPlatform = pPlatform->GetId();
 
 		//m_IsOnStair = false;
-		m_CanTurn = true;
+		//m_CanTurn = true;
 
 		if (canGoRight && canGoLeft)
 		{
