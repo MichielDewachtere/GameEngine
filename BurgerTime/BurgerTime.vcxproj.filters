@@ -114,6 +114,9 @@
     <ClCompile Include="PlayerManager.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Level03.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -191,6 +194,9 @@
     </ClInclude>
     <ClInclude Include="PlayerManager.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Level03.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

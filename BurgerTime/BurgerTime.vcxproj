@@ -171,6 +171,7 @@
     <ClCompile Include="IngredientPrefab.cpp" />
     <ClCompile Include="Level01.cpp" />
     <ClCompile Include="Level02.cpp" />
+    <ClCompile Include="Level03.cpp" />
     <ClCompile Include="LevelParser.cpp" />
     <ClCompile Include="LivesDisplay.cpp" />
     <ClCompile Include="LoadNextSceneCommand.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="IngredientPrefab.h" />
     <ClInclude Include="Level01.h" />
     <ClInclude Include="Level02.h" />
+    <ClInclude Include="Level03.h" />
     <ClInclude Include="LevelParser.h" />
     <ClInclude Include="LivesDisplay.h" />
     <ClInclude Include="LoadNextSceneCommand.h" />
