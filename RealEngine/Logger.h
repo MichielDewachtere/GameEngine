@@ -36,7 +36,7 @@ namespace real
 		static void LogWarning(const std::string& message, Args&&... args)
 		{
 			std::ostringstream oss;
-			oss << GetTime() << " [INFO] ";
+			oss << GetTime() << " [WARNING] ";
 			LogImpl(oss, message, std::forward<Args>(args)...);
 			std::cout << "\033[33m" << oss.str() << "\033[0m\n";
 		}
@@ -50,7 +50,7 @@ namespace real
 		static void LogError(const std::string& message, Args&&... args)
 		{
 			std::ostringstream oss;
-			oss << GetTime() << " [INFO] ";
+			oss << GetTime() << " [ERROR] ";
 			LogImpl(oss, message, std::forward<Args>(args)...);
 			std::cout << "\033[31m" << oss.str() << "\033[0m\n";
 		}
