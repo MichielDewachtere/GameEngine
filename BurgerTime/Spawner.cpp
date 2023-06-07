@@ -10,6 +10,7 @@
 
 #include "BaseEnemy.h"
 #include "GameInfo.h"
+#include "SpriteComponent.h"
 
 void Spawner::Update()
 {
@@ -33,7 +34,7 @@ void Spawner::Update()
 		case EnemyTypes::egg:
 			real::Logger::LogInfo("Spawner => Egg should spawn");
 
-			//SpawnEnemyType(Tags::egg, 300);
+			SpawnEnemyType(Tags::egg, 300);
 			break;
 		case EnemyTypes::pickle:
 			real::Logger::LogInfo("Spawner => Pickle should spawn");
@@ -75,18 +76,27 @@ void Spawner::ReSpawnEnemy(real::GameObject* pEnemy) const
 void Spawner::SpawnEnemyType(const std::string& type, int /*points*/)
 {
 	const auto enemy = GetOwner()->CreateGameObject();
-	const auto pTexture = real::ResourceManager::GetInstance().LoadTexture("enemies/" + type + ".png");
+	const auto pTexture = real::ResourceManager::GetInstance().LoadTexture("enemies/" + type + "spritesheet.png");
+
+	real::SpriteSheet spriteSheet;
+	spriteSheet.pTexture = pTexture;
+	spriteSheet.rows = 2;
+	spriteSheet.columns = 6;
+	spriteSheet.animTimer = 0.1f;
 
 	enemy->SetTag(type);
 	enemy->GetComponent<real::TransformComponent>()->SetWorldPosition(GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition());
-	enemy->GetComponent<real::TransformComponent>()->Translate(0, static_cast<float>(-pTexture->GetSize().y + 1));
-	enemy->AddComponent<real::TextureComponent>()->SetTexture(pTexture);
-	enemy->AddComponent<real::ColliderComponent>(pTexture->GetSize())->EnableDebugRendering(false, Colors::white);
+	enemy->GetComponent<real::TransformComponent>()->Translate(0, static_cast<float>(-48 + 1));
+	//enemy->AddComponent<real::TextureComponent>()->SetTexture(pTexture);
+	enemy->AddComponent<real::SpriteComponent>(spriteSheet);
+	enemy->GetComponent<real::SpriteComponent>()->PlayAnimation(2, 4);
+	//enemy->GetComponent<real::SpriteComponent>();
+	enemy->AddComponent<real::ColliderComponent>(glm::vec2{48, 48})->EnableDebugRendering(true, Colors::white);
 	enemy->AddComponent<BaseEnemy>();
 
 	const auto core = enemy->CreateGameObject();
-	core->AddComponent<real::ColliderComponent>(glm::vec2{24, 24})->EnableDebugRendering(false, Colors::purple);
-	core->GetComponent<real::TransformComponent>()->Translate(12, 12);
+	core->GetComponent<real::TransformComponent>()->SetLocalPosition(12, 12);
+	core->AddComponent<real::ColliderComponent>(glm::vec2{24, 24})->EnableDebugRendering(true, Colors::purple);
 
 	enemy->Start();
 }
