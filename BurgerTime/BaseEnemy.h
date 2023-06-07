@@ -28,7 +28,6 @@ public:
 	void HandleEvent(bool) override;
 	void HandleEvent(real::Scene&) override;
 	void OnSubjectDestroy() override {}
-
 private:
 	enum class EnemyState
 	{
@@ -46,7 +45,6 @@ private:
 	std::vector</*std::unique_ptr<*/real::GameObject*/*>*/> m_PlayerPtrs;
 
 	float m_Speed{ 40 };
-	bool m_CanTurn = true;
 	bool m_CheckForPepper{};
 
 	float m_DeathTimer{};
