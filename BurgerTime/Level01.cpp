@@ -1,21 +1,9 @@
 ﻿#include "Level01.h"
 
-#include <SDL_scancode.h>
-
-#include <ColliderComponent.h>
-#include <TextureComponent.h>
-#include <Input.h>
-#include <InputMap.h>
-#include <ResourceManager.h>
 #include <TransformComponent.h>
 
-#include "MoveCommand.h"
 #include "LevelParser.h"
-#include "HealthComponent.h"
-#include "PlayerCharacter.h"
-#include "StunCommand.h"
 #include "GameInfo.h"
-#include "LoadNextSceneCommand.h"
 
 Level01::Level01()
 	: Scene(Scenes::level01, InputMaps::gameplay)
@@ -24,41 +12,10 @@ Level01::Level01()
 
 void Level01::Load()
 {
-	//auto& scene = real::SceneManager::GetInstance().AddScene(Scenes::level01, InputMaps::gameplay);
 	this->SetDebugRendering(true);
-	//auto& input = real::Input::GetInstance();
-	//const auto pInputMap = input.AddInputMap(InputMaps::gameplay);
 
 	const auto pLevel = LevelParser::ParseLevel(*this, "Level01.json");
 	pLevel->GetComponent<real::TransformComponent>()->Translate(48, 62);
-
-#pragma region player
-	//const auto pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("characters/PeterPepper.png");
-	//const auto pPepperTexture = real::ResourceManager::GetInstance().LoadTexture("characters/pepper.png");
-
-	//const auto pCharacter = pLevel->CreateGameObject();
-	//pCharacter->SetTag(Tags::player);
-	//pCharacter->GetComponent<real::TransformComponent>()->SetLocalPosition(288, 423);
-	//pCharacter->AddComponent<real::TextureComponent>()->SetTexture(pCharacterTexture);
-	//pCharacter->AddComponent<HealthComponent>()->SetLives(4);
-	//pCharacter->GetComponent<HealthComponent>()->SetSpawnPoint(pCharacter->GetComponent<real::TransformComponent>()->GetWorldPosition());
-	//pCharacter->AddComponent<PlayerCharacter>();
-	//pCharacter->AddComponent<real::ColliderComponent>(pCharacterTexture->GetSize())->EnableDebugRendering(true);
-
-	//const auto pFeet = pCharacter->CreateGameObject();
-	////pFeet->SetTag(Tags::player);
-	//pFeet->GetComponent<real::TransformComponent>()->SetLocalPosition(12, 0);
-	//pFeet->AddComponent<real::ColliderComponent>(glm::vec2{ 24, 48 })->EnableDebugRendering(true, Colors::purple);
-	////pFeet->GetComponent<real::ColliderComponent>()->Translate(12, 0);
-
-	//const auto pPepperArea = pCharacter->CreateGameObject();
-	//pPepperArea->SetTag(Tags::pepper);
-	//pPepperArea->SetIsActive(false);
-	//pPepperArea->GetComponent<real::TransformComponent>()->SetIgnoreParent(true);
-	//pPepperArea->AddComponent<real::TextureComponent>()->SetTexture(pPepperTexture);
-	//pPepperArea->AddComponent<real::ColliderComponent>(pPepperTexture->GetSize())->EnableDebugRendering(true, Colors::red);
-
-#pragma endregion player
 
 	//input.EnableCoOp(true);
 	//const auto controllerIdcs = input.AddControllers();
