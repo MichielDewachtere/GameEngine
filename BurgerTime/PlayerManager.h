@@ -21,13 +21,17 @@ public:
 	void HandleEvent(real::Scene&) override;
 	void OnSubjectDestroy() override {}
 
-	void AddPlayer(bool useKeyboard = true);
+	void AddPlayer(bool useKeyboard = true, const int controllerIdx = -1);
+	int GetAmountOfPlayers() const { return static_cast<int>(m_PlayerPtrs.size()); }
 
 private:
 	friend class Singleton<PlayerManager>;
 	PlayerManager() = default;
 
 	std::vector<std::shared_ptr<real::GameObject>> m_PlayerPtrs{};
+
+	bool m_KeyboardInUse{};
+	std::vector<int> m_ControllersInUse{};
 };
 
 #endif // PLAYERMANAGER_H
