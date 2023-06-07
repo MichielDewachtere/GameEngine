@@ -32,6 +32,9 @@ private:
 
 	bool m_KeyboardInUse{};
 	std::vector<int> m_ControllersInUse{};
+
+	std::shared_ptr<real::GameObject> m_pHud{};
+	void InitHud();
 };
 
 #endif // PLAYERMANAGER_H

@@ -15,6 +15,7 @@
 #include "MoveCommand.h"
 #include "PlayerCharacter.h"
 #include "StunCommand.h"
+#include "TextComponent.h"
 
 PlayerManager::~PlayerManager()
 {
@@ -30,6 +31,8 @@ void PlayerManager::HandleEvent(real::Scene& scene)
 {
 	if (scene.GetName().find("Level") == std::string::npos)
 		return;
+
+	scene.Add(m_pHud);
 
 	for (const auto& pPlayer : m_PlayerPtrs)
 	{
@@ -56,6 +59,7 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 
 	if (m_PlayerPtrs.empty())
 	{
+		InitHud();
 		pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("characters/PeterPepper.png");
 		pInputMap = input.AddInputMap(InputMaps::gameplay);
 	}
@@ -128,4 +132,66 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 	}
 	
 	m_PlayerPtrs.push_back(std::shared_ptr<real::GameObject>(pCharacter));
+}
+
+void PlayerManager::InitHud()
+{
+	const auto pFont = real::ResourceManager::GetInstance().LoadFont("8-bit-hud.ttf", 10);
+	const auto pMiddleFont = real::ResourceManager::GetInstance().LoadFont("8-bit-hud.ttf", 16);
+	const auto pTitleFont = real::ResourceManager::GetInstance().LoadFont("8-bit-hud.ttf", 32);
+
+	using alignment = real::TextComponent::Alignment;
+
+	m_pHud = std::make_shared<real::GameObject>();
+	m_pHud->SetTag("HUD");
+	m_pHud->SetCanBeDestroyed(false);
+	m_pHud->AddComponent<real::TransformComponent>();
+
+	const auto pScoreText = m_pHud->CreateGameObject();
+	pScoreText->GetComponent<real::TransformComponent>()->SetLocalPosition(110,0);
+	pScoreText->AddComponent<real::TextureComponent>();
+	pScoreText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
+	pScoreText->GetComponent<real::TextComponent>()->SetText("1UP");
+	pScoreText->GetComponent<real::TextComponent>()->SetColor(Colors::red);
+	pScoreText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+
+	const auto pScoreCounter = m_pHud->CreateGameObject();
+	pScoreCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(110, 25);
+	pScoreCounter->AddComponent<real::TextureComponent>();
+	pScoreCounter->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
+	pScoreCounter->GetComponent<real::TextComponent>()->SetText("0");
+	pScoreCounter->GetComponent<real::TextComponent>()->SetColor(Colors::white);
+	pScoreCounter->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+
+	const auto pHighScoreText = m_pHud->CreateGameObject();
+	pHighScoreText->GetComponent<real::TransformComponent>()->SetLocalPosition(280,0);
+	pHighScoreText->AddComponent<real::TextureComponent>();
+	pHighScoreText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
+	pHighScoreText->GetComponent<real::TextComponent>()->SetText("HI-SCORE");
+	pHighScoreText->GetComponent<real::TextComponent>()->SetColor(Colors::red);
+	pHighScoreText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+
+	const auto pHighScoreCounter = m_pHud->CreateGameObject();
+	pHighScoreCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(280, 25);
+	pHighScoreCounter->AddComponent<real::TextureComponent>();
+	pHighScoreCounter->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
+	pHighScoreCounter->GetComponent<real::TextComponent>()->SetText("0");
+	pHighScoreCounter->GetComponent<real::TextComponent>()->SetColor(Colors::white);
+	pHighScoreCounter->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+
+	const auto pPepperText = m_pHud->CreateGameObject();
+	pPepperText->GetComponent<real::TransformComponent>()->SetLocalPosition(672, 0);
+	pPepperText->AddComponent<real::TextureComponent>();
+	pPepperText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
+	pPepperText->GetComponent<real::TextComponent>()->SetText("PEPPER");
+	pPepperText->GetComponent<real::TextComponent>()->SetColor(Colors::green);
+	pPepperText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::left);
+
+	const auto pPepperCounter = m_pHud->CreateGameObject();
+	pPepperCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(672, 25);
+	pPepperCounter->AddComponent<real::TextureComponent>();
+	pPepperCounter->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
+	pPepperCounter->GetComponent<real::TextComponent>()->SetText("0");
+	pPepperCounter->GetComponent<real::TextComponent>()->SetColor(Colors::white);
+	pPepperCounter->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::left);
 }
