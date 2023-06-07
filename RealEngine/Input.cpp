@@ -79,6 +79,7 @@ bool real::Input::ProcessInput()
 					if (e.key.keysym.scancode == (int)info.second)
 					{
 						command->SetKeyBoardInput(static_cast<int>(info.second));
+						command->SetInputController(nullptr);
 						command->Execute();
 					}
 				}
@@ -103,6 +104,7 @@ bool real::Input::ProcessInput()
 		if (pKeyboardState[info.second])
 		{
 			command->SetKeyBoardInput(static_cast<int>(info.second));
+			command->SetInputController(nullptr);
 			command->Execute();
 			//if (const auto moveCommand = dynamic_cast<MoveCommand*>(command))
 			//{
@@ -122,6 +124,7 @@ bool real::Input::ProcessInput()
 				if (pController->IsPressed(key.second) && key.first == static_cast<unsigned int>(pController->GetIndex()))
 				{
 					command.first->SetInputController(pController.get());
+					command.first->SetKeyBoardInput(-1);
 					command.first->Execute();
 				}
 				
@@ -132,6 +135,7 @@ bool real::Input::ProcessInput()
 				if (pController->IsDown(key.second) && key.first == static_cast<unsigned int>(pController->GetIndex()))
 				{
 					command.first->SetInputController(pController.get());
+					command.first->SetKeyBoardInput(-1);
 					command.first->Execute();
 				}
 				break;
@@ -141,6 +145,7 @@ bool real::Input::ProcessInput()
 				if (pController->IsUp(key.second) && key.first == static_cast<unsigned int>(pController->GetIndex()))
 				{
 					command.first->SetInputController(pController.get());
+					command.first->SetKeyBoardInput(-1);
 					command.first->Execute();
 				}
 				
@@ -151,6 +156,7 @@ bool real::Input::ProcessInput()
 				if (pController->HasLeftThumbStickMoved() && key.first == static_cast<unsigned int>(pController->GetIndex()))
 				{
 					command.first->SetInputController(pController.get());
+					command.first->SetKeyBoardInput(-1);
 					command.first->Execute();
 					//if (const auto moveCommand = dynamic_cast<MoveCommand*>(command.first))
 					//	moveCommand->SetDirection(pController->GetNormalizedLeftThumbStickPos());
@@ -162,6 +168,7 @@ bool real::Input::ProcessInput()
 				if (pController->HasRightThumbStickMoved() && key.first == static_cast<unsigned int>(pController->GetIndex()))
 				{
 					command.first->SetInputController(pController.get());
+					command.first->SetKeyBoardInput(-1);
 					command.first->Execute();
 				}
 				break;
@@ -211,6 +218,21 @@ real::InputMap* real::Input::AddInputMap(const std::string& name)
 	}
 
 	return pInputMapPtr;
+}
+
+real::InputMap* real::Input::GetInputMap(const std::string& name) const
+{
+	for (const auto& pInputMap : m_InputMapPtrs)
+	{
+		if (pInputMap->GetName() == name)
+		{
+			//m_pActiveInputMap = pInputMap.get();
+			return pInputMap;
+		}
+	}
+
+	Logger::LogWarning("InputManager => No input map found with the name {}", name);
+	return nullptr;
 }
 
 void real::Input::SetInputMapActive(const std::string& name)
