@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 
 #include "Input.h"
+#include "Locator.h"
 #include "Scene.h"
 
 void real::SceneManager::Update()
@@ -53,6 +54,7 @@ real::Scene& real::SceneManager::SetSceneActive(const std::string& name)
 			{
 				onSceneExit.Notify(*m_pActiveScene);
 				m_pActiveScene->RemoveAll();
+				Locator::GetAudioSystem().StopAllSounds();
 			}
 
 			m_pActiveScene = pScene;
