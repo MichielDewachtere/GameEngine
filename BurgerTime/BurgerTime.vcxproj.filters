@@ -117,6 +117,9 @@
     <ClCompile Include="Level03.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerJoinCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -197,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="Level03.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerJoinCommand.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
