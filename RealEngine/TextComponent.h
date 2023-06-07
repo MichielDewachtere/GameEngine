@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <string>
+#include <glm/vec4.hpp>
 
 #include "Component.h"
 
@@ -28,7 +29,10 @@ namespace real
 		void SetFont(const std::shared_ptr<Font>& pFont);
 
 		void SetColor(const SDL_Color& color);
+		void SetColor(const glm::vec4& color);
 		void SetColor(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a = 0);
+
+		void CenterText(bool centerText);
 
 		bool CanRender() const override { return false; }
 
@@ -37,7 +41,9 @@ namespace real
 		std::string m_pText{"empty"};
 		std::shared_ptr<Font> m_pFont{};
 		SDL_Color m_Color{ 255,255,255 };
+
+		bool m_CenterText{};
+		bool m_IsCentered{};
 	};
 }
-
 #endif // TEXTCOMPONENT_H
