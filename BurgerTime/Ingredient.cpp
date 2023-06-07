@@ -60,15 +60,16 @@ void Ingredient::PartIsTriggered()
 void Ingredient::InitCurrentPlatform()
 {
 	const auto platformPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::floor);
-	const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
+	const auto pCollider = GetOwner()->GetChildAt(0)->GetComponent<real::ColliderComponent>();
 
 	for (const auto& pPlatform : platformPtrs)
 	{
 		const auto pPlatformCollider = pPlatform->GetComponent<real::ColliderComponent>();
 
-		if (pPlatformCollider->IsOverlapping(*pCollider))
+		if (pPlatformCollider->IsEntireColliderOverlapping(*pCollider))
 		{
 			m_CurrentPlatform = pPlatform->GetId();
+			return;
 		}
 	}
 }
@@ -113,6 +114,9 @@ void Ingredient::Fall()
 		if (pOtherIngredient->HasComponent<Ingredient>() == false)
 			continue;
 
+		if (pOtherIngredient->GetComponent<Ingredient>()->GetIsFalling())
+			continue;
+
 		if (GetOwner()->GetId() == pOtherIngredient->GetId())
 			continue;
 
@@ -123,7 +127,7 @@ void Ingredient::Fall()
 
 		if (pIngredientCollider->IsOverlapping(*pIngredientOtherCollider))
 		{
-			pOtherIngredient->GetComponent<real::TransformComponent>()->Translate({ 0,6 });
+			//pOtherIngredient->GetComponent<real::TransformComponent>()->Translate({ 0,6 });
 			pOtherIngredient->GetComponent<Ingredient>()->SetIsFalling(true);
 		}
 	}
@@ -148,6 +152,7 @@ void Ingredient::Fall()
 			}
 
 			++m_PlatformsCrossed;
+			return;
 		}
 	}
 
