@@ -8,6 +8,8 @@
 #include <Scene.h>
 
 #include "GameInfo.h"
+#include "Logger.h"
+#include "PlayerManager.h"
 
 LoadNextSceneCommand::LoadNextSceneCommand(real::GameObject* object, std::string name)
 	: Command(object)
@@ -17,6 +19,12 @@ LoadNextSceneCommand::LoadNextSceneCommand(real::GameObject* object, std::string
 
 void LoadNextSceneCommand::Execute()
 {
+	if (PlayerManager::GetInstance().GetAmountOfPlayers() == 0)
+	{
+		real::Logger::LogError("LoadNextSceneCommand => No player found, can not start the game");
+		return;
+	}
+
 	real::SceneManager::GetInstance().SetSceneActive(m_Name);
 	real::Input::GetInstance().SetInputMapActive(real::SceneManager::GetInstance().GetActiveScene().GetDefaultInputMap());
 
