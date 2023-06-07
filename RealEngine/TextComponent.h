@@ -51,7 +51,7 @@ namespace real
 		SDL_Color m_Color{ 255,255,255 };
 
 		glm::vec2 m_OriginalPos{};
-		Alignment m_CurrentAlignment{ Alignment::left };
+		Alignment m_CurrentAlignment{ Alignment::right };
 	};
 }
 #endif // TEXTCOMPONENT_H

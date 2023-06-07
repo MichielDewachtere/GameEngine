@@ -44,7 +44,7 @@ void real::TextComponent::Update()
 		{
 		case Alignment::left:
 		{
-			const auto newPos = m_OriginalPos;
+			const auto newPos = m_OriginalPos - glm::vec2{static_cast<float>(pTexture->GetSize().x), 0 };
 			GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
 			break;
 		}
@@ -56,7 +56,7 @@ void real::TextComponent::Update()
 		}
 		case Alignment::right:
 		{
-			const auto newPos = m_OriginalPos - glm::vec2{static_cast<float>(pTexture->GetSize().x), 0 };
+			const auto newPos = m_OriginalPos;
 			GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
 			break;
 		}
