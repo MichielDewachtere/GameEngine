@@ -27,10 +27,13 @@ namespace real
 
 		void RemoveObserver(Observer<Args...>* pObserver)
 		{
-			m_ObserverPtrs.erase(std::remove(
-				m_ObserverPtrs.begin(),
-				m_ObserverPtrs.end(), pObserver),
-				m_ObserverPtrs.end());
+			if (m_ObserverPtrs.empty() == false)
+			{
+				m_ObserverPtrs.erase(std::remove(
+					m_ObserverPtrs.begin(),
+					m_ObserverPtrs.end(), pObserver),
+					m_ObserverPtrs.end());
+			}
 		}
 
 		void Notify(Args... args)
