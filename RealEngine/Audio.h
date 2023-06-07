@@ -35,6 +35,8 @@ namespace real
 		 */
 		virtual void Play(const Sound sound, const int volume = -1, const int loops = -1) = 0;
 		virtual void Stop(const Sound sound) = 0;
+		virtual void StopAllSounds() = 0;
+		virtual void Mute(bool mute) = 0;
 	protected:
 	};
 }

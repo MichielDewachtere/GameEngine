@@ -14,6 +14,8 @@ namespace real
 		virtual void Update() override {}
 		virtual void Play(const Sound, const int, const int) override {}
 		virtual void Stop(const Sound) override {}
+		virtual void StopAllSounds() override {}
+		virtual void Mute(bool mute) override {}
 	};
 }
 #endif // NULLAUDIO_H

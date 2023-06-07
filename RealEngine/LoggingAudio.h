@@ -13,9 +13,11 @@ namespace real
 		LoggingAudio(Audio* audio) : m_RealAudio(audio) {}
 		virtual ~LoggingAudio() override = default;
 
-		void Update() override;
-		void Play(const Sound sound, const int volume, const int loops) override;
-		void Stop(const Sound sound) override;
+		virtual void Update() override;
+		virtual void Play(const Sound sound, const int volume, const int loops) override;
+		virtual void Stop(const Sound sound) override;
+		virtual void StopAllSounds() override;
+		virtual void Mute(bool mute) override;
 	private:
 		std::unique_ptr<Audio> m_RealAudio;
 	};

@@ -19,8 +19,10 @@ namespace real
 
 		void Update() override;
 
-		void Play(const Sound sound, const int volume = -1, const int loops = -1) override;
-		void Stop(const Sound sound) override;
+		virtual void Play(const Sound sound, const int volume = -1, const int loops = -1) override;
+		virtual void Stop(const Sound sound) override;
+		virtual void StopAllSounds() override;
+		virtual void Mute(bool mute) override;
 
 	private:
 		class SDLAudioImpl;

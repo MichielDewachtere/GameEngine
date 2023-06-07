@@ -7,6 +7,8 @@
 #include <mutex>
 #include <thread>
 
+#include "Logger.h"
+
 #define AMOUNT_OF_CHANNELS 2
 
 namespace real
@@ -101,12 +103,33 @@ namespace real
 
 			m_Tail = (m_Tail + 1) % static_cast<int>(max_pending);
 		}
-		void Stop(const Sound /*sound*/) override
+		void Stop(const Sound sound) override
 		{
-			//if (IsLoaded(id) == false)
+			//if (IsLoaded(sound) == false)
 			//	return;
+			//
+			//if (sound)
+			//Mix_HaltChannel()
 
-			
+			Logger::LogWarning("SDLAudio => The stop function is not yet implemented, {} can not be stopped this way", sound.fileName);
+		}
+		void StopAllSounds() override
+		{
+			Mix_HaltChannel(-1);
+		}
+		void Mute(bool mute) override
+		{
+			m_IsMuted = mute;
+
+			const int numChannels = Mix_AllocateChannels(-1);
+
+			for (int i = 0; i < numChannels; ++i)
+			{
+				if (mute)
+					Mix_Volume(i, 0);
+				else
+					Mix_Volume(i, MIX_MAX_VOLUME);
+			}
 		}
 
 	private:
@@ -147,9 +170,12 @@ namespace real
 				printf("SDL_mixer could not play sound effect! SDL_mixer Error: %s\n", Mix_GetError());
 			}
 
-			Mix_Volume(result, sound.volume);
+			if (m_IsMuted)
+				Mix_Volume(result, 0);
+			else
+				Mix_Volume(result, sound.volume);
 		}
-	private:
+
 		std::map<Sound, Mix_Chunk*> m_AudioClips;
 		//std::map<Sound, std::unique_ptr<Mix_Chunk>> m_AudioClips;
 
@@ -160,6 +186,8 @@ namespace real
 		static constexpr size_t max_pending = 16;
 		std::array<Sound, max_pending> m_Pending{};
 		//int m_NumPending{};
+
+		bool m_IsMuted{};
 	};
 };
 
@@ -181,4 +209,14 @@ void real::SDLAudio::Play(const Sound sound, const int volume, const int loops)
 void real::SDLAudio::Stop(const Sound sound)
 {
 	m_pImpl->Stop(sound);
+}
+
+void real::SDLAudio::StopAllSounds()
+{
+	m_pImpl->StopAllSounds();
+}
+
+void real::SDLAudio::Mute(bool mute)
+{
+	m_pImpl->Mute(mute);
 }
