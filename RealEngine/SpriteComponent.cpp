@@ -1,0 +1,94 @@
+﻿#include "SpriteComponent.h"
+
+#include <glm/vec2.hpp>
+
+#include "GameTime.h"
+#include "Renderer.h"
+#include "GameObject.h"
+#include "ResourceManager.h"
+#include "Texture2D.h"
+#include "TransformComponent.h"
+
+
+real::SpriteComponent::SpriteComponent(GameObject* pOwner, SpriteSheet spriteSheet)
+	: Component(pOwner)
+	, m_SpriteSheet(std::move(spriteSheet))
+{
+	m_Rect.w = m_SpriteSheet.pTexture->GetSize().x / m_SpriteSheet.columns;
+	m_Rect.h = m_SpriteSheet.pTexture->GetSize().y / m_SpriteSheet.rows;
+}
+
+void real::SpriteComponent::Update()
+{
+	if (m_Pause || m_Stop)
+		return;
+
+	m_RenderPos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
+
+	m_AccuTime += Time::GetInstance().GetElapsed();
+
+	if (m_AccuTime > m_SpriteSheet.animTimer)
+	{
+		//UpdateCurrIdx
+		++m_CurrIdx;
+		if (m_CurrIdx >= m_EndIdx)
+		{
+			++m_AccuLoops;
+
+			if (m_Loops != -1 && m_AccuLoops > m_Loops)
+			{
+				m_Stop = true;
+			}
+
+			m_CurrIdx = m_StartIdx;
+		}
+
+		//Move rect
+		m_Rect.x = (m_CurrIdx % m_SpriteSheet.columns) * m_Rect.w;
+		m_Rect.y = (m_CurrIdx / m_SpriteSheet.columns) * m_Rect.h;
+
+		m_AccuTime = 0.f;
+	}
+}
+
+void real::SpriteComponent::Render() const
+{
+	SDL_Rect dst;
+	dst.x = static_cast<int>(m_RenderPos.x);
+	dst.y = static_cast<int>(m_RenderPos.y);
+	dst.w = static_cast<int>(m_Rect.w);
+	dst.h = static_cast<int>(m_Rect.h);
+
+	const SDL_Point rotationCenter{ dst.w / 2, dst.h / 2 };
+
+	SDL_RenderCopyEx(Renderer::GetInstance().GetSDLRenderer(), m_SpriteSheet.pTexture->GetSDLTexture(), &m_Rect, &dst, 0, &rotationCenter, m_Flip);
+}
+
+void real::SpriteComponent::PlayAnimation(int startIdx, int endIdx, int loops)
+{
+	m_AccuTime = 0.f;
+
+	m_StartIdx = startIdx;
+	m_EndIdx = endIdx;
+	m_CurrIdx = m_StartIdx;
+
+	m_Loops = loops;
+
+	m_Pause = false;
+	m_Stop = false;
+}
+
+void real::SpriteComponent::Pause(bool value)
+{
+	m_Pause = value;
+}
+
+void real::SpriteComponent::FlipTexture(SDL_RendererFlip flip)
+{
+	m_Flip = flip;
+}
+
+glm::vec2 real::SpriteComponent::GetSpriteSize() const
+{
+	return glm::vec2(m_Rect.w, m_Rect.h);
+}
