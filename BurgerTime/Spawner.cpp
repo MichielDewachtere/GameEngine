@@ -29,7 +29,7 @@ void Spawner::Update()
 		case EnemyTypes::hotDog:
 			real::Logger::LogInfo("Spawner => Hotdog should spawn");
 
-			//SpawnEnemyType(Tags::hot_dog, 100);
+			SpawnEnemyType(Tags::hot_dog, 100);
 			break;
 		case EnemyTypes::egg:
 			real::Logger::LogInfo("Spawner => Egg should spawn");
@@ -39,7 +39,7 @@ void Spawner::Update()
 		case EnemyTypes::pickle:
 			real::Logger::LogInfo("Spawner => Pickle should spawn");
 
-			//SpawnEnemyType(Tags::pickle, 100);
+			SpawnEnemyType(Tags::pickle, 100);
 			break;
 		}
 
@@ -82,21 +82,19 @@ void Spawner::SpawnEnemyType(const std::string& type, int /*points*/)
 	spriteSheet.pTexture = pTexture;
 	spriteSheet.rows = 2;
 	spriteSheet.columns = 6;
-	spriteSheet.animTimer = 0.1f;
+	spriteSheet.animTimer = 1 / 10.f;
 
 	enemy->SetTag(type);
 	enemy->GetComponent<real::TransformComponent>()->SetWorldPosition(GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition());
-	enemy->GetComponent<real::TransformComponent>()->Translate(0, static_cast<float>(-48 + 1));
-	//enemy->AddComponent<real::TextureComponent>()->SetTexture(pTexture);
 	enemy->AddComponent<real::SpriteComponent>(spriteSheet);
-	enemy->GetComponent<real::SpriteComponent>()->PlayAnimation(2, 4);
-	//enemy->GetComponent<real::SpriteComponent>();
-	enemy->AddComponent<real::ColliderComponent>(glm::vec2{48, 48})->EnableDebugRendering(true, Colors::white);
+	const auto spriteSize = enemy->GetComponent<real::SpriteComponent>()->GetSpriteSize();
+	enemy->AddComponent<real::ColliderComponent>(spriteSize)->EnableDebugRendering(true, Colors::white);
 	enemy->AddComponent<BaseEnemy>();
+	enemy->GetComponent<real::TransformComponent>()->Translate(0, -spriteSize.y + 1);
 
 	const auto core = enemy->CreateGameObject();
-	core->GetComponent<real::TransformComponent>()->SetLocalPosition(12, 12);
-	core->AddComponent<real::ColliderComponent>(glm::vec2{24, 24})->EnableDebugRendering(true, Colors::purple);
+	core->GetComponent<real::TransformComponent>()->SetLocalPosition(spriteSize.x / 4, spriteSize.y / 4);
+	core->AddComponent<real::ColliderComponent>(glm::vec2{spriteSize.x / 2, spriteSize.y / 2})->EnableDebugRendering(true, Colors::purple);
 
 	enemy->Start();
 }
