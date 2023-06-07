@@ -50,7 +50,6 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		return;
 	}
 
-	real::Logger::LogInfo("A player has been added");
 
 	auto& input = real::Input::GetInstance();
 	real::InputMap* pInputMap;
@@ -62,12 +61,20 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		InitHud();
 		pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("characters/PeterPepper.png");
 		pInputMap = input.AddInputMap(InputMaps::gameplay);
+		real::Logger::LogInfo("Player 1 has been initialized");
 	}
 	else if (m_PlayerPtrs.size() == 1)
 	{
+		if (useKeyboard && m_KeyboardInUse)
+		{
+			real::Logger::LogWarning("The keyboard is already linked to an existing player");
+			return;
+		}
+
 		input.EnableCoOp(true);
 		pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("characters/SallySalt.png");
 		pInputMap = input.GetInputMap(InputMaps::gameplay);
+		real::Logger::LogInfo("Player 2 has been initialized");
 	}
 	else
 	{
