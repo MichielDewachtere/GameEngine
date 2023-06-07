@@ -24,6 +24,8 @@ void MainMenu::Load()
 	auto& input = real::Input::GetInstance();
 	const auto pInputMap = input.AddInputMap(InputMaps::menu);
 
+	using alignment = real::TextComponent::Alignment;
+
 	const auto pFont = real::ResourceManager::GetInstance().LoadFont("8-bit-hud.ttf", 10);
 	const auto pMiddleFont = real::ResourceManager::GetInstance().LoadFont("8-bit-hud.ttf", 16);
 	const auto pTitleFont = real::ResourceManager::GetInstance().LoadFont("8-bit-hud.ttf", 32);
@@ -34,7 +36,7 @@ void MainMenu::Load()
 	pTitleText->AddComponent<real::TextComponent>()->SetFont(pTitleFont);
 	pTitleText->GetComponent<real::TextComponent>()->SetText("Burger Time");
 	pTitleText->GetComponent<real::TextComponent>()->SetColor(Colors::red);
-	pTitleText->GetComponent<real::TextComponent>()->CenterText(true);
+	pTitleText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
 
 	//const auto pKeyBoardText = pTitleText->CreateGameObject<real::TextObject>();
 	//pKeyBoardText->InitComponents({ 0,20 }, pFont, "Keyboard: ");
@@ -45,7 +47,7 @@ void MainMenu::Load()
 	pControlsText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pControlsText->GetComponent<real::TextComponent>()->SetText("Controls");
 	pControlsText->GetComponent<real::TextComponent>()->SetColor(Colors::white);
-	pControlsText->GetComponent<real::TextComponent>()->CenterText(true);
+	pControlsText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
 
 	const auto pKeyBoardText = pControlsText->CreateGameObject();
 	pKeyBoardText->GetComponent<real::TransformComponent>()->SetLocalPosition(-m_Settings.width / 6.f, 40);
@@ -69,7 +71,7 @@ void MainMenu::Load()
 	pText3->GetComponent<real::TransformComponent>()->SetLocalPosition(-m_Settings.width / 6.f, 100);
 	pText3->AddComponent<real::TextureComponent>();
 	pText3->AddComponent<real::TextComponent>()->SetFont(pFont);
-	pText3->GetComponent<real::TextComponent>()->SetText("Mute                  M");
+	pText3->GetComponent<real::TextComponent>()->SetText("Mute                 M");
 
 
 	const auto pControllerText = pControlsText->CreateGameObject();
@@ -94,16 +96,14 @@ void MainMenu::Load()
 	pText6->GetComponent<real::TransformComponent>()->SetLocalPosition(-m_Settings.width / 6.f, 200);
 	pText6->AddComponent<real::TextureComponent>();
 	pText6->AddComponent<real::TextComponent>()->SetFont(pFont);
-	pText6->GetComponent<real::TextComponent>()->SetText("Mute                  M");
-
+	pText6->GetComponent<real::TextComponent>()->SetText("Mute                 Y");
+	
 	const auto pJoinText = CreateGameObject();
 	pJoinText->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 350);
 	pJoinText->AddComponent<real::TextureComponent>();
 	pJoinText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pJoinText->GetComponent<real::TextComponent>()->SetText("Press ENTER/A to join");
-	pJoinText->GetComponent<real::TextComponent>()->CenterText(true);
-
-
+	pJoinText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
 
 	//const auto pContinueText = this->CreateGameObject();
 	//pContinueText->GetComponent<real::TransformComponent>()->SetLocalPosition(320, 450);
