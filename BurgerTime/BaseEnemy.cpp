@@ -22,29 +22,16 @@ BaseEnemy::BaseEnemy(real::GameObject* pOwner)
 
 BaseEnemy::~BaseEnemy()
 {
-	//for (const auto& pPlayer : m_PlayerPtrs)
-	//{
-	//	pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.RemoveObserver(this);
-	//}
+	if (GetOwner()->IsMarkedForDestroy() == false)
+	{
+		for (const auto& pPlayer : m_PlayerPtrs)
+		{
+			pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.RemoveObserver(this);
+		}
 
-	//if (m_pWorldBorder != nullptr)
-	//{
-	//	delete m_pWorldBorder;
-	//	m_pWorldBorder = nullptr;
-	//}
+		real::SceneManager::GetInstance().onSceneExit.RemoveObserver(this);
+	}
 
-
-	//if (m_pCurrentIngredient != nullptr)
-	//{
-	//	delete m_pCurrentIngredient;
-	//	m_pCurrentIngredient = nullptr;
-	//}
-
-	//m_FloorPtrs.clear();
-	//m_HiddenStairPtrs.clear();
-	//m_IngredientPtrs.clear();
-	//m_PlayerPtrs.clear();
-	//m_StairPtrs.clear();
 }
 
 void BaseEnemy::Start()
@@ -206,11 +193,10 @@ void BaseEnemy::Update()
 
 		const auto currentStairCollider = real::SceneManager::GetInstance().GetActiveScene().FindObject(m_CurrentStair)->GetComponent<real::ColliderComponent>();
 
-		// turn enemy around if it is gonna be out of bounds.
-		if (CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::down) == false)
+		/// turn enemy around if it is gonna be out of bounds.
+		if (CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::down) == false && m_Direction == glm::vec2{ 0, 1 })
 			m_Direction = { 0, 1 };
-
-		if (CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::up) == false)
+		if (CanMoveTo(enemyPos, pCollider->GetSize(), *currentStairCollider, Direction::up) == false && m_Direction == glm::vec2{ 0, -1 })
 			m_Direction = { 0, -1 };
 
 		MoveEnemy();
