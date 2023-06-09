@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include "SceneManager.h"
 
+#include "GameTime.h"
 #include "Input.h"
 #include "Locator.h"
 #include "Scene.h"
@@ -9,6 +10,18 @@ void real::SceneManager::Update()
 {
 	if (m_pActiveScene)
 		m_pActiveScene->Update();
+
+	if (m_LoadWithTimer)
+	{
+		m_LoadCountDown -= Time::GetInstance().GetElapsed();
+		if (m_LoadCountDown <= 0)
+		{
+			m_LoadWithTimer = false;
+			m_LoadCountDown = 0;
+
+			SetSceneActive(m_SceneToLoad.get());
+		}
+	}
 }
 
 void real::SceneManager::Render()
@@ -37,15 +50,33 @@ real::Scene& real::SceneManager::AddScene(real::Scene* scene)
 	return *newScene;
 }
 
-real::Scene& real::SceneManager::SetSceneActive(const std::string& name)
+real::Scene& real::SceneManager::SetSceneActive(const std::string& name, float timer)
 {
+	timer = std::max(timer, 0.f);
+
+	if (timer > 0 + FLT_EPSILON)
+	{
+		m_LoadWithTimer = true;
+		m_LoadCountDown = timer;
+
+		for (const auto& pScene : m_ScenePtrs)
+		{
+			if (pScene->GetName() == name)
+			{
+				m_SceneToLoad = pScene;
+				return *pScene;
+			}
+		}
+
+
+		return *m_pActiveScene;
+	}
+
 	for (const auto& pScene : m_ScenePtrs)
 	{
 		if (pScene->GetName() == name)
 		{
-			//m_pActiveScene = pScene;
-  			//pScene->Start();
-			//return *pScene;
+			//return SetSceneActive(pScene.get(), timer);
 
 			if (pScene->IsLoaded() == false)
 				pScene->Load();
@@ -67,9 +98,40 @@ real::Scene& real::SceneManager::SetSceneActive(const std::string& name)
 			return *pScene;
 		}
 	}
-	
 
 	throw std::runtime_error("Could not find a scene with the name \"" + name + "\". Please ensure that the name is spelled correctly and that the scene exists.");
+}
 
-	//return *m_pActiveScene;
+real::Scene& real::SceneManager::SetSceneActive(real::Scene* scene, float timer)
+{
+	timer = std::max(timer, 0.f);
+
+	if (timer > 0 + FLT_EPSILON)
+	{
+		m_LoadWithTimer = true;
+		m_LoadCountDown = timer;
+
+		m_SceneToLoad = std::shared_ptr<Scene>(scene);
+
+		return *m_SceneToLoad;
+	}
+
+	if (scene->IsLoaded() == false)
+		scene->Load();
+
+	if (m_pActiveScene != nullptr)
+	{
+		onSceneExit.Notify(*m_pActiveScene);
+		m_pActiveScene->RemoveAll();
+		Locator::GetAudioSystem().StopAllSounds();
+	}
+
+	m_pActiveScene = std::shared_ptr<Scene>(scene);
+	//pScene->Start();
+
+	onSceneLoaded.Notify(*m_pActiveScene);
+
+	Input::GetInstance().ReloadCommands();
+
+	return *scene;
 }

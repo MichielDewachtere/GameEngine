@@ -15,7 +15,8 @@ namespace real
 	{
 	public:
 		Scene& AddScene(Scene* scene);
-		Scene& SetSceneActive(const std::string& name);
+		Scene& SetSceneActive(const std::string& name, float timer = 0);
+		Scene& SetSceneActive(Scene* scene, float timer = 0);
 
 		Scene& GetActiveScene() const { return *m_pActiveScene; }
 
@@ -30,6 +31,11 @@ namespace real
 		SceneManager() = default;
 		std::vector<std::shared_ptr<Scene>> m_ScenePtrs;
 		std::shared_ptr<Scene> m_pActiveScene{nullptr};
+
+		bool m_LoadWithTimer{};
+		float m_LoadCountDown{};
+		//std::string m_SceneToLoad{ "empty" };
+		std::shared_ptr<Scene> m_SceneToLoad{};
 	};
 }
 
