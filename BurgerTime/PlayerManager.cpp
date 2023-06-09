@@ -1,5 +1,7 @@
 ﻿#include "PlayerManager.h"
 
+//#include <algorithm>
+
 #include <ColliderComponent.h>
 #include <Input.h>
 #include <InputMap.h>
@@ -14,6 +16,7 @@
 #include "Logger.h"
 #include "MoveCommand.h"
 #include "PlayerCharacter.h"
+#include "SpriteComponent.h"
 #include "StunCommand.h"
 #include "TextComponent.h"
 
@@ -32,14 +35,39 @@ void PlayerManager::HandleEvent(real::Scene& scene)
 	if (scene.GetName().find("Level") == std::string::npos)
 		return;
 
+	++m_CurrentLevel;
+	std::cout << m_CurrentLevel << '\n';
+
 	scene.Add(m_pHud);
 
-	for (const auto& pPlayer : m_PlayerPtrs)
+	for (int i = 0; i < m_PlayerPtrs.size(); ++i)
 	{
-		const auto playerPos = scene.FindObjectsWithTag(Tags::player_spawn)[0]->GetComponent<real::TransformComponent>()->GetWorldPosition();
-		pPlayer->GetComponent<real::TransformComponent>()->SetWorldPosition(playerPos);
-		scene.Add(pPlayer);
+		const auto playerPos = scene.FindObjectsWithTag(Tags::player_spawn)[i]->GetComponent<real::TransformComponent>()->GetWorldPosition();
+		m_PlayerPtrs[i]->GetComponent<real::TransformComponent>()->SetWorldPosition(playerPos);
+		m_PlayerPtrs[i]->GetComponent<HealthComponent>()->SetSpawnPoint(playerPos);
+
+		scene.Add(m_PlayerPtrs[i]);
 	}
+
+	m_AmountOfPlates = 0;
+	for (const auto& pIngredient : scene.FindObjectsWithTag(Tags::ingredient))
+	{
+		++m_AmountOfPlates;
+		pIngredient->GetComponent<Ingredient>()->landedOnPlate.AddObserver(this);
+	}
+}
+
+void PlayerManager::HandleEvent(Ingredient& ingredient)
+{
+	--m_AmountOfPlates;
+
+	std::cout << m_AmountOfPlates;
+
+	ingredient.landedOnPlate.RemoveObserver(this);
+
+	if (m_AmountOfPlates == 15)
+		PlayerWins();
+		//real::SceneManager::GetInstance().SetSceneActive(Scenes::level03);
 }
 
 void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
@@ -50,16 +78,21 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		return;
 	}
 
-
 	auto& input = real::Input::GetInstance();
 	real::InputMap* pInputMap;
 
-	std::shared_ptr<real::Texture2D> pCharacterTexture;
+	std::shared_ptr<real::Texture2D> pCharacterSpriteSheetTexture;
+	real::SpriteSheet spriteSheet;
+	spriteSheet.columns = 9;
+	spriteSheet.rows = 2;
+	spriteSheet.animTimer = 1 / 10.f;
 
 	if (m_PlayerPtrs.empty())
 	{
 		InitHud();
-		pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("characters/PeterPepper.png");
+		pCharacterSpriteSheetTexture = real::ResourceManager::GetInstance().LoadTexture("characters/PeterPepperSpriteSheet.png");
+		spriteSheet.pTexture = pCharacterSpriteSheetTexture;
+
 		pInputMap = input.AddInputMap(InputMaps::gameplay);
 		real::Logger::LogInfo("Player 1 has been initialized");
 	}
@@ -72,7 +105,9 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		}
 
 		input.EnableCoOp(true);
-		pCharacterTexture = real::ResourceManager::GetInstance().LoadTexture("characters/SallySalt.png");
+		pCharacterSpriteSheetTexture = real::ResourceManager::GetInstance().LoadTexture("characters/SallySaltSpriteSheet.png");
+		spriteSheet.pTexture = pCharacterSpriteSheetTexture;
+
 		pInputMap = input.GetInputMap(InputMaps::gameplay);
 		real::Logger::LogInfo("Player 2 has been initialized");
 	}
@@ -88,11 +123,12 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 	pCharacter->SetTag(Tags::player);
 	pCharacter->SetCanBeDestroyed(false);
 	pCharacter->AddComponent<real::TransformComponent>()->SetLocalPosition(288, 423);
-	pCharacter->AddComponent<real::TextureComponent>()->SetTexture(pCharacterTexture);
+	pCharacter->AddComponent<real::SpriteComponent>(spriteSheet)->SelectSprite(1);
+	const auto spriteSize = pCharacter->GetComponent<real::SpriteComponent>()->GetSpriteSize();
 	pCharacter->AddComponent<HealthComponent>()->SetLives(4);
 	pCharacter->GetComponent<HealthComponent>()->SetSpawnPoint(pCharacter->GetComponent<real::TransformComponent>()->GetWorldPosition());
 	pCharacter->AddComponent<PlayerCharacter>();
-	pCharacter->AddComponent<real::ColliderComponent>(pCharacterTexture->GetSize())->EnableDebugRendering(false);
+	pCharacter->AddComponent<real::ColliderComponent>(spriteSize)->EnableDebugRendering(false);
 
 	const auto pFeet = pCharacter->CreateGameObject();
 	pFeet->SetCanBeDestroyed(false);
@@ -140,6 +176,18 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 	
 	m_PlayerPtrs.push_back(std::shared_ptr<real::GameObject>(pCharacter));
 }
+
+//int PlayerManager::GetPlayerIndex(const real::GameObject& player) const
+//{
+//	const auto it = std::find(m_PlayerPtrs.begin(), m_PlayerPtrs.end(), player);
+//	if (it != m_PlayerPtrs.end())
+//	{
+//		const size_t position = std::distance(m_PlayerPtrs.begin(), it);
+//		return position;
+//	}
+//
+//	return -1;
+//}
 
 void PlayerManager::InitHud()
 {
@@ -201,4 +249,23 @@ void PlayerManager::InitHud()
 	pPepperCounter->GetComponent<real::TextComponent>()->SetText("0");
 	pPepperCounter->GetComponent<real::TextComponent>()->SetColor(Colors::white);
 	pPepperCounter->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::left);
+}
+
+void PlayerManager::PlayerWins()
+{
+	//TODO : set animation
+	//for (const auto& pPlayer: m_PlayerPtrs)
+	//{
+	//	pPlayer->GetComponent<real::SpriteComponent>()->PlayAnimation()
+	//}
+
+	if (m_CurrentLevel <= 3)
+	{
+		std::string nextLevel = "Level0" + std::to_string(m_CurrentLevel + 1);
+		real::SceneManager::GetInstance().SetSceneActive(nextLevel, 3.f);
+	}
+	else
+	{
+		
+	}
 }

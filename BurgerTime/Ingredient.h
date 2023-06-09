@@ -3,6 +3,8 @@
 
 #include <Component.h>
 
+#include "Subject.h"
+
 namespace real
 {
 	class ColliderComponent;
@@ -30,6 +32,8 @@ public:
 	void SetIsFalling(bool isFalling) { m_IsFalling = isFalling; }
 	bool GetIsFalling() const { return m_IsFalling; }
 	int GetFallSpeed() const { return m_FallSpeed; }
+
+	real::Subject<Ingredient&> landedOnPlate{};
 
 private:
 	//bool m_IsActive{ true };

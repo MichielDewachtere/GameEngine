@@ -172,7 +172,11 @@ void Ingredient::Fall()
 			pPlateTransform->Translate({ 0, static_cast<float>(-size.y) - offset });
 
 			GetOwner()->SetTag(Tags::empty);
-			GetOwner()->RemoveComponent<Ingredient>();
+
+			landedOnPlate.Notify(*this);
+
+			//if (GetOwner()->IsMarkedForDestroy() == false)
+			//GetOwner()->RemoveComponent<Ingredient>();
 		}
 	}
 }
