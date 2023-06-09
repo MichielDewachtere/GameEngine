@@ -1,6 +1,9 @@
 {
     "levelTexturePath": "Levels/Level02.png",
-    "player_spawn" : [288,518],
+    "player_spawn": [
+        [288,518],
+        [288,422]
+    ],
     "floors": [
         [0,39,624],
         [0,87,336],

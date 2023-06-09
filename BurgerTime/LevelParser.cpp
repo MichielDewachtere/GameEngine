@@ -53,9 +53,12 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
 
     // PLAYER SPAWN
     const rapidjson::Value& playerPos = document["player_spawn"].GetArray();
-    const auto pPlayerSpawn = pLevel->CreateGameObject();
+	auto pPlayerSpawn = pLevel->CreateGameObject();
     pPlayerSpawn->SetTag(Tags::player_spawn);
-    pPlayerSpawn->GetComponent<real::TransformComponent>()->SetLocalPosition(playerPos[0].GetFloat(), playerPos[1].GetFloat() - 47.f);
+    pPlayerSpawn->GetComponent<real::TransformComponent>()->SetLocalPosition(playerPos[0][0].GetFloat(), playerPos[0][1].GetFloat() - 47.f);
+    pPlayerSpawn = pLevel->CreateGameObject();
+    pPlayerSpawn->SetTag(Tags::player_spawn);
+    pPlayerSpawn->GetComponent<real::TransformComponent>()->SetLocalPosition(playerPos[1][0].GetFloat(), playerPos[1][1].GetFloat() - 47.f);
 
     // FLOORS
     for (const auto& floor : document["floors"].GetArray())
