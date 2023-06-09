@@ -12,6 +12,7 @@
 #include "HealthComponent.h"
 #include "Ingredient.h"
 #include "PlayerCharacter.h"
+#include "PlayerManager.h"
 #include "Spawner.h"
 #include "SpriteComponent.h"
 
@@ -31,6 +32,7 @@ BaseEnemy::~BaseEnemy()
 		}
 
 		real::SceneManager::GetInstance().onSceneExit.RemoveObserver(this);
+		PlayerManager::GetInstance().levelHasEnded.RemoveObserver(this);
 	}
 }
 
@@ -67,6 +69,8 @@ void BaseEnemy::Start()
 	{
 		pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.AddObserver(this);
 	}
+
+	PlayerManager::GetInstance().levelHasEnded.AddObserver(this);
 }
 
 void BaseEnemy::Update()
@@ -371,7 +375,17 @@ void BaseEnemy::Update()
 
 		break;
 	}
+	case EnemyState::pause:
+	{
+		GetOwner()->GetComponent<real::SpriteComponent>()->Pause(true);
+		break;
 	}
+	}
+}
+
+void BaseEnemy::HandleEvent()
+{
+	m_CurrentState = EnemyState::pause;
 }
 
 void BaseEnemy::HandleEvent(bool pepperActive)
@@ -386,6 +400,7 @@ void BaseEnemy::HandleEvent(real::Scene&)
 		pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.RemoveObserver(this);
 	}
 
+	PlayerManager::GetInstance().levelHasEnded.RemoveObserver(this);
 	real::SceneManager::GetInstance().onSceneExit.RemoveObserver(this);
 }
 

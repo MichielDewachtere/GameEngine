@@ -9,7 +9,8 @@
 
 class BaseEnemy : public real::Component,
 	public real::Observer<bool>,
-	public real::Observer<real::Scene&>
+	public real::Observer<real::Scene&>,
+	public real::Observer<>
 {
 public:
 	explicit BaseEnemy(real::GameObject* pOwner);
@@ -25,6 +26,7 @@ public:
 
 	bool CanRender() const override { return false; }
 
+	void HandleEvent() override;
 	void HandleEvent(bool) override;
 	void HandleEvent(real::Scene&) override;
 	void OnSubjectDestroy() override {}
@@ -37,7 +39,8 @@ private:
 		fall,
 		crushed,
 		stun,
-		dead
+		dead,
+		pause
 	};
 	EnemyState m_CurrentState{ EnemyState::outOfBounds };
 
