@@ -36,8 +36,10 @@ namespace real
 		void Render() const override;
 		bool CanRender() const override { return !m_Stop; }
 
-		void PlayAnimation(int startIdx = 0, int endIdx = 0, int loops = -1);
-		void UpdateAnimation(int startIdx = 0, int endIdx = 0, int loops = -1);
+		void SelectSprite(int idx);
+
+		void PlayAnimation(int startIdx, int endIdx, int loops = -1);
+		void UpdateAnimation(int startIdx, int endIdx, int loops = -1);
 		bool IsAnimationPlaying() const { return m_IsAnimationPlaying; }
 		void Pause(bool value);
 		void Stop(bool value);

@@ -67,6 +67,14 @@ void real::SpriteComponent::Render() const
 	SDL_RenderCopyEx(Renderer::GetInstance().GetSDLRenderer(), m_SpriteSheet.pTexture->GetSDLTexture(), &m_Rect, &dst, 0, &rotationCenter, m_Flip);
 }
 
+void real::SpriteComponent::SelectSprite(int idx)
+{
+	m_Pause = true;
+
+	m_Rect.x = (idx % m_SpriteSheet.columns) * m_Rect.w;
+	m_Rect.y = (idx / m_SpriteSheet.columns) * m_Rect.h;
+}
+
 void real::SpriteComponent::PlayAnimation(int startIdx, int endIdx, int loops)
 {
 	m_AccuTime = 0.f;
