@@ -6,6 +6,7 @@
 #include <SceneManager.h>
 #include <GameObject.h>
 #include <GameTime.h>
+#include <glm/geometric.hpp>
 
 #include "GameInfo.h"
 #include "HealthComponent.h"
@@ -31,7 +32,6 @@ BaseEnemy::~BaseEnemy()
 
 		real::SceneManager::GetInstance().onSceneExit.RemoveObserver(this);
 	}
-
 }
 
 void BaseEnemy::Start()
@@ -389,9 +389,25 @@ void BaseEnemy::HandleEvent(real::Scene&)
 	real::SceneManager::GetInstance().onSceneExit.RemoveObserver(this);
 }
 
-real::GameObject* BaseEnemy::GetClosestPlayer(const std::vector<real::GameObject*>&)
+real::GameObject* BaseEnemy::GetClosestPlayer(const std::vector<real::GameObject*>& playerPtrs) const
 {
-	return nullptr;
+	real::GameObject* pClosestPlayer{};
+	float closestDistance = FLT_MAX;
+
+	for (const auto& pPlayer : playerPtrs)
+	{
+		const auto pos1 = pPlayer->GetComponent<real::TransformComponent>()->GetWorldPosition();
+		const auto pos2 = GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition();
+
+		const float distance = glm::distance(pos1, pos2);
+		if (distance < closestDistance)
+		{
+			pClosestPlayer = pPlayer;
+			closestDistance = distance;
+		}
+	}
+
+	return pClosestPlayer;
 }
 
 bool BaseEnemy::CheckForStairs(real::TransformComponent* playerTransform)
@@ -638,7 +654,7 @@ void BaseEnemy::MoveEnemy()
 
 void BaseEnemy::Fall()
 {
-	if (m_pCurrentIngredient->HasComponent<Ingredient>() == false)
+	if (m_pCurrentIngredient->GetTag() != Tags::ingredient)
 	{
 		real::Logger::LogInfo("BaseEnemy => Enemy {} should be destroyed", GetOwner()->GetId());
 		//m_IsFalling = false;
@@ -652,7 +668,7 @@ void BaseEnemy::Fall()
 		//
 		
 		//m_CurrentState = EnemyState::outOfBounds;
-		m_pCurrentIngredient->SetTag(Tags::empty);
+		//m_pCurrentIngredient->SetTag(Tags::empty);
 
 		//GetOwner()->Destroy();
 		//GetOwner()->GetParent()->GetComponent<Spawner>()->SpawnEnemy();

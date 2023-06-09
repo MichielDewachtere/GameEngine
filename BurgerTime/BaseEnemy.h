@@ -67,7 +67,7 @@ private:
 
 	glm::vec2 m_Direction{};
 
-	real::GameObject* GetClosestPlayer(const std::vector<real::GameObject*>& playerPtrs);
+	real::GameObject* GetClosestPlayer(const std::vector<real::GameObject*>& playerPtrs) const;
 	bool PlayerHit(real::GameObject* pPlayer) const;
 
 	bool CheckForStairs(real::TransformComponent* playerTransform);
