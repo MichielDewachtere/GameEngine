@@ -68,7 +68,6 @@ real::Scene& real::SceneManager::SetSceneActive(const std::string& name, float t
 			}
 		}
 
-
 		return *m_pActiveScene;
 	}
 
