@@ -24,7 +24,7 @@ namespace real
 
 		std::string GetName() const { return m_Name; }
 
-		using ControllerKey = std::pair<unsigned, XInputController::ControllerButton>;
+		using ControllerKey = std::pair<int, XInputController::ControllerButton>;
 		using CommandKeyRawPtr = std::pair<Command*, XInputController::InputType>;
 		using ControllerCommandsMapRawPtr = std::map<ControllerKey, CommandKeyRawPtr>;
 		ControllerCommandsMapRawPtr GetControllerCommands() const;
@@ -35,13 +35,13 @@ namespace real
 
 
 		template <class T, typename... Args>
-		void AddControllerCommands(XInputController::ControllerButton button, XInputController::InputType inputType, unsigned int controller, Args... commandArgs);
+		void AddControllerCommands(XInputController::ControllerButton button, XInputController::InputType inputType, int controller, Args... commandArgs);
 		template <class T, typename... Args>
 		void AddKeyboardCommands(Uint32 scancode, Uint32 event, Args... commandArgs);
 	private:
 		std::string m_Name;
 
-		using ControllerKey = std::pair<unsigned, XInputController::ControllerButton>;
+		using ControllerKey = std::pair<int, XInputController::ControllerButton>;
 		using CommandKey = std::pair<std::unique_ptr<Command>, XInputController::InputType>;
 		using ControllerCommandsMap = std::map<ControllerKey, CommandKey>;
 		ControllerCommandsMap m_ControllerCommands{};
@@ -49,31 +49,40 @@ namespace real
 		using KeyboardKey = std::pair<Uint32 /*event*/, Uint32 /*scancode*/>;
 		using KeyboardCommandsMap = std::map<KeyboardKey, std::unique_ptr<Command>>;
 		KeyboardCommandsMap m_KeyboardCommands{};
+
+		template <class T, typename... Args>
+		void AddControllerCommandsHelper(int controllerIdx, XInputController::ControllerButton button, XInputController::InputType inputType, Args... commandArgs);
 	};
 
 	/**
- * \brief
- * \tparam T must derive from the Command class
- * \param button
- * \param inputType
- * \param controller -1 will allow every controller to invoke this command
- * \param commandArgs parameters for the Command class, must have a GameObject and optional params
- *		for MoveCommand: FLOAT	speed (= 50)
- */
+	 * \brief
+	 * \tparam T must derive from the Command class
+	 * \param button
+	 * \param inputType
+	 * \param controller -1 will allow every controller to invoke this command
+	 * \param commandArgs parameters for the Command class, must have a GameObject and optional params
+	 *		for MoveCommand: FLOAT	speed (= 50)
+	 */
 	template <class T, typename... Args>
-	inline void InputMap::AddControllerCommands(XInputController::ControllerButton button, XInputController::InputType inputType, unsigned int controller, Args... commandArgs)
+	inline void InputMap::AddControllerCommands(XInputController::ControllerButton button, XInputController::InputType inputType, int controller, Args... commandArgs)
 	{
 		static_assert(std::is_base_of<Command, T>(), "T must derive from the Command class");
 
-		unsigned int controllerIdx{};
+		int controllerIdx{};
 		for (const auto& pController : Input::GetInstance().GetControllers())
 		{
 			if (controller == -1)
 			{
+
+				//AddControllerCommandsHelper<T>(controllerIdx, button, inputType, commandArgs..., std::make_index_sequence<sizeof...(Args)>());
 				m_ControllerCommands[std::pair(controllerIdx, button)] = std::pair(std::make_unique<T>(std::forward<Args>(commandArgs)...), inputType);
+				m_ControllerCommands[std::pair(controllerIdx, button)] = std::pair<
+					std::unique_ptr<T>, XInputController::InputType>(
+					std::make_unique<T>(/*std::forward<Args>(*/commandArgs/*)*/...), inputType);
+
 				++controllerIdx;
 			}
-			else if (pController->GetIndex() == (int)controller)
+			else if (pController->GetIndex() == controller)
 			{
 				m_ControllerCommands[std::pair(controller, button)] = std::pair(std::make_unique<T>(std::forward<Args>(commandArgs)...), inputType);
 				return;
@@ -100,6 +109,13 @@ namespace real
 			m_KeyboardCommands[std::pair(event, scancode)] = std::make_unique<T>(std::forward<Args>(commandArgs)...);
 		else
 			throw std::runtime_error("The event parameter must be either SDL_KEYDOWN or SDL_KEYUP");
+	}
+
+	template <class T, typename ... Args>
+	void InputMap::AddControllerCommandsHelper(int controllerIdx, XInputController::ControllerButton button,
+	                                           XInputController::InputType inputType, Args... commandArgs)
+	{
+		m_ControllerCommands[std::pair(controllerIdx, button)] = std::pair<std::unique_ptr<T>, XInputController::InputType>(std::make_unique<T>(std::move<Args>(commandArgs)...), inputType);
 	}
 }
 

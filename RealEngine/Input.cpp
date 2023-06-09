@@ -121,7 +121,7 @@ bool real::Input::ProcessInput()
 			{
 			case XInputController::InputType::pressed:
 			{
-				if (pController->IsPressed(key.second) && key.first == static_cast<unsigned int>(pController->GetIndex()))
+				if (pController->IsPressed(key.second) && key.first == pController->GetIndex())
 				{
 					command.first->SetInputController(pController.get());
 					command.first->SetKeyBoardInput(-1);
@@ -132,7 +132,7 @@ bool real::Input::ProcessInput()
 			}
 			case XInputController::InputType::down:
 			{
-				if (pController->IsDown(key.second) && key.first == static_cast<unsigned int>(pController->GetIndex()))
+				if (pController->IsDown(key.second) && key.first == pController->GetIndex())
 				{
 					command.first->SetInputController(pController.get());
 					command.first->SetKeyBoardInput(-1);
@@ -142,7 +142,7 @@ bool real::Input::ProcessInput()
 			}
 			case XInputController::InputType::up:
 			{
-				if (pController->IsUp(key.second) && key.first == static_cast<unsigned int>(pController->GetIndex()))
+				if (pController->IsUp(key.second) && key.first == pController->GetIndex())
 				{
 					command.first->SetInputController(pController.get());
 					command.first->SetKeyBoardInput(-1);
@@ -153,7 +153,7 @@ bool real::Input::ProcessInput()
 			}
 			case XInputController::InputType::leftThumbMoved:
 			{
-				if (pController->HasLeftThumbStickMoved() && key.first == static_cast<unsigned int>(pController->GetIndex()))
+				if (pController->HasLeftThumbStickMoved() && key.first == pController->GetIndex())
 				{
 					command.first->SetInputController(pController.get());
 					command.first->SetKeyBoardInput(-1);
@@ -165,7 +165,7 @@ bool real::Input::ProcessInput()
 			}
 			case XInputController::InputType::rightThumbMoved:
 			{
-				if (pController->HasRightThumbStickMoved() && key.first == static_cast<unsigned int>(pController->GetIndex()))
+				if (pController->HasRightThumbStickMoved() && key.first == pController->GetIndex())
 				{
 					command.first->SetInputController(pController.get());
 					command.first->SetKeyBoardInput(-1);

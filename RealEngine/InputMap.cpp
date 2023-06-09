@@ -3,7 +3,7 @@
 
 real::InputMap::ControllerCommandsMapRawPtr real::InputMap::GetControllerCommands() const
 {
-	using ControllerKey = std::pair<unsigned, XInputController::ControllerButton>;
+	using ControllerKey = std::pair<int, XInputController::ControllerButton>;
 	using CommandKeyRawPtr = std::pair<Command*, XInputController::InputType>;
 	using ControllerCommandsMapRawPtr = std::map<ControllerKey, CommandKeyRawPtr>;
 
