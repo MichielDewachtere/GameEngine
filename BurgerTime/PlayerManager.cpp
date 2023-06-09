@@ -65,7 +65,7 @@ void PlayerManager::HandleEvent(Ingredient& ingredient)
 
 	ingredient.landedOnPlate.RemoveObserver(this);
 
-	if (m_AmountOfPlates == 15)
+	if (m_AmountOfPlates == 0)
 		PlayerWins();
 		//real::SceneManager::GetInstance().SetSceneActive(Scenes::level03);
 }
@@ -258,14 +258,20 @@ void PlayerManager::PlayerWins()
 	//{
 	//	pPlayer->GetComponent<real::SpriteComponent>()->PlayAnimation()
 	//}
+	//for (const auto& pEnemy = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::egg))
+	//{
+	//	
+	//}
 
-	if (m_CurrentLevel <= 3)
+	levelHasEnded.Notify();
+
+	if (m_CurrentLevel < 3)
 	{
-		std::string nextLevel = "Level0" + std::to_string(m_CurrentLevel + 1);
+		const std::string nextLevel = "Level0" + std::to_string(m_CurrentLevel + 1);
 		real::SceneManager::GetInstance().SetSceneActive(nextLevel, 3.f);
 	}
 	else
 	{
-		
+		real::Logger::LogInfo("Player has beaten the game.");
 	}
 }

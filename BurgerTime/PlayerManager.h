@@ -31,6 +31,8 @@ public:
 
 	int GetCurrentLevel() const { return m_CurrentLevel; }
 
+	real::Subject<> levelHasEnded{};
+
 private:
 	friend class Singleton<PlayerManager>;
 	PlayerManager() = default;
