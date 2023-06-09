@@ -116,10 +116,13 @@ void MainMenu::Load()
 	const auto controllerIdcs = input.AddControllers();
 
 	pInputMap->AddKeyboardCommands<PlayerJoinCommand>(SDL_SCANCODE_RETURN, SDL_KEYUP, nullptr);
-	pInputMap->AddControllerCommands<PlayerJoinCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, (unsigned int)-1, nullptr);
-
 	pInputMap->AddKeyboardCommands<LoadNextSceneCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, nullptr, Scenes::level01);
-	pInputMap->AddControllerCommands<LoadNextSceneCommand>(real::XInputController::ControllerButton::Start, real::XInputController::InputType::down, (unsigned int)-1, nullptr, Scenes::level01);
+
+	if (controllerIdcs.empty() == false)
+	{
+		pInputMap->AddControllerCommands<PlayerJoinCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, -1, nullptr);
+		pInputMap->AddControllerCommands<LoadNextSceneCommand>(real::XInputController::ControllerButton::Start, real::XInputController::InputType::down, 0, nullptr, Scenes::level01);
+	}
 
 	m_IsLoaded = true;
 
