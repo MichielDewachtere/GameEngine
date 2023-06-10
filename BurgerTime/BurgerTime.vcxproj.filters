@@ -141,6 +141,9 @@
     <ClCompile Include="HighScoreParser.cpp">
       <Filter>Parsers</Filter>
     </ClCompile>
+    <ClCompile Include="GameOverMenu.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -245,6 +248,9 @@
     </ClInclude>
     <ClInclude Include="HighScoreParser.h">
       <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverMenu.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
