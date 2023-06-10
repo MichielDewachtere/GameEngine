@@ -14,6 +14,12 @@ namespace real
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
+		enum class SceneSwitchState
+		{
+			exit,
+			loaded
+		};
+
 		Scene& AddScene(Scene* scene);
 		Scene& SetSceneActive(const std::string& name, float timer = 0);
 		Scene& SetSceneActive(Scene* scene, float timer = 0);
@@ -26,6 +32,8 @@ namespace real
 
 		Subject<Scene&> onSceneExit{};
 		Subject<Scene&> onSceneLoaded{};
+
+		Subject<Scene&, SceneSwitchState> onSceneSwitch{};
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;

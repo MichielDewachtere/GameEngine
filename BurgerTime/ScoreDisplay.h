@@ -4,11 +4,13 @@
 #include <Component.h>
 #include <Observer.h>
 #include <Subject.h>
+#include <SceneManager.h>
 
 
-class ScoreDisplay final : public real::Component,
-                           public real::Observer<int>,
-                           public real::Observer<real::Scene&>
+class ScoreDisplay final :
+	public real::Component,
+	public real::Observer<int>,
+	public real::Observer<real::Scene&, real::SceneManager::SceneSwitchState>
 {
 public:
 	explicit ScoreDisplay(real::GameObject* pOwner);
@@ -19,7 +21,7 @@ public:
 	bool CanRender() const override { return false; }
 
 	virtual void HandleEvent(int) override;
-	void HandleEvent(real::Scene&) override;
+	void HandleEvent(real::Scene&, real::SceneManager::SceneSwitchState) override;
 	virtual void OnSubjectDestroy() override {}
 
 	real::Subject<int> scoreChanged{};

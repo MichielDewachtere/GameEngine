@@ -85,6 +85,8 @@ real::Scene& real::SceneManager::SetSceneActive(const std::string& name, float t
 			if (m_pActiveScene != nullptr)
 			{
 				onSceneExit.Notify(*m_pActiveScene);
+				onSceneSwitch.Notify(*m_pActiveScene, SceneSwitchState::exit);
+
 				m_pActiveScene->RemoveAll();
 				Locator::GetAudioSystem().StopAllSounds();
 			}
@@ -93,6 +95,7 @@ real::Scene& real::SceneManager::SetSceneActive(const std::string& name, float t
 			pScene->Start();
 
 			onSceneLoaded.Notify(*m_pActiveScene);
+			onSceneSwitch.Notify(*m_pActiveScene, SceneSwitchState::loaded);
 
 			Input::GetInstance().ReloadCommands();
 
