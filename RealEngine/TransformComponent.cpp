@@ -25,6 +25,7 @@ void real::TransformComponent::SetWorldPosition(const float x, const float y)
 void real::TransformComponent::SetWorldPosition(const glm::vec2& pos)
 {
 	m_WorldPosition = pos;
+	//SetPositionDirty();
 
 	for (const auto& pChild : GetOwner()->GetChildren())
 		pChild->GetComponent<TransformComponent>()->SetPositionDirty();
