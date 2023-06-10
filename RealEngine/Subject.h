@@ -5,6 +5,7 @@
 #include <algorithm>
 
 #include "Observer.h"
+#include "Logger.h"
 
 namespace real
 {
@@ -16,6 +17,7 @@ namespace real
 		{
 			for (auto& observer : m_ObserverPtrs)
 			{
+				m_ObserverPtrs.clear();
 				observer->OnSubjectDestroy();
 			}
 		}
@@ -29,17 +31,32 @@ namespace real
 		{
 			if (m_ObserverPtrs.empty() == false)
 			{
-				m_ObserverPtrs.erase(std::remove(
-					m_ObserverPtrs.begin(),
-					m_ObserverPtrs.end(), pObserver),
-					m_ObserverPtrs.end());
+				const auto removeIt = std::remove(m_ObserverPtrs.begin(), m_ObserverPtrs.end(), pObserver);
+
+				if (removeIt == m_ObserverPtrs.end())
+				{
+					m_ObserverPtrs.erase(m_ObserverPtrs.begin());
+					Logger::LogWarning("Subject.h => Could not remove observer {}", pObserver);
+				}
+				else
+				{
+					// for some reason in BurgerTime the last Base Enemy defined cant delete their observers...
+					std::erase(m_ObserverPtrs, pObserver);
+				}
+				//m_ObserverPtrs.erase(std::remove(
+				//	m_ObserverPtrs.begin(),
+				//	m_ObserverPtrs.end(), pObserver),
+				//	m_ObserverPtrs.end());
 			}
 		}
 
 		void Notify(Args... args)
 		{
-			for (auto& pObserver : m_ObserverPtrs)
+ 			for (auto& pObserver : m_ObserverPtrs)
 			{
+				if (pObserver == nullptr)
+					std::erase(m_ObserverPtrs, pObserver);
+
 				pObserver->HandleEvent(args...);
 			}
 		}
