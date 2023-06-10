@@ -9,8 +9,10 @@
 
 #include "LoadNextLevelCommand.h"
 #include "GameInfo.h"
+#include "PlayerDisplay.h"
 #include "PlayerJoinCommand.h"
 #include "PlayerManager.h"
+#include "PlayerNameDisplay.h"
 
 MainMenu::MainMenu(real::WindowSettings settings)
 	: Scene(Scenes::main_menu, InputMaps::menu)
@@ -104,6 +106,16 @@ void MainMenu::Load()
 	pJoinText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pJoinText->GetComponent<real::TextComponent>()->SetText("Press ENTER/A to join");
 	pJoinText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	pJoinText->AddComponent<PlayerDisplay>();
+
+	const auto playerName = CreateGameObject();
+	playerName->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 500);
+	playerName->AddComponent<real::TextureComponent>();
+	playerName->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
+	playerName->GetComponent<real::TextComponent>()->SetText(" ");
+	playerName->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	//playerName->AddComponent<real::ReadKeyboardComponent>();
+	playerName->AddComponent<PlayerNameDisplay>();
 
 	//const auto pContinueText = this->CreateGameObject();
 	//pContinueText->GetComponent<real::TransformComponent>()->SetLocalPosition(320, 450);
@@ -120,11 +132,9 @@ void MainMenu::Load()
 
 	if (controllerIdcs.empty() == false)
 	{
-		pInputMap->AddControllerCommands<PlayerJoinCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, -1, nullptr);
+		pInputMap->AddControllerCommands<PlayerJoinCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, 0, nullptr);
 		pInputMap->AddControllerCommands<LoadNextLevelCommand>(real::XInputController::ControllerButton::Start, real::XInputController::InputType::down, 0, nullptr, Scenes::level01);
 	}
 
 	m_IsLoaded = true;
-
-	//PlayerManager::GetInstance().AddPlayer();
 }
