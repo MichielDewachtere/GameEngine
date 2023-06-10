@@ -15,6 +15,7 @@
 #include "Level02.h"
 #include "Level03.h"
 #include "GameInfo.h"
+#include "GameOverMenu.h"
 #include "PlayerManager.h"
 
 real::WindowSettings g_window;
@@ -27,6 +28,7 @@ void load()
 	real::SceneManager::GetInstance().AddScene(new Level01());
 	real::SceneManager::GetInstance().AddScene(new Level02());
 	real::SceneManager::GetInstance().AddScene(new Level03());
+	real::SceneManager::GetInstance().AddScene(new GameOverMenu(g_window));
 
 	real::SceneManager::GetInstance().SetSceneActive(Scenes::main_menu);
 	real::Input::GetInstance().SetInputMapActive(InputMaps::menu);
