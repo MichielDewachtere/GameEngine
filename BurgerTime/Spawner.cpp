@@ -39,7 +39,7 @@ void Spawner::Update()
 		case EnemyTypes::pickle:
 			real::Logger::LogInfo("Spawner => Pickle should spawn");
 
-			SpawnEnemyType(Tags::pickle, 100);
+			SpawnEnemyType(Tags::pickle, 200);
 			break;
 		}
 
@@ -73,7 +73,7 @@ void Spawner::ReSpawnEnemy(real::GameObject* pEnemy) const
 	//pEnemy->GetComponent<real::TransformComponent>()->Translate(0, static_cast<float>(-48 + 1));
 }
 
-void Spawner::SpawnEnemyType(const std::string& type, int /*points*/)
+void Spawner::SpawnEnemyType(const std::string& type, int points)
 {
 	const auto enemy = GetOwner()->CreateGameObject();
 	const auto pTexture = real::ResourceManager::GetInstance().LoadTexture("enemies/" + type + "spritesheet.png");
@@ -89,7 +89,7 @@ void Spawner::SpawnEnemyType(const std::string& type, int /*points*/)
 	enemy->AddComponent<real::SpriteComponent>(spriteSheet);
 	const auto spriteSize = enemy->GetComponent<real::SpriteComponent>()->GetSpriteSize();
 	enemy->AddComponent<real::ColliderComponent>(spriteSize)->EnableDebugRendering(false, Colors::white);
-	enemy->AddComponent<BaseEnemy>();
+	enemy->AddComponent<BaseEnemy>(points);
 	enemy->GetComponent<real::TransformComponent>()->Translate(0, -spriteSize.y + 1);
 
 	const auto core = enemy->CreateGameObject();
