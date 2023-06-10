@@ -138,6 +138,9 @@
     <ClCompile Include="PlayerNameDisplay.cpp">
       <Filter>Components\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="HighScoreParser.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -239,6 +242,9 @@
     </ClInclude>
     <ClInclude Include="PlayerNameDisplay.h">
       <Filter>Components\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreParser.h">
+      <Filter>Parsers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
