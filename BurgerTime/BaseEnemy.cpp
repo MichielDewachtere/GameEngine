@@ -25,7 +25,7 @@ BaseEnemy::BaseEnemy(real::GameObject* pOwner, int score)
 
 BaseEnemy::~BaseEnemy()
 {
-	if (GetOwner()->IsMarkedForDestroy() == false)
+	if (m_RemovedObservers == false)
 	{
 		for (const auto& pPlayer : m_PlayerPtrs)
 		{
@@ -401,14 +401,15 @@ void BaseEnemy::HandleEvent(bool pepperActive)
 
 void BaseEnemy::HandleEvent(real::Scene&)
 {
-	for (auto& pPlayer : m_PlayerPtrs)
+	for (const auto& pPlayer : m_PlayerPtrs)
 	{
 		pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.RemoveObserver(this);
 	}
 
 	PlayerManager::GetInstance().levelHasEnded.RemoveObserver(this);
-
 	real::SceneManager::GetInstance().onSceneExit.RemoveObserver(this);
+
+	m_RemovedObservers = true;
 }
 
 real::GameObject* BaseEnemy::GetClosestPlayer(const std::vector<real::GameObject*>& playerPtrs) const

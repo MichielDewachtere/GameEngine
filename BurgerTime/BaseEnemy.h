@@ -78,6 +78,8 @@ private:
 
 	glm::vec2 m_Direction{};
 
+	bool m_RemovedObservers{};
+
 	real::GameObject* GetClosestPlayer(const std::vector<real::GameObject*>& playerPtrs) const;
 	bool PlayerHit(real::GameObject* pPlayer) const;
 
