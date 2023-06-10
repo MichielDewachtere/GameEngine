@@ -167,6 +167,7 @@
     <ClCompile Include="FPSCounterComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="HighScoreDisplay.cpp" />
+    <ClCompile Include="HighScoreParser.cpp" />
     <ClCompile Include="Ingredient.cpp" />
     <ClCompile Include="IngredientPart.cpp" />
     <ClCompile Include="IngredientPrefab.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HighScoreDisplay.h" />
+    <ClInclude Include="HighScoreParser.h" />
     <ClInclude Include="Ingredient.h" />
     <ClInclude Include="IngredientPart.h" />
     <ClInclude Include="IngredientPrefab.h" />
