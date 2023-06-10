@@ -20,6 +20,9 @@ public:
 	bool CanRender() const override { return false; }
 	void HandleEvent(char) override;
 	void OnSubjectDestroy() override {}
+
+private:
+	std::string m_PlayerName{};
 };
 
 #endif // PLAYERDISPLAYNAME_H

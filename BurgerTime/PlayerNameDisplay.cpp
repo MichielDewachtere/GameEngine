@@ -3,6 +3,8 @@
 #include <TextComponent.h>
 #include <Input.h>
 
+#include "PlayerManager.h"
+
 PlayerNameDisplay::PlayerNameDisplay(real::GameObject* pOwner)
 	: Component(pOwner)
 {
@@ -10,6 +12,8 @@ PlayerNameDisplay::PlayerNameDisplay(real::GameObject* pOwner)
 
 PlayerNameDisplay::~PlayerNameDisplay()
 {
+	PlayerManager::GetInstance().SubmitName(m_PlayerName);
+
 	real::Input::GetInstance().StopReadingKeyboard();
 	real::Input::GetInstance().inputReceived.RemoveObserver(this);
 }
@@ -22,8 +26,11 @@ void PlayerNameDisplay::Start()
 
 void PlayerNameDisplay::HandleEvent(char character)
 {
-	auto text = GetOwner()->GetComponent<real::TextComponent>()->GetText();
-	text += character;
+	if (m_PlayerName.length() > 5)
+		return;
 
-	GetOwner()->GetComponent<real::TextComponent>()->SetText(text);
+	m_PlayerName = GetOwner()->GetComponent<real::TextComponent>()->GetText();
+	m_PlayerName += character;
+
+	GetOwner()->GetComponent<real::TextComponent>()->SetText(m_PlayerName);
 }
