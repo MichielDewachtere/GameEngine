@@ -108,20 +108,21 @@ void MainMenu::Load()
 	pJoinText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
 	pJoinText->AddComponent<PlayerDisplay>();
 
+	const auto playerNameText = CreateGameObject();
+	playerNameText->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 500);
+	playerNameText->AddComponent<real::TextureComponent>();
+	playerNameText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
+	playerNameText->GetComponent<real::TextComponent>()->SetText("Player/Team name");
+	playerNameText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+
 	const auto playerName = CreateGameObject();
-	playerName->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 500);
+	playerName->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 540);
 	playerName->AddComponent<real::TextureComponent>();
-	playerName->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
+	playerName->AddComponent<real::TextComponent>()->SetFont(pFont);
+	playerName->GetComponent<real::TextComponent>()->SetColor(Colors::green);
 	playerName->GetComponent<real::TextComponent>()->SetText(" ");
 	playerName->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
-	//playerName->AddComponent<real::ReadKeyboardComponent>();
 	playerName->AddComponent<PlayerNameDisplay>();
-
-	//const auto pContinueText = this->CreateGameObject();
-	//pContinueText->GetComponent<real::TransformComponent>()->SetLocalPosition(320, 450);
-	//pContinueText->AddComponent<real::TextureComponent>();
-	//pContinueText->AddComponent<real::TextComponent>()->SetFont(pFont);
-	//pContinueText->GetComponent<real::TextComponent>()->SetText("To continue, press Space");
 
 	input.UseKeyboard(true);
 	input.EnableCoOp(true);
