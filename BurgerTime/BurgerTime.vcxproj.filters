@@ -45,7 +45,7 @@
     <ClCompile Include="DamageCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
-    <ClCompile Include="LoadNextSceneCommand.cpp">
+    <ClCompile Include="LoadNextLevelCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
     <ClCompile Include="MoveCommand.cpp">
@@ -120,13 +120,22 @@
     <ClCompile Include="PlayerJoinCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="ItemSpawnerPrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemSpawner.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PepperCounter.cpp">
+      <Filter>Components\HUD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="DamageCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="LoadNextSceneCommand.h">
+    <ClInclude Include="LoadNextLevelCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="MoveCommand.h">
@@ -203,6 +212,15 @@
     </ClInclude>
     <ClInclude Include="PlayerJoinCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemSpawnerPrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemSpawner.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PepperCounter.h">
+      <Filter>Components\HUD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
