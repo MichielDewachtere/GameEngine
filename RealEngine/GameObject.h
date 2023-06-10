@@ -72,6 +72,7 @@ namespace real
 		size_t GetChildCount() const { return m_ChildrenPtrs.size(); }
 		GameObject* GetChildAt(const unsigned int idx) const { return m_ChildrenPtrs[idx].get(); }
 		std::vector<GameObject*> GetChildren() const;
+		void RemoveChild(std::unique_ptr<GameObject> gameObject);
 
 	private:
 		Scene* m_pScene{ nullptr };
@@ -90,7 +91,6 @@ namespace real
 		gameobject_id m_Id;
 		static inline gameobject_id m_NextId = 0;
 
-		void RemoveChild(std::unique_ptr<GameObject> gameObject);
 	};
 
 #pragma region ComponentLogic
