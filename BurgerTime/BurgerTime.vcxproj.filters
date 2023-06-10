@@ -129,6 +129,15 @@
     <ClCompile Include="PepperCounter.cpp">
       <Filter>Components\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="HighScoreDisplay.cpp">
+      <Filter>Components\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDisplay.cpp">
+      <Filter>Components\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerNameDisplay.cpp">
+      <Filter>Components\HUD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -220,6 +229,15 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="PepperCounter.h">
+      <Filter>Components\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreDisplay.h">
+      <Filter>Components\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDisplay.h">
+      <Filter>Components\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerNameDisplay.h">
       <Filter>Components\HUD</Filter>
     </ClInclude>
   </ItemGroup>
