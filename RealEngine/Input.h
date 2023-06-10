@@ -2,10 +2,12 @@
 #define INPUT_H
 
 #include <memory>
+#include <SDL_events.h>
 #include <string>
 #include <vector>
 
 #include "Singleton.h"
+#include "Subject.h"
 #include "XInputController.h"
 
 namespace real
@@ -39,6 +41,11 @@ namespace real
 		InputMap* GetInputMap(const std::string& name) const;
 		void SetInputMapActive(const std::string& name);
 
+		void StartReadingKeyboard() { m_IsReading = true; }
+		void StopReadingKeyboard() { m_IsReading = false; }
+
+		Subject<char> inputReceived{};
+
 	private:
 		std::vector<std::unique_ptr<XInputController>> m_ControllerPtrs{};
 		//std::vector<std::unique_ptr<InputMap>> m_InputMapPtrs{};
@@ -47,6 +54,9 @@ namespace real
 
 		bool m_EnableCoOp{ false };
 		bool m_UseKeyboard{ false };
+
+		bool m_IsReading{};
+		bool ReadKeyboardInput(SDL_Event e);
 	};
 }
 

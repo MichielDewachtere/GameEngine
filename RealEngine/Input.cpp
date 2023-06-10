@@ -66,9 +66,17 @@ bool real::Input::ProcessInput()
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
+		
+		//std::cout << "test2\n";
 
 		if (m_pActiveInputMap == nullptr)
 			return true;
+
+		if (m_IsReading)
+		{
+			if (ReadKeyboardInput(e))
+				return true;
+		}
 
 		if (m_UseKeyboard)
 		{
@@ -248,6 +256,22 @@ void real::Input::SetInputMapActive(const std::string& name)
 	}
 
 	Logger::LogWarning("InputManager => No input map found with the name {}", name);
+}
+
+bool real::Input::ReadKeyboardInput(SDL_Event e)
+{
+	if (e.type == SDL_KEYUP)
+	{
+		if (e.key.keysym.scancode >= SDL_SCANCODE_A 
+			&& e.key.keysym.scancode <= SDL_SCANCODE_Z)
+		{
+				constexpr int toAscii = 61;
+				inputReceived.Notify(static_cast<char>(e.key.keysym.scancode + toAscii));
+				return true;
+		}
+	}
+
+	return false;
 }
 
 void real::Input::Update()
