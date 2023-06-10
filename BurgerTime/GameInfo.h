@@ -44,6 +44,7 @@ struct Scenes
 	inline static const std::string level01 = "Level01";
 	inline static const std::string level02 = "Level02";
 	inline static const std::string level03 = "Level03";
+	inline static const std::string game_over_menu = "GameOverMenu";
 };
 
 struct InputMaps
