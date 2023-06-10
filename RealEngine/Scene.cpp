@@ -45,6 +45,7 @@ void Scene::RemoveAll()
 		gameObject->Destroy();
 	}
 
+	m_IsLoaded = false;
 	m_objects.clear();
 }
 
