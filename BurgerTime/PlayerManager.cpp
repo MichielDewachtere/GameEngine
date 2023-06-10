@@ -12,6 +12,8 @@
 
 #include "GameInfo.h"
 #include "HealthComponent.h"
+#include "HighScoreDisplay.h"
+#include "LivesDisplay.h"
 #include "LoadNextLevelCommand.h"
 #include "Locator.h"
 #include "Logger.h"
@@ -37,6 +39,12 @@ void PlayerManager::HandleEvent(real::Scene& scene)
 {
 	if (scene.GetName().find("Level") == std::string::npos)
 		return;
+
+	if (scene.GetName() == Scenes::level01)
+	{
+		InitHud();
+		m_pHud->Start();
+	}
 
 	++m_CurrentLevel;
 	std::cout << m_CurrentLevel << '\n';
@@ -92,7 +100,6 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 
 	if (m_PlayerPtrs.empty())
 	{
-		InitHud();
 		pCharacterSpriteSheetTexture = real::ResourceManager::GetInstance().LoadTexture("characters/PeterPepperSpriteSheet.png");
 		spriteSheet.pTexture = pCharacterSpriteSheetTexture;
 
@@ -180,7 +187,6 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 	}
 
 	m_PlayerPtrs.push_back(std::shared_ptr<real::GameObject>(pCharacter));
-	m_pHud->Start();
 }
 
 std::vector<real::GameObject*> PlayerManager::GetPlayers() const
@@ -193,6 +199,13 @@ std::vector<real::GameObject*> PlayerManager::GetPlayers() const
 	}
 
 	return playerPtrs;
+}
+
+void PlayerManager::SubmitName(std::string name)
+{
+	m_PlayerName = std::move(name);
+
+
 }
 
 //int PlayerManager::GetPlayerIndex(const real::GameObject& player) const
@@ -235,7 +248,7 @@ void PlayerManager::InitHud()
 	pScoreCounter->GetComponent<real::TextComponent>()->SetText("0");
 	pScoreCounter->GetComponent<real::TextComponent>()->SetColor(Colors::white);
 	pScoreCounter->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
-	pScoreCounter->AddComponent<ScoreDisplay>();
+	const auto pScoreDisplay = pScoreCounter->AddComponent<ScoreDisplay>();
 
 	const auto pHighScoreText = m_pHud->CreateGameObject();
 	pHighScoreText->GetComponent<real::TransformComponent>()->SetLocalPosition(280,0);
@@ -252,6 +265,7 @@ void PlayerManager::InitHud()
 	pHighScoreCounter->GetComponent<real::TextComponent>()->SetText("0");
 	pHighScoreCounter->GetComponent<real::TextComponent>()->SetColor(Colors::white);
 	pHighScoreCounter->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	pHighScoreCounter->AddComponent<HighScoreDisplay>(pScoreDisplay);
 
 	const auto pPepperText = m_pHud->CreateGameObject();
 	pPepperText->GetComponent<real::TransformComponent>()->SetLocalPosition(672, 0);
@@ -269,6 +283,11 @@ void PlayerManager::InitHud()
 	pPepperCounter->GetComponent<real::TextComponent>()->SetColor(Colors::white);
 	pPepperCounter->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::left);
 	pPepperCounter->AddComponent<PepperCounter>();
+
+	const auto pLivesCounter = m_pHud->CreateGameObject();
+	pLivesCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(48, 586);
+	pLivesCounter->AddComponent<LivesDisplay>();
+
 
 	m_pHud->Start();
 }

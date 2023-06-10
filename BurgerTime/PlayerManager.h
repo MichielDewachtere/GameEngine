@@ -31,8 +31,10 @@ public:
 	real::GameObject* GetPlayer(int idx) const { return m_PlayerPtrs[idx].get(); }
 	std::vector<real::GameObject*> GetPlayers() const;
 
+	void SubmitName(std::string name);
 
 	int GetCurrentLevel() const { return m_CurrentLevel; }
+	//void ResetLevel();
 
 	real::Subject<> levelHasEnded{};
 	real::Subject<int> playerJoined{};
@@ -42,6 +44,7 @@ private:
 	PlayerManager() = default;
 
 	std::vector<std::shared_ptr<real::GameObject>> m_PlayerPtrs{};
+	std::string m_PlayerName{};
 
 	bool m_KeyboardInUse{};
 	std::vector<int> m_ControllersInUse{};
