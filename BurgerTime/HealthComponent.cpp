@@ -63,6 +63,7 @@ void HealthComponent::Damage()
 
 	const auto& scene = real::SceneManager::GetInstance().GetActiveScene();
 
+	m_EnemyPtrs.clear();
 	for (const auto& pEnemy : scene.FindObjectsWithTag(Tags::hot_dog))
 	{
 		const auto pBaseEnemy = pEnemy->GetComponent<BaseEnemy>();
@@ -84,7 +85,8 @@ void HealthComponent::Damage()
 
 	if (m_Lives == 0)
 	{
-		Kill();
+		real::SceneManager::GetInstance().SetSceneActive(Scenes::game_over_menu, m_TimeToRespawn);
+		//PlayerManager::GetInstance().
 	}
 	else
 	{
