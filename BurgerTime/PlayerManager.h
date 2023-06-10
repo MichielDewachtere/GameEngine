@@ -28,6 +28,9 @@ public:
 	void AddPlayer(bool useKeyboard = true, const int controllerIdx = -1);
 	int GetAmountOfPlayers() const { return static_cast<int>(m_PlayerPtrs.size()); }
 	//int GetPlayerIndex(const real::GameObject& player) const;
+	real::GameObject* GetPlayer(int idx) const { return m_PlayerPtrs[idx].get(); }
+	std::vector<real::GameObject*> GetPlayers() const;
+
 
 	int GetCurrentLevel() const { return m_CurrentLevel; }
 

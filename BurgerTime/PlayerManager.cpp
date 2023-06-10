@@ -12,9 +12,11 @@
 
 #include "GameInfo.h"
 #include "HealthComponent.h"
-#include "LoadNextSceneCommand.h"
+#include "LoadNextLevelCommand.h"
+#include "Locator.h"
 #include "Logger.h"
 #include "MoveCommand.h"
+#include "PepperCounter.h"
 #include "PlayerCharacter.h"
 #include "SpriteComponent.h"
 #include "StunCommand.h"
@@ -45,6 +47,7 @@ void PlayerManager::HandleEvent(real::Scene& scene)
 		const auto playerPos = scene.FindObjectsWithTag(Tags::player_spawn)[i]->GetComponent<real::TransformComponent>()->GetWorldPosition();
 		m_PlayerPtrs[i]->GetComponent<real::TransformComponent>()->SetWorldPosition(playerPos);
 		m_PlayerPtrs[i]->GetComponent<HealthComponent>()->SetSpawnPoint(playerPos);
+		m_PlayerPtrs[i]->GetComponent<real::SpriteComponent>()->SelectSprite(1);
 
 		scene.Add(m_PlayerPtrs[i]);
 	}
@@ -55,19 +58,18 @@ void PlayerManager::HandleEvent(real::Scene& scene)
 		++m_AmountOfPlates;
 		pIngredient->GetComponent<Ingredient>()->landedOnPlate.AddObserver(this);
 	}
+
+	real::Locator::GetAudioSystem().Play(Sounds::background);
 }
 
 void PlayerManager::HandleEvent(Ingredient& ingredient)
 {
 	--m_AmountOfPlates;
 
-	std::cout << m_AmountOfPlates;
-
 	ingredient.landedOnPlate.RemoveObserver(this);
 
 	if (m_AmountOfPlates == 0)
 		PlayerWins();
-		//real::SceneManager::GetInstance().SetSceneActive(Scenes::level03);
 }
 
 void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
@@ -154,7 +156,7 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_UP, KEYPRESSED, pCharacter, glm::vec2{ 0, 1 });
 		pInputMap->AddKeyboardCommands<StunCommand>(SDL_SCANCODE_Z, SDL_KEYUP, pCharacter);
 		pInputMap->AddKeyboardCommands<StunCommand>(SDL_SCANCODE_X, SDL_KEYUP, pCharacter);
-		pInputMap->AddKeyboardCommands<LoadNextSceneCommand>(SDL_SCANCODE_F1, SDL_KEYUP, pCharacter, Scenes::level03);
+		pInputMap->AddKeyboardCommands<LoadNextLevelCommand>(SDL_SCANCODE_F1, SDL_KEYUP, pCharacter, Scenes::level03);
 
 		m_KeyboardInUse = true;
 	}
@@ -171,10 +173,23 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		pInputMap->AddControllerCommands<MoveCommand>(controller_button::DPadUp, input_type::pressed, controllerIdx, pCharacter, glm::vec2{ 0, 1 });
 		pInputMap->AddControllerCommands<StunCommand>(controller_button::ButtonDown, input_type::down, controllerIdx, pCharacter);
 		pInputMap->AddControllerCommands<StunCommand>(controller_button::ButtonLeft, input_type::down, controllerIdx, pCharacter);
-		pInputMap->AddControllerCommands<LoadNextSceneCommand>(controller_button::Back, input_type::down, controllerIdx, pCharacter, Scenes::level03);
+		pInputMap->AddControllerCommands<LoadNextLevelCommand>(controller_button::Back, input_type::down, controllerIdx, pCharacter, Scenes::level03);
 	}
-	
+
 	m_PlayerPtrs.push_back(std::shared_ptr<real::GameObject>(pCharacter));
+	m_pHud->Start();
+}
+
+std::vector<real::GameObject*> PlayerManager::GetPlayers() const
+{
+	std::vector<real::GameObject*> playerPtrs;
+
+	for (const auto& pPlayer : m_PlayerPtrs)
+	{
+		playerPtrs.push_back(pPlayer.get());
+	}
+
+	return playerPtrs;
 }
 
 //int PlayerManager::GetPlayerIndex(const real::GameObject& player) const
@@ -246,18 +261,22 @@ void PlayerManager::InitHud()
 	pPepperCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(672, 25);
 	pPepperCounter->AddComponent<real::TextureComponent>();
 	pPepperCounter->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
-	pPepperCounter->GetComponent<real::TextComponent>()->SetText("0");
+	pPepperCounter->GetComponent<real::TextComponent>()->SetText("5");
 	pPepperCounter->GetComponent<real::TextComponent>()->SetColor(Colors::white);
 	pPepperCounter->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::left);
+	pPepperCounter->AddComponent<PepperCounter>();
+
+	m_pHud->Start();
 }
 
 void PlayerManager::PlayerWins()
 {
 	//TODO : set animation
-	//for (const auto& pPlayer: m_PlayerPtrs)
-	//{
-	//	pPlayer->GetComponent<real::SpriteComponent>()->PlayAnimation()
-	//}
+	for (const auto& pPlayer: m_PlayerPtrs)
+	{
+		pPlayer->GetComponent<real::SpriteComponent>()->PlayAnimation({ 1,12 },-1);
+	}
+
 	//for (const auto& pEnemy = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::egg))
 	//{
 	//	
