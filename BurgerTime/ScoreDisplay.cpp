@@ -84,6 +84,6 @@ void ScoreDisplay::HandleEvent(real::Scene& scene)
 void ScoreDisplay::UpdateScoreText(int scoreToAdd)
 {
 	m_Score += scoreToAdd;
-
+	scoreChanged.Notify(m_Score);
 	GetOwner()->GetComponent<real::TextComponent>()->SetText(std::to_string(m_Score));
 }

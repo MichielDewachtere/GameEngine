@@ -3,10 +3,12 @@
 
 #include <Component.h>
 #include <Observer.h>
+#include <Subject.h>
+
 
 class ScoreDisplay final : public real::Component,
-	public real::Observer<int>,
-	public real::Observer<real::Scene&>
+                           public real::Observer<int>,
+                           public real::Observer<real::Scene&>
 {
 public:
 	explicit ScoreDisplay(real::GameObject* pOwner);
@@ -19,6 +21,8 @@ public:
 	virtual void HandleEvent(int) override;
 	void HandleEvent(real::Scene&) override;
 	virtual void OnSubjectDestroy() override {}
+
+	real::Subject<int> scoreChanged{};
 private:
 	int m_Score{ 0 };
 
