@@ -166,6 +166,7 @@
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="FPSCounterComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="HighScoreDisplay.cpp" />
     <ClCompile Include="Ingredient.cpp" />
     <ClCompile Include="IngredientPart.cpp" />
     <ClCompile Include="IngredientPrefab.cpp" />
@@ -183,8 +184,10 @@
     <ClCompile Include="PepperCounter.cpp" />
     <ClCompile Include="Plate.cpp" />
     <ClCompile Include="PlayerCharacter.cpp" />
+    <ClCompile Include="PlayerDisplay.cpp" />
     <ClCompile Include="PlayerJoinCommand.cpp" />
     <ClCompile Include="PlayerManager.cpp" />
+    <ClCompile Include="PlayerNameDisplay.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
     <ClCompile Include="Spawner.cpp" />
@@ -200,6 +203,7 @@
     <ClInclude Include="FPSCounterComponent.h" />
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="HighScoreDisplay.h" />
     <ClInclude Include="Ingredient.h" />
     <ClInclude Include="IngredientPart.h" />
     <ClInclude Include="IngredientPrefab.h" />
@@ -216,8 +220,10 @@
     <ClInclude Include="PepperCounter.h" />
     <ClInclude Include="Plate.h" />
     <ClInclude Include="PlayerCharacter.h" />
+    <ClInclude Include="PlayerDisplay.h" />
     <ClInclude Include="PlayerJoinCommand.h" />
     <ClInclude Include="PlayerManager.h" />
+    <ClInclude Include="PlayerNameDisplay.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreDisplay.h" />
     <ClInclude Include="Spawner.h" />
