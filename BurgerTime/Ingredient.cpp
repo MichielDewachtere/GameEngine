@@ -53,7 +53,30 @@ void Ingredient::PartIsTriggered()
 
 	if (m_AmountOfPartsTriggered == amountOfParts)
 	{
-		burgerDropped.Notify();
+		switch (m_PlatformsToSkip)
+		{
+		case 1:
+			burgerDropped.Notify(500);
+			break;
+		case 2:
+			burgerDropped.Notify(1'000);
+			break;
+		case 3:
+			burgerDropped.Notify(2'000);
+			break;
+		case 4:
+			burgerDropped.Notify(4'000);
+			break;
+		case 5:
+			burgerDropped.Notify(8'000);
+			break;
+		case 6:
+			burgerDropped.Notify(16'000);
+			break;
+		}
+
+		burgerDropped.Notify(50 * (m_PlatformsToSkip + 1));
+
 		m_IsFalling = true;
 	}
 }
@@ -130,6 +153,8 @@ void Ingredient::Fall()
 		{
 			//pOtherIngredient->GetComponent<real::TransformComponent>()->Translate({ 0,6 });
 			pOtherIngredient->GetComponent<Ingredient>()->SetIsFalling(true);
+			// add another 50 points for the ingredient that is dropped by this ingredient
+			burgerDropped.Notify(50);
 		}
 	}
 
