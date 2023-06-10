@@ -27,6 +27,16 @@ namespace real
 			m_ObserverPtrs.push_back(pObserver);
 		}
 
+		bool HasObserver(Observer<Args...>* pObserver)
+		{
+			const auto it = std::ranges::find(m_ObserverPtrs, pObserver);
+
+			if (it == m_ObserverPtrs.end())
+				return false;
+
+			return true;
+		}
+
 		void RemoveObserver(Observer<Args...>* pObserver)
 		{
 			if (m_ObserverPtrs.empty() == false)
@@ -35,7 +45,7 @@ namespace real
 
 				if (removeIt == m_ObserverPtrs.end())
 				{
-					m_ObserverPtrs.erase(m_ObserverPtrs.begin());
+					//m_ObserverPtrs.erase(m_ObserverPtrs.begin());
 					Logger::LogWarning("Subject.h => Could not remove observer {}", pObserver);
 				}
 				else
