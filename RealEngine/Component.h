@@ -27,9 +27,9 @@ namespace real
 		bool GetIsActive() const { return m_IsActive; }
 		void SetIsActive(const bool value) { m_IsActive = value; }
 
-	protected:
 		GameObject* GetOwner() const { return m_pOwner/*.get()*/; }
 
+	protected:
 		explicit Component(GameObject* pOwner) : m_pOwner(pOwner) {}
 
 	private:
