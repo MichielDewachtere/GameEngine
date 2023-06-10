@@ -17,13 +17,24 @@ namespace real
 		{
 			for (auto& observer : m_ObserverPtrs)
 			{
-				m_ObserverPtrs.clear();
-				observer->OnSubjectDestroy();
+				Observer<Args ...>* observerPtr = reinterpret_cast<Observer<Args ...>*>(observer);
+
+				if (observerPtr == nullptr)
+					continue;
+
+				observerPtr->OnSubjectDestroy();
 			}
+			m_ObserverPtrs.clear();
 		}
 
 		void AddObserver(Observer<Args...>* pObserver)
 		{
+			if (std::find(m_ObserverPtrs.begin(), m_ObserverPtrs.end(), pObserver) != m_ObserverPtrs.end())
+			{
+				Logger::LogWarning("Observer {} is already added as listener to subject {}", pObserver, this);
+				return;
+			}
+
 			m_ObserverPtrs.push_back(pObserver);
 		}
 
@@ -42,7 +53,7 @@ namespace real
 			if (m_ObserverPtrs.empty() == false)
 			{
 				const auto removeIt = std::remove(m_ObserverPtrs.begin(), m_ObserverPtrs.end(), pObserver);
-
+				
 				if (removeIt == m_ObserverPtrs.end())
 				{
 					//m_ObserverPtrs.erase(m_ObserverPtrs.begin());
@@ -53,6 +64,7 @@ namespace real
 					// for some reason in BurgerTime the last Base Enemy defined cant delete their observers...
 					std::erase(m_ObserverPtrs, pObserver);
 				}
+
 				//m_ObserverPtrs.erase(std::remove(
 				//	m_ObserverPtrs.begin(),
 				//	m_ObserverPtrs.end(), pObserver),
