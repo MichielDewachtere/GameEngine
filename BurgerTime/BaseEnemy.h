@@ -31,6 +31,9 @@ public:
 	void HandleEvent(real::Scene&) override;
 	void OnSubjectDestroy() override {}
 
+	void PauseEnemy() { m_CurrentState = EnemyState::pause; }
+	void RespawnEnemy() { m_CurrentState = EnemyState::crushed; }
+
 	real::Subject<int> addScore{};
 
 private:

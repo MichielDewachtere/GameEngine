@@ -323,8 +323,8 @@ void BaseEnemy::Update()
 		{
 			m_DeathTimer = 0;
 
-			GetOwner()->GetParent()->GetComponent<Spawner>()->ReSpawnEnemy(GetOwner());
 			GetOwner()->GetComponent<real::SpriteComponent>()->Stop(true);
+			GetOwner()->GetParent()->GetComponent<Spawner>()->ReSpawnEnemy(GetOwner());
 
 			m_Direction = glm::vec2{ 0,0 };
 			m_CurrentStair = 0;
