@@ -18,6 +18,7 @@
 #include "MoveCommand.h"
 #include "PepperCounter.h"
 #include "PlayerCharacter.h"
+#include "ScoreDisplay.h"
 #include "SpriteComponent.h"
 #include "StunCommand.h"
 #include "TextComponent.h"
@@ -68,7 +69,7 @@ void PlayerManager::HandleEvent(Ingredient& ingredient)
 
 	ingredient.landedOnPlate.RemoveObserver(this);
 
-	if (m_AmountOfPlates == 0)
+	if (m_AmountOfPlates == 14)
 		PlayerWins();
 }
 
@@ -97,6 +98,7 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 
 		pInputMap = input.AddInputMap(InputMaps::gameplay);
 		real::Logger::LogInfo("Player 1 has been initialized");
+		playerJoined.Notify(1);
 	}
 	else if (m_PlayerPtrs.size() == 1)
 	{
@@ -112,6 +114,7 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 
 		pInputMap = input.GetInputMap(InputMaps::gameplay);
 		real::Logger::LogInfo("Player 2 has been initialized");
+		playerJoined.Notify(2);
 	}
 	else
 	{
@@ -232,6 +235,7 @@ void PlayerManager::InitHud()
 	pScoreCounter->GetComponent<real::TextComponent>()->SetText("0");
 	pScoreCounter->GetComponent<real::TextComponent>()->SetColor(Colors::white);
 	pScoreCounter->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	pScoreCounter->AddComponent<ScoreDisplay>();
 
 	const auto pHighScoreText = m_pHud->CreateGameObject();
 	pHighScoreText->GetComponent<real::TransformComponent>()->SetLocalPosition(280,0);
