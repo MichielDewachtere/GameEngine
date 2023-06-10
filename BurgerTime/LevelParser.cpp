@@ -13,6 +13,7 @@
 #include "GameInfo.h"
 #include "Floor.h"
 #include "IngredientPrefab.h"
+#include "ItemSpawnerPrefab.h"
 #include "Plate.h"
 #include "SpawnPoint.h"
 #include "Stair.h"
@@ -52,7 +53,7 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     pLevelBoundaries->AddComponent<real::ColliderComponent>(levelBoundaries)->EnableDebugRendering(false, Colors::red);
 
     // PLAYER SPAWN
-    const rapidjson::Value& playerPos = document["player_spawn"].GetArray();
+    const rapidjson::Value& playerPos = document["player_spawnpoint"].GetArray();
 	auto pPlayerSpawn = pLevel->CreateGameObject();
     pPlayerSpawn->SetTag(Tags::player_spawn);
     pPlayerSpawn->GetComponent<real::TransformComponent>()->SetLocalPosition(playerPos[0][0].GetFloat(), playerPos[0][1].GetFloat() - 47.f);
@@ -92,7 +93,8 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
 	    Plate::CreatePlate(pLevel, { plate[0].GetDouble(), plate[1].GetDouble() }, false);
     }
     //SPAWNPOINT
-    for (const auto& spawnPoint : document["spawnpoint"].GetArray())
+		// enemy
+    for (const auto& spawnPoint : document["enemy_spawnpoint"].GetArray())
     {
         std::vector<std::string> enemiePtrs;
 
@@ -103,6 +105,9 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
 
 	    SpawnPoint::CreateSpawnPoint(pLevel, { spawnPoint[0].GetDouble(), spawnPoint[1].GetDouble() }, enemiePtrs);
     }
+		// item
+	const auto itemSpawner = document["item_spawnpoint"].GetArray();
+    ItemSpawnerPrefab::CreateItemSpawnerPrefab(pLevel, glm::vec2{itemSpawner[0].GetDouble(), itemSpawner[0].GetDouble()});
 
 	return pLevel;
 }

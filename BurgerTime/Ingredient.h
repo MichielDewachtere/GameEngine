@@ -34,7 +34,7 @@ public:
 	int GetFallSpeed() const { return m_FallSpeed; }
 
 	real::Subject<Ingredient&> landedOnPlate{};
-
+	real::Subject<> burgerDropped{};
 private:
 	//bool m_IsActive{ true };
 

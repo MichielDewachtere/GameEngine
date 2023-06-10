@@ -53,6 +53,7 @@ void Ingredient::PartIsTriggered()
 
 	if (m_AmountOfPartsTriggered == amountOfParts)
 	{
+		burgerDropped.Notify();
 		m_IsFalling = true;
 	}
 }

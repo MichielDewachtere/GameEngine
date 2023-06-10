@@ -1,6 +1,6 @@
 {
     "levelTexturePath": "Levels/Level03.png",
-    "player_spawn": [
+    "player_spawnpoint": [
         [288,566],
         [288,518]
     ],
@@ -107,10 +107,11 @@
         [483,305],
         [483,593]
     ],
-    "spawnpoint": [
+    "enemy_spawnpoint": [
         [-48, 38, ["Pickle"]],
         [-48, 470, ["Egg","Pickle"]],
         [624, 38, ["HotDog"]],
         [624, 374, ["HotDog","Pickle"]]
-    ]
+    ],
+    "item_spawnpoint" : [288,284]
 }
