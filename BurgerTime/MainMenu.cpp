@@ -7,7 +7,7 @@
 #include <TextureComponent.h>
 #include <TransformComponent.h>
 
-#include "LoadNextSceneCommand.h"
+#include "LoadNextLevelCommand.h"
 #include "GameInfo.h"
 #include "PlayerJoinCommand.h"
 #include "PlayerManager.h"
@@ -116,12 +116,12 @@ void MainMenu::Load()
 	const auto controllerIdcs = input.AddControllers();
 
 	pInputMap->AddKeyboardCommands<PlayerJoinCommand>(SDL_SCANCODE_RETURN, SDL_KEYUP, nullptr);
-	pInputMap->AddKeyboardCommands<LoadNextSceneCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, nullptr, Scenes::level01);
+	pInputMap->AddKeyboardCommands<LoadNextLevelCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, nullptr, Scenes::level01);
 
 	if (controllerIdcs.empty() == false)
 	{
 		pInputMap->AddControllerCommands<PlayerJoinCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, -1, nullptr);
-		pInputMap->AddControllerCommands<LoadNextSceneCommand>(real::XInputController::ControllerButton::Start, real::XInputController::InputType::down, 0, nullptr, Scenes::level01);
+		pInputMap->AddControllerCommands<LoadNextLevelCommand>(real::XInputController::ControllerButton::Start, real::XInputController::InputType::down, 0, nullptr, Scenes::level01);
 	}
 
 	m_IsLoaded = true;
