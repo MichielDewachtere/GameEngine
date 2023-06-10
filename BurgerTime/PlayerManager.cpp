@@ -43,7 +43,7 @@ void PlayerManager::HandleEvent(real::Scene& scene)
 
 	scene.Add(m_pHud);
 
-	for (int i = 0; i < m_PlayerPtrs.size(); ++i)
+	for (size_t i = 0; i < m_PlayerPtrs.size(); ++i)
 	{
 		const auto playerPos = scene.FindObjectsWithTag(Tags::player_spawn)[i]->GetComponent<real::TransformComponent>()->GetWorldPosition();
 		m_PlayerPtrs[i]->GetComponent<real::TransformComponent>()->SetWorldPosition(playerPos);
