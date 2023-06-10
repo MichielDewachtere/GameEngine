@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+ //#include "stdafx.h"
 #include "SceneManager.h"
 
 #include "GameTime.h"
@@ -52,6 +52,8 @@ real::Scene& real::SceneManager::AddScene(real::Scene* scene)
 
 real::Scene& real::SceneManager::SetSceneActive(const std::string& name, float timer)
 {
+	Logger::LogInfo("Scene {} is loaded in {} seconds", name, timer);
+
 	timer = std::max(timer, 0.f);
 
 	if (timer > 0 + FLT_EPSILON)
@@ -88,7 +90,7 @@ real::Scene& real::SceneManager::SetSceneActive(const std::string& name, float t
 			}
 
 			m_pActiveScene = pScene;
-			//pScene->Start();
+			pScene->Start();
 
 			onSceneLoaded.Notify(*m_pActiveScene);
 
@@ -103,34 +105,36 @@ real::Scene& real::SceneManager::SetSceneActive(const std::string& name, float t
 
 real::Scene& real::SceneManager::SetSceneActive(real::Scene* scene, float timer)
 {
-	timer = std::max(timer, 0.f);
+	return SetSceneActive(scene->GetName(), timer);
 
-	if (timer > 0 + FLT_EPSILON)
-	{
-		m_LoadWithTimer = true;
-		m_LoadCountDown = timer;
+	//timer = std::max(timer, 0.f);
 
-		m_SceneToLoad = std::shared_ptr<Scene>(scene);
+	//if (timer > 0 + FLT_EPSILON)
+	//{
+	//	m_LoadWithTimer = true;
+	//	m_LoadCountDown = timer;
 
-		return *m_SceneToLoad;
-	}
+	//	m_SceneToLoad = std::shared_ptr<Scene>(scene);
 
-	if (scene->IsLoaded() == false)
-		scene->Load();
+	//	return *m_SceneToLoad;
+	//}
 
-	if (m_pActiveScene != nullptr)
-	{
-		onSceneExit.Notify(*m_pActiveScene);
-		m_pActiveScene->RemoveAll();
-		Locator::GetAudioSystem().StopAllSounds();
-	}
+	//if (scene->IsLoaded() == false)
+	//	scene->Load();
 
-	m_pActiveScene = std::shared_ptr<Scene>(scene);
-	//pScene->Start();
+	//if (m_pActiveScene != nullptr)
+	//{
+	//	onSceneExit.Notify(*m_pActiveScene);
+	//	m_pActiveScene->RemoveAll();
+	//	Locator::GetAudioSystem().StopAllSounds();
+	//}
 
-	onSceneLoaded.Notify(*m_pActiveScene);
+	//m_pActiveScene = std::shared_ptr<Scene>(scene);
+	////pScene->Start();
 
-	Input::GetInstance().ReloadCommands();
+	//onSceneLoaded.Notify(*m_pActiveScene);
 
-	return *scene;
+	//Input::GetInstance().ReloadCommands();
+
+	//return *scene;
 }
