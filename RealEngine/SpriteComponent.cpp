@@ -34,21 +34,41 @@ void real::SpriteComponent::Update()
 	{
 		//UpdateCurrIdx
 		++m_CurrIdx;
-		if (m_CurrIdx >= m_EndIdx)
+		if (m_PlaySelectedIdcs == false)
 		{
-			++m_AccuLoops;
-
-			if (m_Loops != -1 && m_AccuLoops > m_Loops)
+			if (m_CurrIdx >= m_EndIdx)
 			{
-				m_Stop = true;
+				++m_AccuLoops;
+
+				if (m_Loops != -1 && m_AccuLoops > m_Loops)
+				{
+					m_Stop = true;
+				}
+
+				m_CurrIdx = m_StartIdx;
 			}
 
-			m_CurrIdx = m_StartIdx;
+			//Move rect
+			m_Rect.x = (m_CurrIdx % m_SpriteSheet.columns) * m_Rect.w;
+			m_Rect.y = (m_CurrIdx / m_SpriteSheet.columns) * m_Rect.h;
 		}
+		else
+		{
+			if (m_CurrIdx >= static_cast<int>(m_SelectedIdcs.size()))
+			{
+				++m_AccuLoops;
 
-		//Move rect
-		m_Rect.x = (m_CurrIdx % m_SpriteSheet.columns) * m_Rect.w;
-		m_Rect.y = (m_CurrIdx / m_SpriteSheet.columns) * m_Rect.h;
+				if (m_Loops != -1 && m_AccuLoops > m_Loops)
+				{
+					m_Stop = true;
+				}
+
+				m_CurrIdx = 0;
+			}
+
+			m_Rect.x = (m_SelectedIdcs[m_CurrIdx] % m_SpriteSheet.columns) * m_Rect.w;
+			m_Rect.y = (m_SelectedIdcs[m_CurrIdx] / m_SpriteSheet.columns) * m_Rect.h;
+		}
 
 		m_AccuTime = 0.f;
 	}
@@ -84,6 +104,22 @@ void real::SpriteComponent::PlayAnimation(int startIdx, int endIdx, int loops)
 	m_CurrIdx = m_StartIdx;
 
 	m_Loops = loops;
+
+	m_Pause = false;
+	m_Stop = false;
+	m_IsAnimationPlaying = true;
+
+	m_Flip = SDL_FLIP_NONE;
+}
+
+void real::SpriteComponent::PlayAnimation(const std::vector<int>& idcs, int loops)
+{
+	m_PlaySelectedIdcs = true;
+	m_SelectedIdcs = idcs;
+
+	m_Loops = loops;
+
+	m_CurrIdx = 0;
 
 	m_Pause = false;
 	m_Stop = false;

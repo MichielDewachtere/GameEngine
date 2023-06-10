@@ -39,6 +39,7 @@ namespace real
 		void SelectSprite(int idx);
 
 		void PlayAnimation(int startIdx, int endIdx, int loops = -1);
+		void PlayAnimation(const std::vector<int>& idcs, int loops = -1);
 		void UpdateAnimation(int startIdx, int endIdx, int loops = -1);
 		bool IsAnimationPlaying() const { return m_IsAnimationPlaying; }
 		void Pause(bool value);
@@ -53,6 +54,8 @@ namespace real
 		int m_CurrIdx{};
 		int m_StartIdx{};
 		int m_EndIdx{};
+		bool m_PlaySelectedIdcs{};
+		std::vector<int> m_SelectedIdcs{};
 
 		int m_Loops{};
 		int m_AccuLoops{};
