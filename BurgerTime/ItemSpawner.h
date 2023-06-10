@@ -7,7 +7,7 @@
 
 class ItemSpawner final :
 	public real::Component,
-	public real::Observer<>,
+	public real::Observer<int>,
 	public real::Observer<real::Scene&>
 {
 public:
@@ -22,7 +22,7 @@ public:
 	void Update() override;
 	bool CanRender() const override { return false; }
 
-	void HandleEvent() override;
+	void HandleEvent(int) override;
 	void HandleEvent(real::Scene&) override;
 	void OnSubjectDestroy() override {}
 

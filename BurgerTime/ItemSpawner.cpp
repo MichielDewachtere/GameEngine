@@ -54,7 +54,7 @@ void ItemSpawner::Update()
 	}
 }
 
-void ItemSpawner::HandleEvent()
+void ItemSpawner::HandleEvent(int)
 {
 	m_IsActive = true;
 	SetComponentsActive(m_IsActive);
