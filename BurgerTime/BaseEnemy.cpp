@@ -16,8 +16,9 @@
 #include "Spawner.h"
 #include "SpriteComponent.h"
 
-BaseEnemy::BaseEnemy(real::GameObject* pOwner)
+BaseEnemy::BaseEnemy(real::GameObject* pOwner, int score)
 	: Component(pOwner)
+	, m_Score(score)
 {
 	real::SceneManager::GetInstance().onSceneExit.AddObserver(this);
 }
@@ -644,6 +645,7 @@ bool BaseEnemy::CheckForIngredients()
 		{
 			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(6, 10, 0);
 			m_CurrentState = EnemyState::crushed;
+			addScore.Notify(m_Score);
 			return true;
 		}
 	}

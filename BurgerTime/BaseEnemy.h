@@ -13,7 +13,7 @@ class BaseEnemy : public real::Component,
 	public real::Observer<>
 {
 public:
-	explicit BaseEnemy(real::GameObject* pOwner);
+	explicit BaseEnemy(real::GameObject* pOwner, int score = 100);
 	virtual ~BaseEnemy() override;
 	BaseEnemy(const BaseEnemy& other) = delete;
 	BaseEnemy operator=(const BaseEnemy& rhs) = delete;
@@ -30,6 +30,9 @@ public:
 	void HandleEvent(bool) override;
 	void HandleEvent(real::Scene&) override;
 	void OnSubjectDestroy() override {}
+
+	real::Subject<int> addScore{};
+
 private:
 	enum class EnemyState
 	{
@@ -46,6 +49,8 @@ private:
 
 	//std::vector<std::shared_ptr<real::GameObject>> m_PlayerPtrs;
 	std::vector</*std::unique_ptr<*/real::GameObject*/*>*/> m_PlayerPtrs;
+
+	int m_Score{};
 
 	float m_Speed{ 40 };
 	bool m_CheckForPepper{};
