@@ -6,6 +6,8 @@
 #include <Component.h>
 #include <Subject.h>
 
+#include "BaseEnemy.h"
+
 class HealthComponent final : public real::Component
 {
 public:
@@ -27,15 +29,21 @@ public:
 
 	void Damage();
 
-	real::Subject<> healthChanged;
+	real::Subject<> playerDied;
 private:
 	int m_CurrentHealth{};
 	int m_Lives{};
 	glm::vec2 m_SpawnPoint{};
 
+	bool m_PlayerDied{};
+	float m_AccuTime{};
+	float m_TimeToRespawn{ 4 };
+	bool m_SpriteChanged{};
+
+	std::vector<BaseEnemy*> m_EnemyPtrs;
 
 	void Kill();
-	void Respawn();
+	void Respawn() const;
 };
 
 #endif // HEALTHCOMPONENT_H
