@@ -1,5 +1,5 @@
-#ifndef LIVESDISPLAY_H
-#define LIVESDISPLAY_H
+#ifndef LIFESDISPLAY_H
+#define LIFESDISPLAY_H
 
 #include <Observer.h>
 #include <Component.h>
@@ -10,19 +10,23 @@ class LivesDisplay final : public real::Component,
 	public real::Observer<>
 {
 public:
-	LivesDisplay(real::GameObject* pOwner, HealthComponent* pHealth);
+	LivesDisplay(real::GameObject* pOwner);
 	virtual ~LivesDisplay() override;
+	LivesDisplay(const Component& other) = delete;
+	LivesDisplay operator=(const Component& rhs) = delete;
+	LivesDisplay(Component&& other) = delete;
+	LivesDisplay operator=(Component&& rhs) = delete;
 
-	void Update() override {};
+	void Update() override {}
 	bool CanRender() const override { return false; }
 
 private:
-	HealthComponent* m_Health{};
+	int m_LivesLost{0};
 
 	virtual void HandleEvent() override;
 	virtual void OnSubjectDestroy() override {}
 
-	void UpdateLivesText() const;
+	void InitLifeIcons(int players);
 };
 
-#endif // LIVESDISPLAY_H
+#endif // LIFESDISPLAY_H
