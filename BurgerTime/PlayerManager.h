@@ -32,6 +32,9 @@ public:
 	std::vector<real::GameObject*> GetPlayers() const;
 
 	void SubmitName(std::string name);
+	std::string GetPlayerName() const { return m_PlayerName; }
+	void SetScore(int score) { m_Score = score; }
+	int GetScore() const { return m_Score; }
 
 	int GetCurrentLevel() const { return m_CurrentLevel; }
 	//void ResetLevel();
@@ -45,6 +48,7 @@ private:
 
 	std::vector<std::shared_ptr<real::GameObject>> m_PlayerPtrs{};
 	std::string m_PlayerName{};
+	int m_Score{};
 
 	bool m_KeyboardInUse{};
 	std::vector<int> m_ControllersInUse{};
@@ -57,6 +61,7 @@ private:
 	float m_AccuTime{};
 
 	int m_CurrentLevel{ 0 };
+	bool m_GameHasBegun{};
 
 	void PlayerWins();
 };

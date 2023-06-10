@@ -13,6 +13,7 @@
 #include "GameInfo.h"
 #include "HealthComponent.h"
 #include "HighScoreDisplay.h"
+#include "HighScoreParser.h"
 #include "LivesDisplay.h"
 #include "LoadNextLevelCommand.h"
 #include "Locator.h"
@@ -40,14 +41,13 @@ void PlayerManager::HandleEvent(real::Scene& scene)
 	if (scene.GetName().find("Level") == std::string::npos)
 		return;
 
-	if (scene.GetName() == Scenes::level01)
+	if (scene.GetName() == Scenes::level01 && m_GameHasBegun == false)
 	{
 		InitHud();
 		m_pHud->Start();
 	}
 
 	++m_CurrentLevel;
-	std::cout << m_CurrentLevel << '\n';
 
 	scene.Add(m_pHud);
 
@@ -68,6 +68,7 @@ void PlayerManager::HandleEvent(real::Scene& scene)
 		pIngredient->GetComponent<Ingredient>()->landedOnPlate.AddObserver(this);
 	}
 
+	m_GameHasBegun = true;
 	real::Locator::GetAudioSystem().Play(Sounds::background);
 }
 
@@ -205,20 +206,9 @@ void PlayerManager::SubmitName(std::string name)
 {
 	m_PlayerName = std::move(name);
 
-
+	// Delete leading space
+	m_PlayerName.erase(m_PlayerName.begin());
 }
-
-//int PlayerManager::GetPlayerIndex(const real::GameObject& player) const
-//{
-//	const auto it = std::find(m_PlayerPtrs.begin(), m_PlayerPtrs.end(), player);
-//	if (it != m_PlayerPtrs.end())
-//	{
-//		const size_t position = std::distance(m_PlayerPtrs.begin(), it);
-//		return position;
-//	}
-//
-//	return -1;
-//}
 
 void PlayerManager::InitHud()
 {
@@ -300,11 +290,6 @@ void PlayerManager::PlayerWins()
 		pPlayer->GetComponent<real::SpriteComponent>()->PlayAnimation({ 1,12 },-1);
 	}
 
-	//for (const auto& pEnemy = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::egg))
-	//{
-	//	
-	//}
-
 	levelHasEnded.Notify();
 
 	if (m_CurrentLevel < 3)
@@ -314,6 +299,9 @@ void PlayerManager::PlayerWins()
 	}
 	else
 	{
-		real::Logger::LogInfo("Player has beaten the game.");
+		m_CurrentLevel = 0;
+		const std::string nextLevel = "Level0" + std::to_string(m_CurrentLevel + 1);
+		real::SceneManager::GetInstance().SetSceneActive(nextLevel, 3.f);
+	//	real::Logger::LogInfo("Player has beaten the game.");
 	}
 }
