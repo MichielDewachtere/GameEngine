@@ -21,11 +21,13 @@ public:
 
 	void ThrowPepper();
 	real::Subject<bool> pepperThrown{};
+	real::Subject<int> amountOfPepperChanged{};
 
 	void SetDirection(glm::vec2 direction) { m_CurrentDirection = direction; }
 
 private:
 	bool m_PepperThrown{};
+	int m_PepperLeft{ 5 };
 	float m_AccuTime{};
 	float m_MaxStunTime{ 1.f };
 	glm::vec2 m_CurrentDirection{};

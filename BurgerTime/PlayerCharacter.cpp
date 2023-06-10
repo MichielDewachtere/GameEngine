@@ -29,11 +29,14 @@ void PlayerCharacter::Update()
 
 void PlayerCharacter::ThrowPepper()
 {
-	if (m_PepperThrown)
+	if (m_PepperThrown || m_PepperLeft <= 0)
 		return;
 
 	m_PepperThrown = true;
 	pepperThrown.Notify(m_PepperThrown);
+
+	--m_PepperLeft;
+	amountOfPepperChanged.Notify(m_PepperLeft);
 
 	const auto pPepperTransform = GetOwner()->GetChildAt(1)->GetComponent<real::TransformComponent>();
 	const auto playerPos = GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition();
