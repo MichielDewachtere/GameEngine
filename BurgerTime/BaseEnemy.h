@@ -76,7 +76,7 @@ private:
 	bool CheckForStairs(real::TransformComponent* playerTransform);
 	bool CheckForHiddenStairs();
 	bool CheckForPlatforms(real::TransformComponent* playerTransform);
-	void CheckForIngredients();
+	bool CheckForIngredients();
 	void CheckForPepper();
 
 	void MoveEnemy();

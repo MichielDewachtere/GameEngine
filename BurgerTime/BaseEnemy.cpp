@@ -65,7 +65,7 @@ void BaseEnemy::Start()
 
 	m_pWorldBorder = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::boundary)[0]->GetComponent<real::ColliderComponent>();
 
-	for (const auto& pPlayer : m_PlayerPtrs)
+	for (auto& pPlayer : m_PlayerPtrs)
 	{
 		pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.AddObserver(this);
 	}
@@ -178,7 +178,8 @@ void BaseEnemy::Update()
 			// LevelManager -> reset level?
 		}
 
-		CheckForIngredients();
+		if (CheckForIngredients())
+			return;
 
 		if (CheckForStairs(pPlayerTransform))
 		{
@@ -236,7 +237,8 @@ void BaseEnemy::Update()
 			// LevelManager -> reset level?
 		}
 
-		CheckForIngredients();
+		if (CheckForIngredients())
+			return;
 
 		if (GetOwner()->GetComponent<real::SpriteComponent>()->IsAnimationPlaying() == false)
 		{
@@ -333,6 +335,9 @@ void BaseEnemy::Update()
 	}
 	case EnemyState::stun:
 	{
+		if (CheckForIngredients())
+			return;
+
 		m_StunTimer += real::Time::GetInstance().GetElapsed();
 
 		if (m_StunTimer > m_MaxStunTime)
@@ -395,12 +400,13 @@ void BaseEnemy::HandleEvent(bool pepperActive)
 
 void BaseEnemy::HandleEvent(real::Scene&)
 {
-	for (const auto& pPlayer : m_PlayerPtrs)
+	for (auto& pPlayer : m_PlayerPtrs)
 	{
 		pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.RemoveObserver(this);
 	}
 
 	PlayerManager::GetInstance().levelHasEnded.RemoveObserver(this);
+
 	real::SceneManager::GetInstance().onSceneExit.RemoveObserver(this);
 }
 
@@ -541,7 +547,7 @@ bool BaseEnemy::CheckForPlatforms(real::TransformComponent* playerTransform)
 	return false;
 }
 
-void BaseEnemy::CheckForIngredients()
+bool BaseEnemy::CheckForIngredients()
 {
 	//const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
 	//const auto pSubCollider = std::make_unique<real::ColliderComponent>(this->GetOwner(), pCollider->GetSize().x / 2, pCollider->GetSize().y);
@@ -580,7 +586,7 @@ void BaseEnemy::CheckForIngredients()
 			real::Logger::LogInfo("BaseEnemy => Enemy {} should fall with burger", GetOwner()->GetId());
 			GetOwner()->GetComponent<real::SpriteComponent>()->Pause(true);
 			m_CurrentState = EnemyState::fall;
-			return;
+			return true;
 		}
 
 		//const auto pIngredientCollider = m_pCurrentIngredient->GetComponent<real::ColliderComponent>();
@@ -613,16 +619,16 @@ void BaseEnemy::CheckForIngredients()
 	}
 
 	if (m_CurrentState == EnemyState::fall)
-		return;
+		return false;
 
 	for (const auto& pIngredient : m_IngredientPtrs)
 	{
 		if (pIngredient->GetTag() != Tags::ingredient)
 			continue;
 
-		const auto pIngredientTransform = pIngredient->GetComponent<real::TransformComponent>();
-		if (pIngredientTransform->GetWorldPosition().y > GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition().y)
-			return;
+		//const auto pIngredientTransform = pIngredient->GetComponent<real::TransformComponent>();
+		//if (pIngredientTransform->GetWorldPosition().y < GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition().y)
+		//	return false;
 
 		const auto pIngredientComponent = pIngredient->GetComponent<Ingredient>();
 
@@ -638,9 +644,11 @@ void BaseEnemy::CheckForIngredients()
 		{
 			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(6, 10, 0);
 			m_CurrentState = EnemyState::crushed;
-			return;
+			return true;
 		}
 	}
+
+	return false;
 }
 
 void BaseEnemy::CheckForPepper()
