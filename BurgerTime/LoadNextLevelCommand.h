@@ -5,11 +5,11 @@
 
 #include <Command.h>
 
-class LoadNextSceneCommand final : public real::Command
+class LoadNextLevelCommand final : public real::Command
 {
 public:
-	LoadNextSceneCommand(real::GameObject* object, std::string name);
-	virtual ~LoadNextSceneCommand() override = default;
+	LoadNextLevelCommand(real::GameObject* object, std::string name);
+	virtual ~LoadNextLevelCommand() override = default;
 
 	void Execute() override;
 
