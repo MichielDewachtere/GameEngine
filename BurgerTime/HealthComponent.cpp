@@ -11,40 +11,22 @@
 #include "BaseEnemy.h"
 #include "GameInfo.h"
 #include "PlayerCharacter.h"
+#include "ScoreDisplay.h"
 
-HealthComponent::HealthComponent(real::GameObject* pOwner, int lives)
+HealthComponent::HealthComponent(real::GameObject* pOwner)
 	: Component(pOwner)
-	, m_Lives(lives)
 {
+	real::SceneManager::GetInstance().onSceneLoaded.AddObserver(this);
 }
 
 HealthComponent::~HealthComponent()
 {
-	if (PlayerManager::GetInstance().GetAmountOfPlayers() == 1)
-		return;
-
-	for (const auto& pPlayer : PlayerManager::GetInstance().GetPlayers())
-	{
-		if (pPlayer->GetId() == GetOwner()->GetId())
-			continue;
-
-		pPlayer->GetComponent<HealthComponent>()->onStatChanged.RemoveObserver(this);
-	}
+	real::SceneManager::GetInstance().onSceneLoaded.RemoveObserver(this);
 }
 
 void HealthComponent::Start()
 {
-	if (PlayerManager::GetInstance().GetAmountOfPlayers() == 1)
-		return;
-
-	const auto playerPtrs = PlayerManager::GetInstance().GetPlayers();
-	for (const auto& pPlayer : playerPtrs)
-	{
-		if (pPlayer->GetId() == GetOwner()->GetId())
-			continue;
-
-		pPlayer->GetComponent<HealthComponent>()->onStatChanged.AddObserver(this);
-	}
+	PlayerManager::GetInstance().GetHUD()->GetComponentInChildren<ScoreDisplay>()->AddLife.AddObserver(this);
 }
 
 void HealthComponent::Update()
@@ -86,14 +68,17 @@ void HealthComponent::Update()
 	}
 }
 
-void HealthComponent::HandleEvent(int stat, int health)
+void HealthComponent::HandleEvent()
 {
-	if (stat == PlayerCharacter::Stats::health)
+	++m_Lives;
+}
+
+void HealthComponent::HandleEvent(real::Scene& scene)
+{
+	if (scene.GetName() == Scenes::game_over_menu)
 	{
-		m_PlayerDied = true;
-		GetOwner()->GetComponent<real::SpriteComponent>()->SelectSprite(13);
-		m_Lives = health;
-		playerStopMoving.Notify(true);
+		if (PlayerManager::GetInstance().GetAmountOfPlayers() == 1 || PlayerManager::GetInstance().GetCurrentLevel() == 0)
+			return;
 	}
 }
 
@@ -101,11 +86,10 @@ void HealthComponent::Damage()
 {
 	--m_Lives;
 	m_PlayerDied = true;
-	onStatChanged.Notify(PlayerCharacter::Stats::health, m_Lives);
 	real::Locator::GetAudioSystem().Stop(Sounds::player_death.channel);
 	real::Locator::GetAudioSystem().Play(Sounds::player_death);
 
-	playerStopMoving.Notify(true);
+	playerDied.Notify(true);
 
 	GetOwner()->GetComponent<real::SpriteComponent>()->SelectSprite(13);
 
@@ -135,10 +119,6 @@ void HealthComponent::Damage()
 	{
 		real::SceneManager::GetInstance().SetSceneActive(Scenes::game_over_menu, m_TimeToRespawn);
 	}
-	else
-	{
-		playerDied.Notify();
-	}
 }
 
 void HealthComponent::Respawn()
@@ -152,5 +132,5 @@ void HealthComponent::Respawn()
 
 	transformComponent->SetWorldPosition(m_SpawnPoint);
 
-	playerStopMoving.Notify(false);
+	playerDied.Notify(false);
 }

@@ -9,10 +9,12 @@
 #include "BaseEnemy.h"
 
 class HealthComponent final : public real::Component,
-	public real::Observer<int, int>
+	//public real::Observer<int, int>,
+	public real::Observer<>,
+	public real::Observer<real::Scene&>
 {
 public:
-	explicit HealthComponent(real::GameObject* pOwner, int lives = 0);
+	explicit HealthComponent(real::GameObject* pOwner);
 	virtual ~HealthComponent() override;
 	HealthComponent(const HealthComponent& other) = delete;
 	HealthComponent& operator=(const HealthComponent& other) = delete;
@@ -24,7 +26,9 @@ public:
 
 	bool CanRender() const override { return false; }
 
-	void HandleEvent(int, int) override;
+	void HandleEvent() override;
+	void HandleEvent(real::Scene&) override;
+	//void HandleEvent(int, int) override;
 	void OnSubjectDestroy() override {}
 
 	void SetLives(const int lives) { m_Lives = lives; }
@@ -34,13 +38,12 @@ public:
 
 	void Damage();
 
-	real::Subject<> playerDied;
-	real::Subject<int, int> onStatChanged;
-	real::Subject<bool> playerStopMoving;
+	//real::Subject<> playerDied;
+	//real::Subject<int, int> onStatChanged;
+	real::Subject<bool> playerDied;
 
 private:
-	int m_CurrentHealth{};
-	int m_Lives{};
+	static inline int m_Lives{ 4 };
 	glm::vec2 m_SpawnPoint{};
 
 	bool m_PlayerDied{};
