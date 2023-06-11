@@ -73,12 +73,7 @@ namespace real
 		{
 			if (controller == -1)
 			{
-
-				//AddControllerCommandsHelper<T>(controllerIdx, button, inputType, commandArgs..., std::make_index_sequence<sizeof...(Args)>());
-				m_ControllerCommands[std::pair(controllerIdx, button)] = std::pair(std::make_unique<T>(std::forward<Args>(commandArgs)...), inputType);
-				m_ControllerCommands[std::pair(controllerIdx, button)] = std::pair<
-					std::unique_ptr<T>, XInputController::InputType>(
-					std::make_unique<T>(/*std::forward<Args>(*/commandArgs/*)*/...), inputType);
+				m_ControllerCommands[std::pair(controllerIdx, button)] = std::pair(std::make_unique<T>(commandArgs...), inputType);
 
 				++controllerIdx;
 			}
