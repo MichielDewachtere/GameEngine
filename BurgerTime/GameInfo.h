@@ -23,6 +23,7 @@ struct Tags
 	inline static const std::string plate = "Plate";
 	inline static const std::string pepper = "Pepper";
 	inline static const std::string player_spawn = "PlayerSpawn";
+	inline static const std::string item_spawn = "ItemSpawn";
 };
 
 struct Colors
