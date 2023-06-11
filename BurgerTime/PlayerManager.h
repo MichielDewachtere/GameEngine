@@ -40,6 +40,8 @@ public:
 	int GetCurrentLoop() const { return m_CurrentLoop; }
 	//void ResetLevel();
 
+	real::GameObject* GetHUD() const { return m_pHud.get(); }
+
 	real::Subject<> levelHasEnded{};
 	real::Subject<int> playerJoined{};
 	real::Subject<bool> playerStopMoving;
