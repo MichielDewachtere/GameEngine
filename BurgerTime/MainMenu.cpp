@@ -6,6 +6,7 @@
 #include <TextComponent.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
+#include <Locator.h>
 
 #include "LoadNextLevelCommand.h"
 #include "GameInfo.h"
@@ -13,6 +14,7 @@
 #include "PlayerJoinCommand.h"
 #include "PlayerManager.h"
 #include "PlayerNameDisplay.h"
+
 
 MainMenu::MainMenu(real::WindowSettings settings)
 	: Scene(Scenes::main_menu, InputMaps::menu)
@@ -26,6 +28,8 @@ void MainMenu::Load()
 	auto& input = real::Input::GetInstance();
 	const auto pInputMap = input.AddInputMap(InputMaps::menu);
 
+	real::Locator::GetAudioSystem().Play(Sounds::menu_background);
+
 	using alignment = real::TextComponent::Alignment;
 
 	const auto pFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
@@ -33,7 +37,7 @@ void MainMenu::Load()
 	const auto pTitleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 32);
 
 	const auto pTitleText = CreateGameObject();
-	pTitleText->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 30);
+	pTitleText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width) / 2.f, 30);
 	pTitleText->AddComponent<real::TextureComponent>();
 	pTitleText->AddComponent<real::TextComponent>()->SetFont(pTitleFont);
 	pTitleText->GetComponent<real::TextComponent>()->SetText("Burger Time");
@@ -44,7 +48,7 @@ void MainMenu::Load()
 	//pKeyBoardText->InitComponents({ 0,20 }, pFont, "Keyboard: ");
 
 	const auto pControlsText = CreateGameObject();
-	pControlsText->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 100);
+	pControlsText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width) / 2.f, 100);
 	pControlsText->AddComponent<real::TextureComponent>();
 	pControlsText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pControlsText->GetComponent<real::TextComponent>()->SetText("Controls");
@@ -52,56 +56,56 @@ void MainMenu::Load()
 	pControlsText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
 
 	const auto pKeyBoardText = pControlsText->CreateGameObject();
-	pKeyBoardText->GetComponent<real::TransformComponent>()->SetLocalPosition(-m_Settings.width / 6.f, 40);
+	pKeyBoardText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(-m_Settings.width) / 6.f, 40);
 	pKeyBoardText->AddComponent<real::TextureComponent>();
 	pKeyBoardText->AddComponent<real::TextComponent>()->SetFont(pFont);
 	pKeyBoardText->GetComponent<real::TextComponent>()->SetText("Keyboard:");
 
 	const auto pText1 = pControlsText->CreateGameObject();
-	pText1->GetComponent<real::TransformComponent>()->SetLocalPosition(-m_Settings.width / 6.f, 60);
+	pText1->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(-m_Settings.width) / 6.f, 60);
 	pText1->AddComponent<real::TextureComponent>();
 	pText1->AddComponent<real::TextComponent>()->SetFont(pFont);
 	pText1->GetComponent<real::TextComponent>()->SetText("Move                 UP, LEFT, DOWN, RIGHT");
 
 	const auto pText2 = pControlsText->CreateGameObject();
-	pText2->GetComponent<real::TransformComponent>()->SetLocalPosition(-m_Settings.width / 6.f, 80);
+	pText2->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(-m_Settings.width) / 6.f, 80);
 	pText2->AddComponent<real::TextureComponent>();
 	pText2->AddComponent<real::TextComponent>()->SetFont(pFont);
 	pText2->GetComponent<real::TextComponent>()->SetText("Use pepper      Z/X");
 
 	const auto pText3 = pControlsText->CreateGameObject();
-	pText3->GetComponent<real::TransformComponent>()->SetLocalPosition(-m_Settings.width / 6.f, 100);
+	pText3->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(-m_Settings.width) / 6.f, 100);
 	pText3->AddComponent<real::TextureComponent>();
 	pText3->AddComponent<real::TextComponent>()->SetFont(pFont);
 	pText3->GetComponent<real::TextComponent>()->SetText("Mute                 M");
 
 
 	const auto pControllerText = pControlsText->CreateGameObject();
-	pControllerText->GetComponent<real::TransformComponent>()->SetLocalPosition(-m_Settings.width / 6.f, 140);
+	pControllerText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(-m_Settings.width) / 6.f, 140);
 	pControllerText->AddComponent<real::TextureComponent>();
 	pControllerText->AddComponent<real::TextComponent>()->SetFont(pFont);
 	pControllerText->GetComponent<real::TextComponent>()->SetText("Controller:");
 
 	const auto pText4 = pControlsText->CreateGameObject();
-	pText4->GetComponent<real::TransformComponent>()->SetLocalPosition(-m_Settings.width / 6.f, 160);
+	pText4->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(-m_Settings.width) / 6.f, 160);
 	pText4->AddComponent<real::TextureComponent>();
 	pText4->AddComponent<real::TextComponent>()->SetFont(pFont);
 	pText4->GetComponent<real::TextComponent>()->SetText("Move                 DPAD");
 
 	const auto pText5 = pControlsText->CreateGameObject();
-	pText5->GetComponent<real::TransformComponent>()->SetLocalPosition(-m_Settings.width / 6.f, 180);
+	pText5->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(-m_Settings.width) / 6.f, 180);
 	pText5->AddComponent<real::TextureComponent>();
 	pText5->AddComponent<real::TextComponent>()->SetFont(pFont);
 	pText5->GetComponent<real::TextComponent>()->SetText("Use pepper      A/X");
 
 	const auto pText6 = pControlsText->CreateGameObject();
-	pText6->GetComponent<real::TransformComponent>()->SetLocalPosition(-m_Settings.width / 6.f, 200);
+	pText6->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(-m_Settings.width) / 6.f, 200);
 	pText6->AddComponent<real::TextureComponent>();
 	pText6->AddComponent<real::TextComponent>()->SetFont(pFont);
 	pText6->GetComponent<real::TextComponent>()->SetText("Mute                 Y");
 	
 	const auto pJoinText = CreateGameObject();
-	pJoinText->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 350);
+	pJoinText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width) / 2.f, 350);
 	pJoinText->AddComponent<real::TextureComponent>();
 	pJoinText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pJoinText->GetComponent<real::TextComponent>()->SetText("Press ENTER/A to join");
@@ -109,14 +113,14 @@ void MainMenu::Load()
 	pJoinText->AddComponent<PlayerDisplay>();
 
 	const auto playerNameText = CreateGameObject();
-	playerNameText->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 500);
+	playerNameText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width) / 2.f, 500);
 	playerNameText->AddComponent<real::TextureComponent>();
 	playerNameText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	playerNameText->GetComponent<real::TextComponent>()->SetText("Player/Team name");
 	playerNameText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
 
 	const auto playerName = CreateGameObject();
-	playerName->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 540);
+	playerName->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width) / 2.f, 540);
 	playerName->AddComponent<real::TextureComponent>();
 	playerName->AddComponent<real::TextComponent>()->SetFont(pFont);
 	playerName->GetComponent<real::TextComponent>()->SetColor(Colors::green);

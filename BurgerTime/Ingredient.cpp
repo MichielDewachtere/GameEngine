@@ -6,6 +6,7 @@
 #include <GameTime.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
+#include <Locator.h>
 
 #include "GameInfo.h"
 #include "IngredientPart.h"
@@ -76,7 +77,8 @@ void Ingredient::PartIsTriggered()
 		}
 
 		burgerDropped.Notify(50 * (m_PlatformsToSkip + 1));
-
+		real::Locator::GetAudioSystem().Play(Sounds::burger_falling);
+		
 		m_IsFalling = true;
 	}
 }
@@ -174,6 +176,7 @@ void Ingredient::Fall()
 			{
 				pTransform->SetWorldPosition({ pTransform->GetWorldPosition().x, pPlatformCollider->GetPosition().y + 33 });
 				//pTransform->Translate({ 0,-1 });
+				real::Locator::GetAudioSystem().Play(Sounds::burger_landing);
 				ResetBurger();
 			}
 

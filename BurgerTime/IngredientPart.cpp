@@ -4,7 +4,9 @@
 #include <Scene.h>
 #include <ColliderComponent.h>
 #include <TransformComponent.h>
+#include <Locator.h>
 
+#include "GameInfo.h"
 #include "Ingredient.h"
 
 void IngredientPart::Update()
@@ -22,6 +24,8 @@ void IngredientPart::Update()
 
 		const auto parent = GetOwner()->GetParent()->GetComponent<Ingredient>();
 		parent->PartIsTriggered();
+
+		real::Locator::GetAudioSystem().Play(Sounds::burger_part_activated);
 	}
 }
 

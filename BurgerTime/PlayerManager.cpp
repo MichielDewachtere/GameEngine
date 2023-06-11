@@ -74,6 +74,7 @@ void PlayerManager::HandleEvent(real::Scene& scene)
 	}
 
 	m_GameHasBegun = true;
+	real::Locator::GetAudioSystem().Play(Sounds::level_intro);
 	real::Locator::GetAudioSystem().Play(Sounds::background);
 }
 
@@ -298,18 +299,21 @@ void PlayerManager::PlayerWins()
 		pPlayer->GetComponent<real::SpriteComponent>()->PlayAnimation({ 1,12 },-1);
 	}
 
+	real::Locator::GetAudioSystem().Stop(Sounds::level_completed.channel);
+	real::Locator::GetAudioSystem().Play(Sounds::level_completed);
+
 	levelHasEnded.Notify();
 
 	if (m_CurrentLevel < 3)
 	{
 		const std::string nextLevel = "Level0" + std::to_string(m_CurrentLevel + 1);
-		real::SceneManager::GetInstance().SetSceneActive(nextLevel, 3.f);
+		real::SceneManager::GetInstance().SetSceneActive(nextLevel, 4.f);
 	}
 	else
 	{
 		++m_CurrentLoop;
 		m_CurrentLevel = 0;
 		const std::string nextLevel = "Level0" + std::to_string(m_CurrentLevel + 1);
-		real::SceneManager::GetInstance().SetSceneActive(nextLevel, 3.f);
+		real::SceneManager::GetInstance().SetSceneActive(nextLevel, 4.f);
 	}
 }

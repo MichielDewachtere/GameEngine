@@ -6,6 +6,7 @@
 #include <Scene.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
+#include <Locator.h>
 
 #include "GameInfo.h"
 #include "ItemSpawner.h"
@@ -77,6 +78,8 @@ void PlayerCharacter::Update()
 
 			++m_Peppers;
 
+			real::Locator::GetAudioSystem().Play(Sounds::pepper_added);
+
 			amountOfPepperChanged.Notify(m_Peppers);
 			pickedUpItem.Notify(500 * points);
 
@@ -128,6 +131,8 @@ void PlayerCharacter::ThrowPepper()
 	--m_Peppers;
 	amountOfPepperChanged.Notify(m_Peppers);
 	statsChanged.Notify(Stats::pepper, m_Peppers);
+
+	real::Locator::GetAudioSystem().Play(Sounds::pepper_thrown);
 
 	const auto pPepperTransform = GetOwner()->GetChildAt(1)->GetComponent<real::TransformComponent>();
 	const auto playerPos = GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition();

@@ -5,6 +5,7 @@
 #include <SpriteComponent.h>
 #include <SceneManager.h>
 #include <TransformComponent.h>
+#include <Locator.h>
 
 #include "PlayerManager.h"
 #include "BaseEnemy.h"
@@ -76,7 +77,9 @@ void HealthComponent::Update()
 				m_AccuTime = 0;
 				m_SpriteChanged = false;
 				m_PlayerDied = false;
-				
+
+				real::Locator::GetAudioSystem().Play(Sounds::background);
+
 				Respawn();
 			}
 		}
@@ -98,6 +101,9 @@ void HealthComponent::Damage()
 	--m_Lives;
 	m_PlayerDied = true;
 	onStatChanged.Notify(PlayerCharacter::Stats::health, m_Lives);
+	real::Locator::GetAudioSystem().Stop(Sounds::player_death.channel);
+	real::Locator::GetAudioSystem().Play(Sounds::player_death);
+
 	GetOwner()->GetComponent<real::SpriteComponent>()->SelectSprite(13);
 
 	const auto& scene = real::SceneManager::GetInstance().GetActiveScene();

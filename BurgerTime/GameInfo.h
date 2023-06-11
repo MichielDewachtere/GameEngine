@@ -56,7 +56,38 @@ struct InputMaps
 
 struct Sounds
 {
-	inline static const real::Sound background = { 1, MIX_MAX_VOLUME, -1, "../data/audio/11_main.ogg" };
+	inline static const real::Sound background	= { 1, MIX_MAX_VOLUME, -1, 0,
+		"../data/audio/11_main.ogg" };
+	inline static const real::Sound burger_falling = { 2, MIX_MAX_VOLUME, 1, -1,
+		"../data/audio/0_burger_going_down.ogg" };
+	inline static const real::Sound burger_landing = { 3, MIX_MAX_VOLUME, 1, -1,
+		"../data/audio/1_burger_touching_floor.ogg" };
+	inline static const real::Sound player_death = { 4, MIX_MAX_VOLUME, 1, 0,
+		"../data/audio/2_die.ogg" };
+	inline static const real::Sound high_score = { 5, MIX_MAX_VOLUME, 0, -1,
+		"../data/audio/3_high_scores.ogg" };
+	inline static const real::Sound life_added = { 6, MIX_MAX_VOLUME, 0, -1,
+		"../data/audio/6_one_up.ogg" };
+	inline static const real::Sound enemy_crushed = { 7, MIX_MAX_VOLUME, 0, -1,
+		"../data/audio/7_enemy_crushed.ogg" };
+	inline static const real::Sound enemy_fall = { 8, MIX_MAX_VOLUME, 0, -1,
+		"../data/audio/8_enemy_fall.ogg" };
+	inline static const real::Sound pepper_added = { 9, MIX_MAX_VOLUME, 0, -1,
+		"../data/audio/9_pepper_up.ogg" };
+	inline static const real::Sound pepper_thrown = { 10, MIX_MAX_VOLUME, 0, -1,
+		"../data/audio/14_pepper.ogg" };
+	inline static const real::Sound enemy_stunned = { 11, MIX_MAX_VOLUME, 0, -1,
+		"../data/audio/15_peppered.ogg" };
+	inline static const real::Sound burger_part_activated = { 12, MIX_MAX_VOLUME, 1, -1,
+		"../data/audio/16_stepping_on_burger.ogg" };
+	inline static const real::Sound level_completed = { 13, MIX_MAX_VOLUME, 0, 0,
+		"../data/audio/17_win.ogg" };
+	inline static const real::Sound level_intro = { 14, MIX_MAX_VOLUME, 0, 0,
+		"../data/audio/10_level_intro.ogg" };
+	inline static const real::Sound menu_select = { 15, MIX_MAX_VOLUME, 0, -1,
+		"../data/audio/18_menu_select.ogg" };
+	inline static const real::Sound menu_background = { 16, MIX_MAX_VOLUME, -1, 0,
+		"../data/audio/19_burgermenu.ogg" };
 };
 
 #endif // GAMEINFO_H

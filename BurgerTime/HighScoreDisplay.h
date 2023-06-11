@@ -25,6 +25,7 @@ public:
 private:
 	ScoreDisplay* m_ScoreDisplay;
 	int m_HighScore{};
+	bool m_HighScoreBroken{};
 };
 
 #endif // HIGHSCOREDISPLAY_H

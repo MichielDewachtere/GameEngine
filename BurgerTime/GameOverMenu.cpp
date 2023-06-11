@@ -5,6 +5,7 @@
 #include <TextComponent.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
+#include <Locator.h>
 
 #include "GameInfo.h"
 #include "HighScoreParser.h"
@@ -19,6 +20,8 @@ GameOverMenu::GameOverMenu(real::WindowSettings settings)
 void GameOverMenu::Load()
 {
 	using alignment = real::TextComponent::Alignment;
+
+	real::Locator::GetAudioSystem().Play(Sounds::menu_background);
 
 	const auto& playerManager = PlayerManager::GetInstance();
 	HighScoreParser::UpdateHighScores(playerManager.GetPlayerName(), playerManager.GetScore());

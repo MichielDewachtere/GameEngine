@@ -2,6 +2,7 @@
 
 #include <GameTime.h>
 #include <SpriteComponent.h>
+#include <Locator.h>
 
 #include "ColliderComponent.h"
 #include "GameInfo.h"
@@ -10,11 +11,6 @@
 ItemSpawner::ItemSpawner(real::GameObject* pOwner)
 	: Component(pOwner)
 {
-
-	//for (const auto& pIngredient : sceneManager.GetActiveScene().FindObjectsWithTag(Tags::ingredient))
-	//{
-	//	pIngredient->GetComponent<Ingredient>()->burgerDropped.AddObserver(this);
-	//}
 }
 
 ItemSpawner::~ItemSpawner()
@@ -58,6 +54,8 @@ void ItemSpawner::HandleEvent(int)
 {
 	m_IsActive = true;
 	SetComponentsActive(m_IsActive);
+	// life_added uses the same sound.
+	real::Locator::GetAudioSystem().Play(Sounds::life_added);
 }
 
 void ItemSpawner::HandleEvent(real::Scene&)

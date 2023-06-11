@@ -1,12 +1,14 @@
 ﻿//#include "stdafx.h"
 #include "BaseEnemy.h"
 
+#include <glm/geometric.hpp>
+
 #include <Scene.h>
 #include <Logger.h>
 #include <SceneManager.h>
 #include <GameObject.h>
 #include <GameTime.h>
-#include <glm/geometric.hpp>
+#include <Locator.h>
 
 #include "GameInfo.h"
 #include "HealthComponent.h"
@@ -102,9 +104,6 @@ void BaseEnemy::Update()
 	{
 		CheckForIngredients();
 
-		//if (m_pWorldBorder->IsEntireColliderOverlapping(*pCollider))
-		//	m_CurrentState = EnemyState::moveY;
-
 		if (CheckForStairs(pPlayerTransform))
 		{
 			if (static_cast<int>(m_Direction.y) == 1)
@@ -126,24 +125,6 @@ void BaseEnemy::Update()
 			MoveEnemy();
 			break;
 		}
-
-
-		//if (CheckForHiddenStairs())
-		//{
-		//	if (static_cast<int>(m_Direction.y) == 1)
-		//	{
-		//		GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(4, 6);
-		//	}
-		//	else if (static_cast<int>(m_Direction.y) == -1)
-		//	{
-		//		GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(0, 2);
-		//	}
-
- 		//	m_CurrentState = EnemyState::moveY;
-		//	MoveEnemy();
-		//	break;
-		//}
-
 
 		if (playerPos.x < enemyPos.x && m_Direction == glm::vec2{0, 0})
 		{
@@ -587,6 +568,7 @@ bool BaseEnemy::CheckForIngredients()
 		{
 			real::Logger::LogInfo("BaseEnemy => Enemy {} should fall with burger", GetOwner()->GetId());
 			GetOwner()->GetComponent<real::SpriteComponent>()->Pause(true);
+			real::Locator::GetAudioSystem().Play(Sounds::enemy_fall);
 			m_CurrentState = EnemyState::fall;
 			return true;
 		}
@@ -645,6 +627,7 @@ bool BaseEnemy::CheckForIngredients()
 		if (pIngredientCollider->IsOverlapping(*pCoreCollider))
 		{
 			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(6, 10, 0);
+			real::Locator::GetAudioSystem().Play(Sounds::enemy_crushed);
 			m_CurrentState = EnemyState::crushed;
 			addScore.Notify(m_Score);
 			return true;
@@ -666,6 +649,7 @@ void BaseEnemy::CheckForPepper()
 		if (pPepperCollider->IsOverlapping(*pEnemyCollider))
 		{
 			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(10, 12, -1);
+			real::Locator::GetAudioSystem().Play(Sounds::enemy_stunned);
 			m_CurrentState = EnemyState::stun;
 			return;
 		}
