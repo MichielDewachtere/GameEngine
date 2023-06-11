@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 #include <stdexcept>
-
 //#include "TransformComponent.h"
+#include "Logger.h"
 #include "Component.h"
 
 namespace real
@@ -59,6 +59,8 @@ namespace real
 		T* AddComponent(Args&&... args);
 		template <class T>
 		T* GetComponent();
+		template <class T>
+		T* GetComponentInChildren();
 		template <class T>
 		void RemoveComponent();
 		template <class T>
@@ -120,6 +122,28 @@ namespace real
 			if (otherComponent != nullptr)
 				return otherComponent;
 		}
+		return nullptr;
+	}
+
+	template <class T>
+	T* GameObject::GetComponentInChildren()
+	{
+		if (m_ChildrenPtrs.empty())
+		{
+			Logger::LogWarning("GameObject::GetComponentInChildren => This GameObject doesn't have any child objects");
+			return nullptr;
+		}
+
+		for (const auto& pChild : m_ChildrenPtrs)
+		{
+			if (pChild->HasComponent<T>())
+				return pChild->GetComponent<T>();
+
+			pChild->GetComponentInChildren<T>();
+		}
+
+		Logger::LogWarning("GameObject::GetComponentInChildren => No component found in children");
+
 		return nullptr;
 	}
 

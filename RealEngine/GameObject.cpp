@@ -270,5 +270,8 @@ void real::GameObject::RemoveChild(std::unique_ptr<GameObject> gameObject)
 	//{
 	//	gameObject->RemoveChild(std::unique_ptr<GameObject>(pChild));
 	//}
-	std::erase(m_ChildrenPtrs, gameObject);
+
+	gameObject->Destroy();
+
+	//std::erase(m_ChildrenPtrs, gameObject);
 }
