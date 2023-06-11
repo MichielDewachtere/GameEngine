@@ -14,6 +14,7 @@
 #include "PlayerJoinCommand.h"
 #include "PlayerManager.h"
 #include "PlayerNameDisplay.h"
+#include "QuitCommand.h"
 
 
 MainMenu::MainMenu(real::WindowSettings settings)
@@ -30,7 +31,8 @@ void MainMenu::Load()
 
 	real::Locator::GetAudioSystem().Play(Sounds::menu_background);
 
-	using alignment = real::TextComponent::Alignment;
+	using vertical_alignment = real::TextComponent::HorizontalAlignment;
+	using horizontal_alignment = real::TextComponent::VerticalAlignment;
 
 	const auto pFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
 	const auto pMiddleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
@@ -42,7 +44,7 @@ void MainMenu::Load()
 	pTitleText->AddComponent<real::TextComponent>()->SetFont(pTitleFont);
 	pTitleText->GetComponent<real::TextComponent>()->SetText("Burger Time");
 	pTitleText->GetComponent<real::TextComponent>()->SetColor(Colors::red);
-	pTitleText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	pTitleText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(vertical_alignment::center);
 
 	//const auto pKeyBoardText = pTitleText->CreateGameObject<real::TextObject>();
 	//pKeyBoardText->InitComponents({ 0,20 }, pFont, "Keyboard: ");
@@ -53,7 +55,7 @@ void MainMenu::Load()
 	pControlsText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pControlsText->GetComponent<real::TextComponent>()->SetText("Controls");
 	pControlsText->GetComponent<real::TextComponent>()->SetColor(Colors::white);
-	pControlsText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	pControlsText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(vertical_alignment::center);
 
 	const auto pKeyBoardText = pControlsText->CreateGameObject();
 	pKeyBoardText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(-m_Settings.width) / 6.f, 40);
@@ -109,15 +111,22 @@ void MainMenu::Load()
 	pJoinText->AddComponent<real::TextureComponent>();
 	pJoinText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pJoinText->GetComponent<real::TextComponent>()->SetText("Press ENTER/A to join");
-	pJoinText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	pJoinText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(vertical_alignment::center);
 	pJoinText->AddComponent<PlayerDisplay>();
+
+	//const auto pModeText = CreateGameObject();
+	//pModeText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width) / 2.f, 350);
+	//pModeText->AddComponent<real::TextureComponent>();
+	//pModeText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
+	//pModeText->GetComponent<real::TextComponent>()->SetText("VERSUS");
+	//pModeText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(vertical_alignment::center);
 
 	const auto playerNameText = CreateGameObject();
 	playerNameText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width) / 2.f, 500);
 	playerNameText->AddComponent<real::TextureComponent>();
 	playerNameText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	playerNameText->GetComponent<real::TextComponent>()->SetText("Player/Team name");
-	playerNameText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	playerNameText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(vertical_alignment::center);
 
 	const auto playerName = CreateGameObject();
 	playerName->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width) / 2.f, 540);
@@ -125,8 +134,25 @@ void MainMenu::Load()
 	playerName->AddComponent<real::TextComponent>()->SetFont(pFont);
 	playerName->GetComponent<real::TextComponent>()->SetColor(Colors::green);
 	playerName->GetComponent<real::TextComponent>()->SetText(" ");
-	playerName->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	playerName->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(vertical_alignment::center);
 	playerName->AddComponent<PlayerNameDisplay>();
+
+	const auto startText = CreateGameObject();
+	startText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width)
+		- 10, static_cast<float>(m_Settings.height) - 60);
+	startText->AddComponent<real::TextureComponent>();
+	startText->AddComponent<real::TextComponent>()->SetFont(pFont);
+	startText->GetComponent<real::TextComponent>()->SetText("Press SPACE/START to start");
+	startText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(vertical_alignment::left);
+	startText->GetComponent<real::TextComponent>()->ChangeVerticalAlignment(horizontal_alignment::down);
+
+	const auto quitText = CreateGameObject();
+	quitText->GetComponent<real::TransformComponent>()->SetLocalPosition(10, static_cast<float>(m_Settings.height) - 30);
+	quitText->AddComponent<real::TextureComponent>();
+	quitText->AddComponent<real::TextComponent>()->SetFont(pFont);
+	quitText->GetComponent<real::TextComponent>()->SetText("Press ESC/BACK to exit");
+	quitText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(vertical_alignment::right);
+	quitText->GetComponent<real::TextComponent>()->ChangeVerticalAlignment(horizontal_alignment::down);
 
 	input.UseKeyboard(true);
 	input.EnableCoOp(true);
@@ -134,11 +160,13 @@ void MainMenu::Load()
 
 	pInputMap->AddKeyboardCommands<PlayerJoinCommand>(SDL_SCANCODE_RETURN, SDL_KEYUP, nullptr);
 	pInputMap->AddKeyboardCommands<LoadNextLevelCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, nullptr, Scenes::level01);
+	pInputMap->AddKeyboardCommands<QuitCommand>(SDL_SCANCODE_ESCAPE, SDL_KEYUP, nullptr);
 
 	if (controllerIdcs.empty() == false)
 	{
-		pInputMap->AddControllerCommands<PlayerJoinCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, 0, nullptr);
-		pInputMap->AddControllerCommands<LoadNextLevelCommand>(real::XInputController::ControllerButton::Start, real::XInputController::InputType::down, 0, nullptr, Scenes::level01);
+		pInputMap->AddControllerCommands<PlayerJoinCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, -1, nullptr);
+		pInputMap->AddControllerCommands<LoadNextLevelCommand>(real::XInputController::ControllerButton::Start, real::XInputController::InputType::down, -1, nullptr, Scenes::level01);
+		pInputMap->AddControllerCommands<QuitCommand>(real::XInputController::ControllerButton::Back, real::XInputController::InputType::down, -1, nullptr);
 	}
 
 	m_IsLoaded = true;
