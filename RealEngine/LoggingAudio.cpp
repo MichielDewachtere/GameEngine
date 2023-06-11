@@ -14,6 +14,12 @@ void real::LoggingAudio::Play(const Sound sound, const int volume, const int loo
 	Logger::LogInfo("Started playing sound {}, attached to file {}", sound.id, sound.fileName);
 }
 
+void real::LoggingAudio::Stop(const int channel)
+{
+	m_RealAudio->Stop(channel);
+	Logger::LogInfo("Stopped playing channel {}", channel);
+}
+
 void real::LoggingAudio::Stop(const Sound sound)
 {
 	m_RealAudio->Stop(sound);

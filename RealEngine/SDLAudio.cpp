@@ -9,7 +9,7 @@
 
 #include "Logger.h"
 
-#define AMOUNT_OF_CHANNELS 2
+#define AMOUNT_OF_CHANNELS 4
 
 namespace real
 {
@@ -49,13 +49,15 @@ namespace real
 		void Update() override
 		{
 			// TODO: eventqueue : https://gameprogrammingpatterns.com/event-queue.html
-			// TODO: implement threading
 			// use Mix_FreeChunk when done playing.
 
 			if (m_Head == m_Tail)
 				return;
 
 			const auto sound = m_Pending[m_Head];
+
+			if (sound.channel != -1 && Mix_Playing(sound.channel))
+				return;
 
 			if (IsLoaded(sound) == false)
 			{
@@ -90,6 +92,7 @@ namespace real
 
 			m_Pending[m_Tail].id = sound.id;
 			m_Pending[m_Tail].fileName = sound.fileName;
+			m_Pending[m_Tail].channel = sound.channel;
 
 			if (volume != -1)
 				m_Pending[m_Tail].volume = volume;
@@ -131,6 +134,10 @@ namespace real
 					Mix_Volume(i, MIX_MAX_VOLUME);
 			}
 		}
+		void Stop(const int channel) override
+		{
+			Mix_HaltChannel(channel);
+		}
 
 	private:
 		bool IsLoaded(const Sound sound)
@@ -148,8 +155,9 @@ namespace real
 		{
 			const auto mixChunk = Mix_LoadWAV(sound.fileName.c_str());
 
-			if (!mixChunk) {
-				printf("SDL_mixer could not load sound effect file! SDL_mixer Error: %s\n", Mix_GetError());
+			if (!mixChunk) 
+			{
+				Logger::LogError("SDL_mixer could not load sound effect file! SDL_mixer Error: {}", Mix_GetError());
 				return;
 			}
 
@@ -165,9 +173,11 @@ namespace real
 			//const auto mixChunk = m_AudioClips[sound].get();
 			const auto mixChunk = m_AudioClips[sound];
 
-			const int result = Mix_PlayChannel(-1, mixChunk, sound.loops);
-			if (result == -1) {
-				printf("SDL_mixer could not play sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+			const int result = Mix_PlayChannel(sound.channel, mixChunk, sound.loops);
+			if (result == -1) 
+			{
+				Logger::LogError("SDL_mixer could not play sound effect! SDL_mixer Error: {}", Mix_GetError());
+				return;
 			}
 
 			if (m_IsMuted)
@@ -176,6 +186,7 @@ namespace real
 				Mix_Volume(result, sound.volume);
 		}
 
+	private:
 		std::map<Sound, Mix_Chunk*> m_AudioClips;
 		//std::map<Sound, std::unique_ptr<Mix_Chunk>> m_AudioClips;
 
@@ -219,4 +230,9 @@ void real::SDLAudio::StopAllSounds()
 void real::SDLAudio::Mute(bool mute)
 {
 	m_pImpl->Mute(mute);
+}
+
+void real::SDLAudio::Stop(const int channel)
+{
+	m_pImpl->Stop(channel);
 }

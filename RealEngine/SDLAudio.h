@@ -23,6 +23,7 @@ namespace real
 		virtual void Stop(const Sound sound) override;
 		virtual void StopAllSounds() override;
 		virtual void Mute(bool mute) override;
+		virtual void Stop(const int channel) override;
 
 	private:
 		class SDLAudioImpl;

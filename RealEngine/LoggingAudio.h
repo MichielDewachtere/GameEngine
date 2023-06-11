@@ -15,6 +15,7 @@ namespace real
 
 		virtual void Update() override;
 		virtual void Play(const Sound sound, const int volume, const int loops) override;
+		virtual void Stop(const int channel) override;
 		virtual void Stop(const Sound sound) override;
 		virtual void StopAllSounds() override;
 		virtual void Mute(bool mute) override;
