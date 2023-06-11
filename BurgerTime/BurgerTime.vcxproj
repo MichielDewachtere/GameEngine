@@ -191,6 +191,7 @@
     <ClCompile Include="PlayerJoinCommand.cpp" />
     <ClCompile Include="PlayerManager.cpp" />
     <ClCompile Include="PlayerNameDisplay.cpp" />
+    <ClCompile Include="QuitCommand.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
     <ClCompile Include="Spawner.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="PlayerJoinCommand.h" />
     <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="PlayerNameDisplay.h" />
+    <ClInclude Include="QuitCommand.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreDisplay.h" />
     <ClInclude Include="Spawner.h" />
