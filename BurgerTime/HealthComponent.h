@@ -36,6 +36,7 @@ public:
 
 	real::Subject<> playerDied;
 	real::Subject<int, int> onStatChanged;
+	real::Subject<bool> playerStopMoving;
 
 private:
 	int m_CurrentHealth{};
@@ -49,7 +50,7 @@ private:
 
 	std::vector<BaseEnemy*> m_EnemyPtrs;
 	
-	void Respawn() const;
+	void Respawn();
 };
 
 #endif // HEALTHCOMPONENT_H

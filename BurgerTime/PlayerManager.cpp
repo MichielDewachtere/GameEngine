@@ -73,6 +73,8 @@ void PlayerManager::HandleEvent(real::Scene& scene)
 		pIngredient->GetComponent<Ingredient>()->landedOnPlate.AddObserver(this);
 	}
 
+	playerStopMoving.Notify(false);
+
 	m_GameHasBegun = true;
 	real::Locator::GetAudioSystem().Play(Sounds::level_intro);
 	real::Locator::GetAudioSystem().Play(Sounds::background);
@@ -303,6 +305,7 @@ void PlayerManager::PlayerWins()
 	real::Locator::GetAudioSystem().Play(Sounds::level_completed);
 
 	levelHasEnded.Notify();
+	playerStopMoving.Notify(true);
 
 	if (m_CurrentLevel < 3)
 	{

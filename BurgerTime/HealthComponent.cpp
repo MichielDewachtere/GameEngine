@@ -93,6 +93,7 @@ void HealthComponent::HandleEvent(int stat, int health)
 		m_PlayerDied = true;
 		GetOwner()->GetComponent<real::SpriteComponent>()->SelectSprite(13);
 		m_Lives = health;
+		playerStopMoving.Notify(true);
 	}
 }
 
@@ -103,6 +104,8 @@ void HealthComponent::Damage()
 	onStatChanged.Notify(PlayerCharacter::Stats::health, m_Lives);
 	real::Locator::GetAudioSystem().Stop(Sounds::player_death.channel);
 	real::Locator::GetAudioSystem().Play(Sounds::player_death);
+
+	playerStopMoving.Notify(true);
 
 	GetOwner()->GetComponent<real::SpriteComponent>()->SelectSprite(13);
 
@@ -138,7 +141,7 @@ void HealthComponent::Damage()
 	}
 }
 
-void HealthComponent::Respawn() const
+void HealthComponent::Respawn()
 {
 	const auto transformComponent = this->GetOwner()->GetComponent<real::TransformComponent>();
 
@@ -148,4 +151,6 @@ void HealthComponent::Respawn() const
 	GetOwner()->GetComponent<real::SpriteComponent>()->SelectSprite(1);
 
 	transformComponent->SetWorldPosition(m_SpawnPoint);
+
+	playerStopMoving.Notify(false);
 }

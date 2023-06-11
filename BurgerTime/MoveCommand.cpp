@@ -5,12 +5,13 @@
 #include <TransformComponent.h>
 #include <GameTime.h>
 #include <Input.h>
-#include <iostream>
 #include <Scene.h>
 #include <SceneManager.h>
 
 #include "GameInfo.h"
 #include "PlayerCharacter.h"
+#include "PlayerManager.h"
+#include "HealthComponent.h"
 
 MoveCommand::MoveCommand(real::GameObject* object, const glm::vec2& direction, const float speed)
     : Command(object)
@@ -21,6 +22,18 @@ MoveCommand::MoveCommand(real::GameObject* object, const glm::vec2& direction, c
     m_Direction.y *= -1;
 }
 
+MoveCommand::~MoveCommand()
+{
+    auto& playerManager = PlayerManager::GetInstance();
+
+    playerManager.playerStopMoving.RemoveObserver(this);
+
+    for (const auto& pPlayer : playerManager.GetPlayers())
+    {
+        pPlayer->GetComponent<HealthComponent>()->playerStopMoving.RemoveObserver(this);
+    }
+}
+
 void MoveCommand::Start()
 {
     m_StairPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::stair);
@@ -28,10 +41,27 @@ void MoveCommand::Start()
     const auto boundaryPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::boundary);
     if (boundaryPtrs.empty() == false)
         m_Boundary = boundaryPtrs[0];
+
+    if (m_PlayerObserversAdded == false)
+    {
+        m_PlayerObserversAdded = true;
+
+    	auto& playerManager = PlayerManager::GetInstance();
+
+        playerManager.playerStopMoving.AddObserver(this);
+
+        for (const auto& pPlayer : playerManager.GetPlayers())
+        {
+            pPlayer->GetComponent<HealthComponent>()->playerStopMoving.AddObserver(this);
+        }
+    }
 }
 
 void MoveCommand::Execute()
 {
+    if (m_CanMove == false)
+        return;
+
 	// Get the TransformComponent of the game object associated with this MoveCommand.
     const auto pTransform = GetOwner()->GetComponent<real::TransformComponent>();
 
@@ -64,24 +94,43 @@ void MoveCommand::Execute()
     }
 
 	// if owner overlaps with ground
-
-    for (const auto& floor : m_FloorPtrs)
+    if (m_Direction.x > 0 + FLT_EPSILON || m_Direction.x < 0 - FLT_EPSILON)
     {
-        if (floor->HasComponent<real::ColliderComponent>() == false)
-            continue;
+        for (const auto& floor : m_FloorPtrs)
+        {
+            if (floor->HasComponent<real::ColliderComponent>() == false)
+                continue;
 
-        if (floor->GetComponent<real::ColliderComponent>()->IsEntireColliderOverlapping(futureCollider))
-            newPos.x = pos.x + m_Direction.x * m_Speed * real::Time::GetInstance().GetElapsed();
+            if (floor->GetComponent<real::ColliderComponent>()->IsEntireColliderOverlapping(futureCollider, { 0, 6 }))
+            {
+                newPos.x = pos.x + m_Direction.x * m_Speed * real::Time::GetInstance().GetElapsed();
+                newPos.y = floor->GetComponent<real::TransformComponent>()->GetWorldPosition().y;
+
+                //if (m_Direction.y < 0 + FLT_EPSILON && m_Direction.y > 0 - FLT_EPSILON)
+                //    break;
+
+            }
+        }
     }
 
-    // if owner overlaps with stair
-    for (const auto& stair : m_StairPtrs)
+    if (m_Direction.y > 0 + FLT_EPSILON || m_Direction.y < 0 - FLT_EPSILON)
     {
-        if (stair->HasComponent<real::ColliderComponent>() == false)
-            continue;
+	    // if owner overlaps with stair
+    	for (const auto& stair : m_StairPtrs)
+    	{
+    		if (stair->HasComponent<real::ColliderComponent>() == false)
+    			continue;
 
-        if (stair->GetComponent<real::ColliderComponent>()->IsEntireColliderOverlapping(futureCollider))
-            newPos.y = pos.y + m_Direction.y * m_Speed * real::Time::GetInstance().GetElapsed();
+    		if (stair->GetComponent<real::ColliderComponent>()->IsEntireColliderOverlapping(futureCollider, {6, 0}))
+    		{
+    			newPos.y = pos.y + m_Direction.y * m_Speed * real::Time::GetInstance().GetElapsed();
+
+    			//if (m_Direction.x < 0 + FLT_EPSILON && m_Direction.x > 0 - FLT_EPSILON)
+    			//    break;
+
+    			newPos.x = stair->GetComponent<real::TransformComponent>()->GetWorldPosition().x;
+    		}
+    	}
     }
 
     GetOwner()->GetComponent<PlayerCharacter>()->SetDirection(m_Direction);
@@ -89,4 +138,9 @@ void MoveCommand::Execute()
     // Translate the TransformComponent to the new position.
     //pTransform->Translate(newPos);
     pTransform->SetWorldPosition(newPos);
+}
+
+void MoveCommand::HandleEvent(bool stopPlayerMoving)
+{
+    m_CanMove = !stopPlayerMoving;
 }

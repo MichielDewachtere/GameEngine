@@ -42,6 +42,7 @@ public:
 
 	real::Subject<> levelHasEnded{};
 	real::Subject<int> playerJoined{};
+	real::Subject<bool> playerStopMoving;
 
 private:
 	friend class Singleton<PlayerManager>;
