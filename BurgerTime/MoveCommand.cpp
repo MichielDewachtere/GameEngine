@@ -30,7 +30,7 @@ MoveCommand::~MoveCommand()
 
     for (const auto& pPlayer : playerManager.GetPlayers())
     {
-        pPlayer->GetComponent<HealthComponent>()->playerStopMoving.RemoveObserver(this);
+        pPlayer->GetComponent<HealthComponent>()->playerDied.RemoveObserver(this);
     }
 }
 
@@ -52,7 +52,7 @@ void MoveCommand::Start()
 
         for (const auto& pPlayer : playerManager.GetPlayers())
         {
-            pPlayer->GetComponent<HealthComponent>()->playerStopMoving.AddObserver(this);
+            pPlayer->GetComponent<HealthComponent>()->playerDied.AddObserver(this);
         }
     }
 }
