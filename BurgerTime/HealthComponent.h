@@ -41,8 +41,7 @@ private:
 	bool m_SpriteChanged{};
 
 	std::vector<BaseEnemy*> m_EnemyPtrs;
-
-	void Kill();
+	
 	void Respawn() const;
 };
 

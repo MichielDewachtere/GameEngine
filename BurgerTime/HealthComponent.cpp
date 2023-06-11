@@ -1,8 +1,6 @@
 //#include "stdafx.h"
 #include "HealthComponent.h"
 
-#include <iostream>
-
 #include <GameTime.h>
 #include <SpriteComponent.h>
 #include <SceneManager.h>
@@ -45,10 +43,10 @@ void HealthComponent::Update()
 					pEnemy->RespawnEnemy();
 				}
 
+				m_AccuTime = 0;
 				m_SpriteChanged = false;
 				m_PlayerDied = false;
-
-				//PlayerManager::GetInstance().ResetLevel();
+				
 				Respawn();
 			}
 		}
@@ -86,19 +84,11 @@ void HealthComponent::Damage()
 	if (m_Lives == 0)
 	{
 		real::SceneManager::GetInstance().SetSceneActive(Scenes::game_over_menu, m_TimeToRespawn);
-		//PlayerManager::GetInstance().
 	}
 	else
 	{
 		playerDied.Notify();
-		//Respawn();
 	}
-}
-
-void HealthComponent::Kill()
-{
-	//GetOwner()->Destroy();
-	std::cout << "HealthComponent > GamObject should get destroyed";
 }
 
 void HealthComponent::Respawn() const
