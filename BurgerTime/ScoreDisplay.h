@@ -25,8 +25,11 @@ public:
 	virtual void OnSubjectDestroy() override {}
 
 	real::Subject<int> scoreChanged{};
+	real::Subject<> AddLife{};
+
 private:
 	int m_Score{ 0 };
+	int m_BonusLivesAdded{};
 
 	void UpdateScoreText(int);
 };

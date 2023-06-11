@@ -3,6 +3,7 @@
 
 #include <SceneManager.h>
 #include <TextComponent.h>
+#include <Locator.h>
 
 #include "GameInfo.h"
 #include "Ingredient.h"
@@ -82,6 +83,14 @@ void ScoreDisplay::HandleEvent(real::Scene& scene, real::SceneManager::SceneSwit
 void ScoreDisplay::UpdateScoreText(int scoreToAdd)
 {
 	m_Score += scoreToAdd;
+
+	if (m_Score >= 20'000 * (m_BonusLivesAdded + 1))
+	{
+		++m_BonusLivesAdded;
+		AddLife.Notify();
+		real::Locator::GetAudioSystem().Play(Sounds::life_added);
+	}
+
 	scoreChanged.Notify(m_Score);
 	PlayerManager::GetInstance().SetScore(m_Score);
 	GetOwner()->GetComponent<real::TextComponent>()->SetText(std::to_string(m_Score));
