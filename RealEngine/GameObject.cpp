@@ -249,7 +249,11 @@ void real::GameObject::SetParent(GameObject* pParent, const bool keepWorldPositi
 
 std::vector<real::GameObject*> real::GameObject::GetChildren() const
 {
-	std::vector<GameObject*> childrenPtrs;
+	std::vector<GameObject*> childrenPtrs{};
+
+	if (m_ChildrenPtrs.empty())
+		return childrenPtrs;
+
 	childrenPtrs.reserve(m_ChildrenPtrs.size());
 
 	for (const auto& pChild : m_ChildrenPtrs)
