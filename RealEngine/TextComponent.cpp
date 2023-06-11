@@ -38,29 +38,10 @@ void real::TextComponent::Update()
 
 		const auto pTexture = std::make_shared<Texture2D>(texture);
 
-		pTextureRenderer->SetTexture(pTexture);
+		HandleHorizontalAlignment(pTexture->GetSize());
+		HandleVerticalAlignment(pTexture->GetSize());
 
-		switch (m_CurrentAlignment)
-		{
-		case Alignment::left:
-		{
-			const auto newPos = m_OriginalPos - glm::vec2{static_cast<float>(pTexture->GetSize().x), 0 };
-			GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
-			break;
-		}
-		case Alignment::center:
-		{
-			const auto newPos = m_OriginalPos - glm::vec2{static_cast<float>(pTexture->GetSize().x) / 2.f, 0};
-			GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
-			break;
-		}
-		case Alignment::right:
-		{
-			const auto newPos = m_OriginalPos;
-			GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
-			break;
-		}
-		}
+		pTextureRenderer->SetTexture(pTexture);
 
 		m_NeedsUpdate = false;
 	}
@@ -101,11 +82,74 @@ void real::TextComponent::SetColor(const Uint8 r, const Uint8 g, const Uint8 b, 
 }
 
 
-void real::TextComponent::ChangeAlignment(Alignment newAlignment)
+void real::TextComponent::ChangeHorizontalAlignment(HorizontalAlignment newAlignment)
 {
-	if (m_CurrentAlignment != newAlignment)
+	if (m_CurVerticalAlignment != newAlignment)
 	{
-		m_CurrentAlignment = newAlignment;
+		m_CurVerticalAlignment = newAlignment;
 		m_NeedsUpdate = true;
 	}
+}
+
+void real::TextComponent::ChangeVerticalAlignment(VerticalAlignment newAlignment)
+{
+	if (m_CurHorizontalAlignment != newAlignment)
+	{
+		m_CurHorizontalAlignment = newAlignment;
+		m_NeedsUpdate = true;
+	}
+}
+
+void real::TextComponent::HandleVerticalAlignment(const glm::vec2& textureSize)
+{
+	switch (m_CurVerticalAlignment)
+	{
+	case HorizontalAlignment::left:
+	{
+		const auto newPos = m_OriginalPos - glm::vec2{static_cast<float>(textureSize.x), 0 };
+		GetOwner()->GetComponent<TransformComponent>()->SetLocalPosition(newPos);
+		break;
+	}
+	case HorizontalAlignment::center:
+	{
+		const auto newPos = m_OriginalPos - glm::vec2{static_cast<float>(textureSize.x) / 2.f, 0};
+		GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+		break;
+	}
+	case HorizontalAlignment::right:
+	{
+		const auto newPos = m_OriginalPos;
+		GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+		break;
+	}
+	}
+
+	//m_OriginalPos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
+}
+
+void real::TextComponent::HandleHorizontalAlignment(const glm::vec2& textureSize)
+{
+	switch (m_CurHorizontalAlignment)
+	{
+	case VerticalAlignment::up:
+	{
+		const auto newPos = m_OriginalPos - glm::vec2{ 0, -static_cast<float>(textureSize.y) };
+		GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+		break;
+	}
+	case VerticalAlignment::center:
+	{
+		const auto newPos = m_OriginalPos - glm::vec2{ 0, -static_cast<float>(textureSize.y) / 2.f };
+		GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+		break;
+	}
+	case VerticalAlignment::down:
+	{
+		const auto newPos = m_OriginalPos;
+		GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+		break;
+	}
+	}
+
+	//m_OriginalPos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
 }

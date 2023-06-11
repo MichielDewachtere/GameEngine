@@ -15,11 +15,17 @@ namespace real
 	class TextComponent final : public Component
 	{
 	public:
-		enum class Alignment
+		enum class HorizontalAlignment
 		{
 			left,
 			center,
 			right
+		};
+		enum class VerticalAlignment
+		{
+			down,
+			center,
+			up
 		};
 
 		explicit TextComponent(GameObject* pOwner);
@@ -40,7 +46,8 @@ namespace real
 		void SetColor(const glm::vec4& color);
 		void SetColor(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a = 0);
 
-		void ChangeAlignment(Alignment newAlignment);
+		void ChangeHorizontalAlignment(HorizontalAlignment newAlignment);
+		void ChangeVerticalAlignment(VerticalAlignment newAlignment);
 
 		bool CanRender() const override { return false; }
 
@@ -48,10 +55,15 @@ namespace real
 		bool m_NeedsUpdate{ true };
 		std::string m_pText{"empty"};
 		std::shared_ptr<Font> m_pFont{};
-		SDL_Color m_Color{ 255,255,255 };
+		SDL_Color m_Color{ 255,255,255,255 };
 
 		glm::vec2 m_OriginalPos{};
-		Alignment m_CurrentAlignment{ Alignment::right };
+
+		HorizontalAlignment m_CurVerticalAlignment{ HorizontalAlignment::right };
+		VerticalAlignment m_CurHorizontalAlignment{ VerticalAlignment::down };
+
+		void HandleVerticalAlignment(const glm::vec2&);
+		void HandleHorizontalAlignment(const glm::vec2&);
 	};
 }
 #endif // TEXTCOMPONENT_H

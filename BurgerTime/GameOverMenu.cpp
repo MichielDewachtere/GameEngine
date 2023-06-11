@@ -19,7 +19,7 @@ GameOverMenu::GameOverMenu(real::WindowSettings settings)
 
 void GameOverMenu::Load()
 {
-	using alignment = real::TextComponent::Alignment;
+	using alignment = real::TextComponent::HorizontalAlignment;
 
 	real::Locator::GetAudioSystem().Play(Sounds::menu_background);
 
@@ -37,7 +37,7 @@ void GameOverMenu::Load()
 	pTitleText->AddComponent<real::TextComponent>()->SetFont(pTitleFont);
 	pTitleText->GetComponent<real::TextComponent>()->SetText("GAME OVER");
 	pTitleText->GetComponent<real::TextComponent>()->SetColor(Colors::white);
-	pTitleText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	pTitleText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(alignment::center);
 
 	{
 		const auto pNameText = CreateGameObject();

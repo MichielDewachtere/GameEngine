@@ -224,7 +224,7 @@ void PlayerManager::InitHud()
 	const auto pMiddleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
 	const auto pTitleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 32);
 
-	using alignment = real::TextComponent::Alignment;
+	using alignment = real::TextComponent::HorizontalAlignment;
 
 	m_pHud = std::make_shared<real::GameObject>();
 	m_pHud->SetTag("HUD");
@@ -237,7 +237,7 @@ void PlayerManager::InitHud()
 	pScoreText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pScoreText->GetComponent<real::TextComponent>()->SetText("1UP");
 	pScoreText->GetComponent<real::TextComponent>()->SetColor(Colors::red);
-	pScoreText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	pScoreText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(alignment::center);
 
 	const auto pScoreCounter = m_pHud->CreateGameObject();
 	pScoreCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(110, 25);
@@ -245,7 +245,7 @@ void PlayerManager::InitHud()
 	pScoreCounter->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pScoreCounter->GetComponent<real::TextComponent>()->SetText("0");
 	pScoreCounter->GetComponent<real::TextComponent>()->SetColor(Colors::white);
-	pScoreCounter->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	pScoreCounter->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(alignment::center);
 	const auto pScoreDisplay = pScoreCounter->AddComponent<ScoreDisplay>();
 
 	const auto pHighScoreText = m_pHud->CreateGameObject();
@@ -254,7 +254,7 @@ void PlayerManager::InitHud()
 	pHighScoreText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pHighScoreText->GetComponent<real::TextComponent>()->SetText("HI-SCORE");
 	pHighScoreText->GetComponent<real::TextComponent>()->SetColor(Colors::red);
-	pHighScoreText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	pHighScoreText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(alignment::center);
 
 	const auto pHighScoreCounter = m_pHud->CreateGameObject();
 	pHighScoreCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(280, 25);
@@ -262,7 +262,7 @@ void PlayerManager::InitHud()
 	pHighScoreCounter->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pHighScoreCounter->GetComponent<real::TextComponent>()->SetText("0");
 	pHighScoreCounter->GetComponent<real::TextComponent>()->SetColor(Colors::white);
-	pHighScoreCounter->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::center);
+	pHighScoreCounter->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(alignment::center);
 	pHighScoreCounter->AddComponent<HighScoreDisplay>(pScoreDisplay);
 
 	const auto pPepperText = m_pHud->CreateGameObject();
@@ -271,7 +271,7 @@ void PlayerManager::InitHud()
 	pPepperText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pPepperText->GetComponent<real::TextComponent>()->SetText("PEPPER");
 	pPepperText->GetComponent<real::TextComponent>()->SetColor(Colors::green);
-	pPepperText->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::left);
+	pPepperText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(alignment::left);
 
 	const auto pPepperCounter = m_pHud->CreateGameObject();
 	pPepperCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(672, 25);
@@ -279,15 +279,15 @@ void PlayerManager::InitHud()
 	pPepperCounter->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
 	pPepperCounter->GetComponent<real::TextComponent>()->SetText("5");
 	pPepperCounter->GetComponent<real::TextComponent>()->SetColor(Colors::white);
-	pPepperCounter->GetComponent<real::TextComponent>()->ChangeAlignment(alignment::left);
+	pPepperCounter->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(alignment::left);
 	pPepperCounter->AddComponent<PepperCounter>();
 
 	const auto pLivesCounter = m_pHud->CreateGameObject();
-	pLivesCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(48, 586);
+	pLivesCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(28, 659);
 	pLivesCounter->AddComponent<LivesDisplay>();
 
 	const auto pLevelCounter = m_pHud->CreateGameObject();
-	pLevelCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(652, 659);
+	pLevelCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(672, 659);
 	pLevelCounter->AddComponent<LevelDisplay>();
 
 	m_pHud->Start();
