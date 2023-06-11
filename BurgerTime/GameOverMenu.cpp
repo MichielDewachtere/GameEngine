@@ -1,7 +1,6 @@
 ﻿#include "GameOverMenu.h"
 
 #include <Input.h>
-#include <InputMap.h>
 #include <ResourceManager.h>
 #include <TextComponent.h>
 #include <TextureComponent.h>
@@ -54,9 +53,9 @@ void GameOverMenu::Load()
 	}
 
 	bool isCurrentPlayerInTopFive = false;
-	for (int i = 0; i < highScores.size(); ++i)
+	for (size_t i = 0; i < highScores.size(); ++i)
 	{
-		const float yPos = 200.f + 40.f * i;
+		const float yPos = 200.f + 40.f * static_cast<float>(i);
 
 		auto name = highScores[i].first;
 		const auto score = highScores[i].second;
