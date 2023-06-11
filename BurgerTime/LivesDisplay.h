@@ -3,10 +3,12 @@
 
 #include <Observer.h>
 #include <Component.h>
+#include <SpriteComponent.h>
 
 class HealthComponent;
 
 class LivesDisplay final : public real::Component,
+	public real::Observer<bool>,
 	public real::Observer<>
 {
 public:
@@ -17,14 +19,19 @@ public:
 	LivesDisplay(Component&& other) = delete;
 	LivesDisplay operator=(Component&& rhs) = delete;
 
+	void Start() override;
 	void Update() override {}
 	bool CanRender() const override { return false; }
 
 private:
-	int m_LivesLost{0};
+	int m_LifeIcons{ 3 };
+	real::SpriteSheet m_SpriteSheet{};
+	int m_AmountOfPlayers{ 1 };
+	bool m_SubjectDestroyed{};
 
-	virtual void HandleEvent() override;
-	virtual void OnSubjectDestroy() override {}
+	void HandleEvent() override;
+	virtual void HandleEvent(bool) override;
+	virtual void OnSubjectDestroy() override { m_SubjectDestroyed = true; }
 
 	void InitLifeIcons(int players);
 };
