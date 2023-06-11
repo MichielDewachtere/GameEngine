@@ -88,19 +88,25 @@ bool real::ColliderComponent::IsEntireColliderOverlapping(const ColliderComponen
 	const auto otherSize = other.GetSize();
 	const auto otherPos = other.GetPosition();
 
-	const auto pos = m_Pos + m_Offset + offset;
+	auto pos = m_Pos + m_Offset /*+ offset*/;
+	pos.x -= offset.x / 2;
+	pos.y -= offset.y / 2;
+
+	auto size = m_Size;
+	size.x += offset.x;
+	size.y += offset.y;
 
 	if (static_cast<int>(pos.x) > static_cast<int>(otherPos.x))
 		return false;
 
-	if (static_cast<int>(pos.x + m_Size.x) < static_cast<int>(otherPos.x + otherSize.x))
+	if (static_cast<int>(pos.x + size.x) < static_cast<int>(otherPos.x + otherSize.x))
 		return false;
 
 	// Y(0,0) IS ON THE TOP RIGHT OF THE SCREEN
 	if (static_cast<int>(pos.y) > static_cast<int>(otherPos.y))
 		return false;
 
-	if (static_cast<int>(pos.y + m_Size.y) < static_cast<int>(otherPos.y + otherSize.y))
+	if (static_cast<int>(pos.y + size.y) < static_cast<int>(otherPos.y + otherSize.y))
 		return false;
 
 	return true;
