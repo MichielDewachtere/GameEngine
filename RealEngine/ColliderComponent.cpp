@@ -88,7 +88,7 @@ bool real::ColliderComponent::IsEntireColliderOverlapping(const ColliderComponen
 	const auto otherSize = other.GetSize();
 	const auto otherPos = other.GetPosition();
 
-	auto pos = m_Pos + m_Offset /*+ offset*/;
+	auto pos = m_Pos + m_Offset;
 	pos.x -= offset.x / 2;
 	pos.y -= offset.y / 2;
 

@@ -20,7 +20,7 @@ SDL_Window* g_window{};
 
 void PrintSDLVersion()
 {
-	SDL_version version{};
+	SDL_version version;
 	SDL_VERSION(&version)
 	printf("We compiled against SDL version %u.%u.%u ...\n",
 		version.major, version.minor, version.patch);
@@ -82,8 +82,6 @@ real::Minigin::Minigin(const std::string &dataPath, const WindowSettings& window
 
 	Time::GetInstance().Init();
 
-	Input::GetInstance().Init();
-
 #if _DEBUG
 	Locator::RegisterAudioSystem(new LoggingAudio(new SDLAudio()));
 #else
@@ -132,10 +130,6 @@ void real::Minigin::Run(const std::function<void()>& load)
 		doContinue = input.ProcessInput();
 
 		input.Update();
-		//if (input.HandleInput())
-		//{
-		//	input.HandleInput()->Execute();
-		//}
 
 #ifdef USE_STEAM
 		SteamAPI_RunCallbacks();

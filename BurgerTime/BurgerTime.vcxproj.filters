@@ -144,9 +144,11 @@
     <ClCompile Include="GameOverMenu.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="LevelDisplay.cpp" />
     <ClCompile Include="QuitCommand.cpp">
       <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelDisplay.cpp">
+      <Filter>Components\HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,9 +258,11 @@
     <ClInclude Include="GameOverMenu.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="LevelDisplay.h" />
     <ClInclude Include="QuitCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelDisplay.h">
+      <Filter>Components\HUD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

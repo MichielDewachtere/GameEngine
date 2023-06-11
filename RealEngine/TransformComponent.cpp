@@ -25,7 +25,6 @@ void real::TransformComponent::SetWorldPosition(const float x, const float y)
 void real::TransformComponent::SetWorldPosition(const glm::vec2& pos)
 {
 	m_WorldPosition = pos;
-	//SetPositionDirty();
 
 	for (const auto& pChild : GetOwner()->GetChildren())
 		pChild->GetComponent<TransformComponent>()->SetPositionDirty();
@@ -49,22 +48,10 @@ void real::TransformComponent::SetLocalPosition(const glm::vec2& pos)
 void real::TransformComponent::Translate(float x, float y)
 {
 	SetWorldPosition(GetWorldPosition() + glm::vec2{ x, y });
-
-	//m_LocalPosition += glm::vec2{ x, y };
-
-	//SetPositionDirty();
 }
-
 void real::TransformComponent::Translate(const glm::vec2& translation)
 {
-	//if (m_PositionIsDirty)
-	//	m_LocalPosition += translation + GetWorldPosition();
-	//else
-	//	m_LocalPosition += translation;
-
 	SetWorldPosition(GetWorldPosition() + translation);
-
-	//SetPositionDirty();
 }
 
 void real::TransformComponent::UpdateWorldPosition()

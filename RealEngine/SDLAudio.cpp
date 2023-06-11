@@ -2,6 +2,7 @@
 #include "SDLAudio.h"
 
 #include <SDL_mixer.h>
+#include <array>
 #include <map>
 #include <cassert>
 #include <mutex>
@@ -36,7 +37,6 @@ namespace real
 			for (const auto& [sound, chunk] : m_AudioClips)
 			{
 				Mix_FreeChunk(chunk);
-				//Mix_FreeChunk(chunk.get());
 			}
 
 			m_AudioClips.clear();
@@ -48,8 +48,7 @@ namespace real
 
 		void Update() override
 		{
-			// TODO: eventqueue : https://gameprogrammingpatterns.com/event-queue.html
-			// use Mix_FreeChunk when done playing.
+			// eventqueue : https://gameprogrammingpatterns.com/event-queue.html
 
 			if (m_Head == m_Tail)
 				return;
@@ -108,12 +107,6 @@ namespace real
 		}
 		void Stop(const Sound sound) override
 		{
-			//if (IsLoaded(sound) == false)
-			//	return;
-			//
-			//if (sound)
-			//Mix_HaltChannel()
-
 			Logger::LogWarning("SDLAudio => The stop function is not yet implemented, {} can not be stopped this way", sound.fileName);
 		}
 		void StopAllSounds() override
@@ -142,14 +135,10 @@ namespace real
 	private:
 		bool IsLoaded(const Sound sound)
 		{
-			//if (m_AudioClips[id].second == nullptr)
 			if (m_AudioClips[sound] == nullptr)
 				return false;
 
 			return true;
-			
-			//const auto it = m_AudioClips.find(sound);
-			//return it != m_AudioClips.end() && it->second != nullptr;
 		}
 		void LoadSound(const Sound sound)
 		{
@@ -163,14 +152,12 @@ namespace real
 
 			std::lock_guard<std::mutex> lock(m_Mutex);
 
-			//m_AudioClips[sound] = std::unique_ptr<Mix_Chunk>(mixChunk);
 			m_AudioClips[sound] = mixChunk;
 
 			m_Condition.notify_all();
 		}
 		void PlaySound(const Sound sound)
 		{
-			//const auto mixChunk = m_AudioClips[sound].get();
 			const auto mixChunk = m_AudioClips[sound];
 
 			const int result = Mix_PlayChannel(sound.channel, mixChunk, sound.loops);
@@ -188,7 +175,6 @@ namespace real
 
 	private:
 		std::map<Sound, Mix_Chunk*> m_AudioClips;
-		//std::map<Sound, std::unique_ptr<Mix_Chunk>> m_AudioClips;
 
 		std::mutex m_Mutex{};
 		std::condition_variable m_Condition{};
@@ -196,7 +182,6 @@ namespace real
 		int m_Head{}, m_Tail{};
 		static constexpr size_t max_pending = 16;
 		std::array<Sound, max_pending> m_Pending{};
-		//int m_NumPending{};
 
 		bool m_IsMuted{};
 	};

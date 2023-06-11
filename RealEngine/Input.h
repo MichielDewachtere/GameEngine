@@ -20,8 +20,11 @@ namespace real
 	{
 	public:
 		~Input() override;
+		Input(const Input& other) = delete;
+		Input operator=(const Input& rhs) = delete;
+		Input(Input&& other) = delete;
+		Input operator=(Input&& rhs) = delete;
 
-		void Init();
 		void ReloadCommands();
 		void Update();
 
@@ -29,7 +32,6 @@ namespace real
 		bool IsCoOpEnabled() const { return m_EnableCoOp; }
 		void UseKeyboard(const bool useKeyboard) { m_UseKeyboard = useKeyboard; }
 
-		Command* HandleInput();
 		bool ProcessInput();
 			
 		const int AddController();
@@ -47,8 +49,10 @@ namespace real
 		Subject<char> inputReceived{};
 
 	private:
+		friend class Singleton<Input>;
+		explicit Input() = default;
+
 		std::vector<std::unique_ptr<XInputController>> m_ControllerPtrs{};
-		//std::vector<std::unique_ptr<InputMap>> m_InputMapPtrs{};
 		std::vector<InputMap*> m_InputMapPtrs{};
 		InputMap* m_pActiveInputMap{};
 

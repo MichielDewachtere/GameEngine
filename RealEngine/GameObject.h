@@ -24,7 +24,7 @@ namespace real
 			: m_Id(++m_NextId) {}
 		explicit GameObject(Scene* pScene, const std::string& tag = "empty") 
 			: m_pScene(pScene), m_Tag(tag), m_Id(++m_NextId) {}
-		~GameObject();
+		~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject& operator=(const GameObject& rhs) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -33,8 +33,6 @@ namespace real
 		GameObject* CreateGameObject();
 		std::vector<GameObject*> GetObjectsWithTag(const std::string& tag);
 		GameObject* GetObject(gameobject_id id);
-
-		//void Init();
 
 		void Start();
 		void Update();
@@ -80,8 +78,6 @@ namespace real
 	private:
 		Scene* m_pScene{ nullptr };
 		std::string m_Tag;
-		//TransformComponent* m_pTransform{ nullptr };
-		//std::unique_ptr<TransformComponent> m_pTransform;
 		bool m_IsMarkedForDestroy{};
 		bool m_IsActive{ true };
 		bool m_CanBeDestroyed{ true };
@@ -155,13 +151,6 @@ namespace real
 
 		for (auto it = m_ComponentPtrs.begin(); it != m_ComponentPtrs.end(); /*++it*/)
 		{
-			//T* otherComponent = dynamic_cast<T*>(*it->get());
-			//if (otherComponent != nullptr)
-			//{
-			//	it = m_ComponentPtrs.erase(it);
-			//	break;
-			//}
-
 			T* otherComponent = dynamic_cast<T*>(it->get());
 			if (otherComponent != nullptr)
 			{

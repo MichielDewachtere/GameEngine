@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿#ifndef STUNCOMMAND_H
+#define STUNCOMMAND_H
 
 #include <Command.h>
 
@@ -14,3 +15,5 @@ public:
 
 	virtual void Execute() override;
 };
+
+#endif // STUNCOMMAND_H

@@ -15,17 +15,6 @@ real::Input::~Input()
 		delete pInputMap;
 }
 
-void real::Input::Init()
-{
-	//using ControllerKey = std::pair<unsigned, XInputController::ControllerButton>;
-	//using ControllerCommandsMap = std::map<ControllerKey, std::unique_ptr<Command>>;
-	//
-	//m_ControllerPtrs.push_back(std::make_unique<XInputController>(0));
-	//
-	//ControllerKey controllerPair = std::make_pair(0, XInputController::ControllerButton::ButtonDown);
-	//m_ControllerCommands.insert({ controllerPair, std::make_unique<TestCommand>(new GameObject()) });
-}
-
 void real::Input::ReloadCommands()
 {
 	for (const auto& inputMap : m_InputMapPtrs)
@@ -42,23 +31,6 @@ void real::Input::ReloadCommands()
 	}
 }
 
-real::Command* real::Input::HandleInput()
-{
-	//for (const auto& pController : m_ControllerPtrs)
-	//{
-	//	for (const auto& [key, command] : m_ControllerCommands)
-	//	{
-	//		if (pController->IsPressed(key.second))
-	//		{
-	//			command.get()->Execute(pController->GetIndex());
-	//			return command.get();
-	//		}
-	//	}
-	//}
-
-	return nullptr;
-}
-
 bool real::Input::ProcessInput()
 {
 	SDL_Event e;
@@ -66,8 +38,6 @@ bool real::Input::ProcessInput()
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
-		
-		//std::cout << "test2\n";
 
 		if (m_pActiveInputMap == nullptr)
 			return true;
@@ -114,10 +84,6 @@ bool real::Input::ProcessInput()
 			command->SetKeyBoardInput(static_cast<int>(info.second));
 			command->SetInputController(nullptr);
 			command->Execute();
-			//if (const auto moveCommand = dynamic_cast<MoveCommand*>(command))
-			//{
-			//	SetDirectionKeyboard(info.second, moveCommand);
-			//}
 		}
 	}
 
@@ -166,8 +132,6 @@ bool real::Input::ProcessInput()
 					command.first->SetInputController(pController.get());
 					command.first->SetKeyBoardInput(-1);
 					command.first->Execute();
-					//if (const auto moveCommand = dynamic_cast<MoveCommand*>(command.first))
-					//	moveCommand->SetDirection(pController->GetNormalizedLeftThumbStickPos());
 				}
 				break;
 			}
@@ -210,18 +174,13 @@ std::vector<real::XInputController*> real::Input::GetControllers() const
 
 real::InputMap* real::Input::AddInputMap(const std::string& name)
 {
-	//auto pInputMap = std::make_unique<InputMap>(name);
 	auto pInputMap = new InputMap(name);
-
-	//const auto pInputMapPtr = pInputMap.get();
 	const auto pInputMapPtr = pInputMap;
 
-	//m_InputMapPtrs.emplace_back(std::move(pInputMap));
 	m_InputMapPtrs.emplace_back(pInputMap);
 
 	if (m_pActiveInputMap == nullptr)
 	{
-		//m_pActiveInputMap = m_InputMapPtrs.begin()->get();
 		m_pActiveInputMap = m_InputMapPtrs[0];
 	}
 
@@ -234,7 +193,6 @@ real::InputMap* real::Input::GetInputMap(const std::string& name) const
 	{
 		if (pInputMap->GetName() == name)
 		{
-			//m_pActiveInputMap = pInputMap.get();
 			return pInputMap;
 		}
 	}
@@ -249,7 +207,6 @@ void real::Input::SetInputMapActive(const std::string& name)
 	{
 		if (pInputMap->GetName() == name)
 		{
-			//m_pActiveInputMap = pInputMap.get();
 			m_pActiveInputMap = pInputMap;
 			return;
 		}
@@ -284,7 +241,7 @@ void real::Input::Update()
 
 const int real::Input::AddController()
 {
-	int controllerIdx = 0/*(int)m_ControllerPtrs.size() + 2*/;
+	int controllerIdx = 0;
 
 	for (int i{ 1 }; i < 5; ++i)
 	{
@@ -304,13 +261,9 @@ const int real::Input::AddController()
 		const DWORD result = XInputGetState(i, &state);
 		if (result == ERROR_SUCCESS)
 		{
-			//throw std::runtime_error("No Controller found with index " + std::to_string(controllerIdx));
 			controllerIdx = i;
 		}
 	}
-
-	//if (controllerIdx >= 4)
-	//	throw std::runtime_error("there can be a maximum of 4 controllers connected");
 
 	m_ControllerPtrs.push_back(std::make_unique<XInputController>(controllerIdx));
 

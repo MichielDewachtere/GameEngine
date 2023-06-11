@@ -10,10 +10,6 @@ namespace real
 	{
 	public:
 		virtual ~Component() = default;
-		Component(const Component& other) = delete;
-		Component& operator=(const Component& rhs) = delete;
-		Component(Component&& other) = delete;
-		Component& operator=(Component&& rhs) = delete;
 
 		virtual void Start() {}
 		virtual void Update() = 0;

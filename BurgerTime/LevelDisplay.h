@@ -13,10 +13,10 @@ class LevelDisplay final : public real::Component
 public:
 	explicit LevelDisplay(real::GameObject* pOwner);
 	virtual ~LevelDisplay() override;
-	LevelDisplay(const Component& other) = delete;
-	LevelDisplay operator=(const Component& rhs) = delete;
-	LevelDisplay(Component&& other) = delete;
-	LevelDisplay operator=(Component&& rhs) = delete;
+	LevelDisplay(const LevelDisplay& other) = delete;
+	LevelDisplay operator=(const LevelDisplay& rhs) = delete;
+	LevelDisplay(LevelDisplay&& other) = delete;
+	LevelDisplay operator=(LevelDisplay&& rhs) = delete;
 
 	void Update() override {}
 	bool CanRender() const override { return false; }

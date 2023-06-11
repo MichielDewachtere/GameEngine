@@ -15,9 +15,13 @@ class ScoreDisplay final :
 public:
 	explicit ScoreDisplay(real::GameObject* pOwner);
 	virtual ~ScoreDisplay() override;
+	ScoreDisplay(const ScoreDisplay& other) = delete;
+	ScoreDisplay operator=(const ScoreDisplay& rhs) = delete;
+	ScoreDisplay(ScoreDisplay&& other) = delete;
+	ScoreDisplay operator=(ScoreDisplay&& rhs) = delete;
 
 	void Start() override;
-	void Update() override {};
+	void Update() override {}
 	bool CanRender() const override { return false; }
 
 	virtual void HandleEvent(int) override;

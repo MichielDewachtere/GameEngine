@@ -13,7 +13,7 @@ public:
 		pickle
 	};
 
-	explicit Spawner(real::GameObject* pGameObject/*, const EnemyTypes type = EnemyTypes::hotDog*/) : Component(pGameObject)/*, m_Type(type)*/ {}
+	explicit Spawner(real::GameObject* pGameObject) : Component(pGameObject) {}
 	virtual ~Spawner() override = default;
 	Spawner(const Spawner& other) = delete;
 	Spawner operator=(Spawner& rhs) = delete;
@@ -26,10 +26,7 @@ public:
 	void SpawnEnemy(const std::string& type);
 	void ReSpawnEnemy(real::GameObject* pEnemy) const;
 
-	//void SetType(const EnemyTypes type) { m_Type = type; }
-
 private:
-	//EnemyTypes m_Type{};
 	std::vector<EnemyTypes> m_Types;
 	float m_AccuTime{};
 

@@ -10,7 +10,7 @@ namespace real
 	{
 	public:
 		explicit TextureComponent(GameObject* pOwner) : Component(pOwner) {}
-		~TextureComponent() override = default;
+		virtual ~TextureComponent() override = default;
 		TextureComponent(const TextureComponent& other) = delete;
 		TextureComponent& operator=(const TextureComponent& rhs) = delete;
 		TextureComponent(TextureComponent&& other) = delete;

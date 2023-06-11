@@ -1,7 +1,5 @@
 ﻿#include "PlayerManager.h"
 
-//#include <algorithm>
-
 #include <ColliderComponent.h>
 #include <Input.h>
 #include <InputMap.h>
@@ -153,10 +151,8 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 
 	const auto pFeet = pCharacter->CreateGameObject();
 	pFeet->SetCanBeDestroyed(false);
-	//pFeet->SetTag(Tags::player);
 	pFeet->GetComponent<real::TransformComponent>()->SetLocalPosition(12, 0);
 	pFeet->AddComponent<real::ColliderComponent>(glm::vec2{ 24, 48 })->EnableDebugRendering(false, Colors::purple);
-	//pFeet->GetComponent<real::ColliderComponent>()->Translate(12, 0);
 
 	const auto pPepperArea = pCharacter->CreateGameObject();
 	pPepperArea->SetCanBeDestroyed(false);

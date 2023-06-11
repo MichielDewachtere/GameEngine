@@ -136,7 +136,6 @@ private:
 };
 
 XInputController::XInputController(int controllerIndex)
-	//: m_pImpl(std::make_unique<XInputControllerImpl>(controllerIndex))
 	: m_pImpl(new XInputControllerImpl(controllerIndex))
 {
 }

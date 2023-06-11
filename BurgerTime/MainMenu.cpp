@@ -114,13 +114,6 @@ void MainMenu::Load()
 	pJoinText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(vertical_alignment::center);
 	pJoinText->AddComponent<PlayerDisplay>();
 
-	//const auto pModeText = CreateGameObject();
-	//pModeText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width) / 2.f, 350);
-	//pModeText->AddComponent<real::TextureComponent>();
-	//pModeText->AddComponent<real::TextComponent>()->SetFont(pMiddleFont);
-	//pModeText->GetComponent<real::TextComponent>()->SetText("VERSUS");
-	//pModeText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(vertical_alignment::center);
-
 	const auto playerNameText = CreateGameObject();
 	playerNameText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width) / 2.f, 500);
 	playerNameText->AddComponent<real::TextureComponent>();

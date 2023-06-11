@@ -4,19 +4,11 @@
 #include <algorithm>
 
 #include "Scene.h"
-//#include "Component.h"
 #include "TransformComponent.h"
-
-real::GameObject::~GameObject()
-{
-	//delete m_pTransform;
-	//delete m_pParent;
-}
 
 real::GameObject* real::GameObject::CreateGameObject()
 {
 	auto pGameObject{ std::make_unique<GameObject>(m_pScene) };
-	//pGameObject->Init();
 	pGameObject->AddComponent<TransformComponent>();
 
 	const auto pGameObjectPtr{ pGameObject.get() };
@@ -59,15 +51,6 @@ real::GameObject* real::GameObject::GetObject(gameobject_id id)
 
 	return nullptr;
 }
-
-
-//void real::GameObject::Init()
-//{
-//	//m_pTransform = AddComponent<TransformComponent>();
-//	TransformComponent* pTransform = AddComponent<TransformComponent>();
-//
-//	m_pTransform = std::unique_ptr<TransformComponent>(pTransform);
-//}
 
 void real::GameObject::Start()
 {
@@ -135,9 +118,6 @@ void real::GameObject::PostUpdate()
 		{
 			auto& pChild = *it;
 
-			// if (m_IsMarkedForDestroy)
-			//     pChild->Destroy();
-
 			if (m_IsActive)
 				pChild->PostUpdate();
 
@@ -179,15 +159,6 @@ void real::GameObject::Destroy()
 	{
 		pChild->Destroy();
 	}
-
-	//m_ComponentPtrs.clear();
-
-	//for (const auto& pChild : m_ChildrenPtrs)
-	//{
-	//	pChild->Destroy();
-	//}
-
-	//m_pParent->RemoveChild(std::unique_ptr<GameObject>(this));
 }
 
 void real::GameObject::SetIsActive(const bool value)
@@ -241,9 +212,6 @@ void real::GameObject::SetParent(GameObject* pParent, const bool keepWorldPositi
 	{
 		if (!pParent) 
 			return;
-
-		//const std::unique_ptr<GameObject> pThis(this);
-		//pParent->m_ChildrenPtrs.push_back(pThis);
 	}
 }
 
@@ -266,12 +234,5 @@ std::vector<real::GameObject*> real::GameObject::GetChildren() const
 
 void real::GameObject::RemoveChild(std::unique_ptr<GameObject> gameObject)
 {
-	//for (const auto& pChild: gameObject->GetChildren())
-	//{
-	//	gameObject->RemoveChild(std::unique_ptr<GameObject>(pChild));
-	//}
-
 	gameObject->Destroy();
-
-	//std::erase(m_ChildrenPtrs, gameObject);
 }

@@ -14,10 +14,10 @@ namespace real
 		explicit ColliderComponent(GameObject* pOwner, const glm::vec2& size);
 		explicit ColliderComponent(GameObject* pOwner, float width, float height);
 		virtual ~ColliderComponent() override = default;
-		ColliderComponent(const Component& other) = delete;
-		ColliderComponent operator=(const Component& rhs) = delete;
-		ColliderComponent(Component&& other) = delete;
-		ColliderComponent operator=(Component&& rhs) = delete;
+		ColliderComponent(const ColliderComponent& other) = delete;
+		ColliderComponent operator=(const ColliderComponent& rhs) = delete;
+		ColliderComponent(ColliderComponent&& other) = delete;
+		ColliderComponent operator=(ColliderComponent&& rhs) = delete;
 
 		void Update() override;
 		void DebugRender() const override;
@@ -33,11 +33,6 @@ namespace real
 		void SetSize(float width, float height) { SetSize({ width, height }); }
 		glm::vec2 GetSize() const { return m_Size; }
 
-		/**
-		 * \brief 
-		 * \param enable 
-		 * \param color color values between 0 and 255
-		 */
 		void EnableDebugRendering(bool enable, const glm::vec4& color = { 0,255,0,255 }) { m_DrawDebug = enable; m_Color = color; }
 		/**
 		 * \brief The Color of the debug box

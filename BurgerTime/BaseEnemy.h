@@ -50,8 +50,7 @@ private:
 	};
 	EnemyState m_CurrentState{ EnemyState::outOfBounds };
 
-	//std::vector<std::shared_ptr<real::GameObject>> m_PlayerPtrs;
-	std::vector</*std::unique_ptr<*/real::GameObject*/*>*/> m_PlayerPtrs;
+	std::vector<real::GameObject*> m_PlayerPtrs;
 
 	int m_Score{};
 
@@ -64,15 +63,14 @@ private:
 	float m_StunTimer{};
 	float m_MaxStunTime{ 5.f };
 
-	std::vector</*std::unique_ptr<*/real::GameObject*/*>*/> m_StairPtrs;
-	std::vector</*std::unique_ptr<*/real::GameObject*/*>*/> m_HiddenStairPtrs;
+	std::vector<real::GameObject*> m_StairPtrs;
+	std::vector<real::GameObject*> m_HiddenStairPtrs;
 	real::gameobject_id m_CurrentStair = 0;
 
-	std::vector</*std::unique_ptr<*/real::GameObject*/*>*/> m_FloorPtrs;
+	std::vector<real::GameObject*> m_FloorPtrs;
 	real::gameobject_id m_CurrentPlatform = 0;
 
-	std::vector</*std::unique_ptr<*/real::GameObject*/*>*/> m_IngredientPtrs;
-	//std::vector<std::unique_ptr<real::GameObject>> m_IngredientPtrs;
+	std::vector<real::GameObject*> m_IngredientPtrs;
 	bool m_IsOnIngredient = false;
 	real::GameObject* m_pCurrentIngredient{};
 
@@ -81,7 +79,7 @@ private:
 	bool m_RemovedObservers{};
 
 	real::GameObject* GetClosestPlayer(const std::vector<real::GameObject*>& playerPtrs) const;
-	bool PlayerHit(real::GameObject* pPlayer) const;
+	bool PlayerHit(const real::GameObject* pPlayer) const;
 
 	bool CheckForStairs(real::TransformComponent* playerTransform);
 	bool CheckForHiddenStairs();

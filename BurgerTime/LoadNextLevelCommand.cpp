@@ -1,13 +1,10 @@
 //#include "stdafx.h"
 #include "LoadNextLevelCommand.h"
 
-#include <Locator.h>
-
 #include <Input.h>
 #include <SceneManager.h>
 #include <Scene.h>
 
-#include "GameInfo.h"
 #include "Logger.h"
 #include "PlayerManager.h"
 

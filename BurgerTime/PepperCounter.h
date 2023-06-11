@@ -12,6 +12,10 @@ class PepperCounter final : public real::Component,
 public:
 	explicit PepperCounter(real::GameObject* pOwner);
 	virtual ~PepperCounter() override;
+	PepperCounter(const PepperCounter& other) = delete;
+	PepperCounter operator=(const PepperCounter& rhs) = delete;
+	PepperCounter(PepperCounter&& other) = delete;
+	PepperCounter operator=(PepperCounter&& rhs) = delete;
 
 	void Start() override;
 	void Update() override {};
@@ -19,9 +23,8 @@ public:
 
 	virtual void HandleEvent(int) override;
 	virtual void OnSubjectDestroy() override {}
-private:
-	HealthComponent* m_Health{};
 
+private:
 	void UpdatePepperText(int);
 };
 

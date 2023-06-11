@@ -56,21 +56,20 @@ void LevelDisplay::HandleEvent(real::Scene& scene, real::SceneManager::SceneSwit
 			const auto pIcon = m_TenIcons->CreateGameObject();
 			pIcon->AddComponent<real::SpriteComponent>(m_SpriteSheet)->SelectSprite(4);
 			const auto spriteSize = pIcon->GetComponent<real::SpriteComponent>()->GetSpriteSize();
-			pIcon->GetComponent<real::TransformComponent>()->Translate(0, -(spriteSize.y + 3) * (tenIcons - 1));
+			pIcon->GetComponent<real::TransformComponent>()->Translate(0, -(spriteSize.y + 3) * static_cast<float>(tenIcons - 1));
 		}
 	}
 	else if (tenIcons > 0 && m_TenIcons->GetChildren().empty())
 	{
 		const auto pIcon = m_TenIcons->CreateGameObject();
 		pIcon->AddComponent<real::SpriteComponent>(m_SpriteSheet)->SelectSprite(4);
-		const auto spriteSize = pIcon->GetComponent<real::SpriteComponent>()->GetSpriteSize();
 	}
 
 	if (fiveIcons == 1)
 	{
 		const auto spriteSize = m_FiveIcon->GetComponent<real::SpriteComponent>()->GetSpriteSize();
 		m_FiveIcon->GetComponent<real::SpriteComponent>()->SetIsActive(true);
-		m_FiveIcon->GetComponent<real::TransformComponent>()->SetLocalPosition(0, -(spriteSize.y + 3) * tenIcons);
+		m_FiveIcon->GetComponent<real::TransformComponent>()->SetLocalPosition(0, -(spriteSize.y + 3) * static_cast<float>(tenIcons));
 	}
 	else
 		m_FiveIcon->GetComponent<real::SpriteComponent>()->SetIsActive(false);
@@ -85,7 +84,7 @@ void LevelDisplay::HandleEvent(real::Scene& scene, real::SceneManager::SceneSwit
 			{
 				const auto spriteSize = pIcon->GetComponent<real::SpriteComponent>()->GetSpriteSize();
 				pIcon->GetComponent<real::SpriteComponent>()->SetIsActive(true);
-				pIcon->GetComponent<real::TransformComponent>()->SetLocalPosition(0, -(spriteSize.y + 3) * (tenIcons + fiveIcons + i));
+				pIcon->GetComponent<real::TransformComponent>()->SetLocalPosition(0, -(spriteSize.y + 3) * static_cast<float>(tenIcons + fiveIcons + i));
 			}
 			else
 				pIcon->GetComponent<real::SpriteComponent>()->SetIsActive(false);
@@ -103,7 +102,7 @@ void LevelDisplay::InitIcons()
 		const auto pIcon = m_NormalIcons->CreateGameObject();
 		pIcon->AddComponent<real::SpriteComponent>(m_SpriteSheet)->SelectSprite(2);
 		const auto spriteSize = pIcon->GetComponent<real::SpriteComponent>()->GetSpriteSize();
-		pIcon->GetComponent<real::TransformComponent>()->Translate(0, -(spriteSize.y + 3) * i);
+		pIcon->GetComponent<real::TransformComponent>()->Translate(0, -(spriteSize.y + 3) * static_cast<float>(i));
 		pIcon->GetComponent<real::SpriteComponent>()->SetIsActive(false);
 	}
 

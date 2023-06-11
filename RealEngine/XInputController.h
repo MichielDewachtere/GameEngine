@@ -9,7 +9,6 @@ namespace real
 	{
 	private:
 		class XInputControllerImpl;
-		//std::unique_ptr<XInputControllerImpl> m_pImpl;
 		XInputControllerImpl* m_pImpl;
 
 	public:
@@ -25,8 +24,6 @@ namespace real
 			RightThumb = 0x0080,
 			LeftShoulder = 0x0100,
 			RightShoulder = 0x0200,
-			//LeftTrigger = 0x0400,
-			//RightTrigger = 0x0800,
 			ButtonDown = 0x1000,
 			ButtonLeft = 0x2000,
 			ButtonRight = 0x4000,
@@ -43,7 +40,7 @@ namespace real
 		};
 
 		explicit XInputController(int controllerIndex);
-		~XInputController() /*= default*/;
+		~XInputController();
 		XInputController(const XInputController& other) = delete;
 		XInputController operator=(const XInputController& rhs) = delete;
 		XInputController(XInputController&& other) = delete;

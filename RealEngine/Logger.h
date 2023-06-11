@@ -14,7 +14,7 @@ namespace real
 		//TODO : LOG TO FILE?
 		/**
 		 * \brief A simple logger to log info.
-		 * \tparam Args 
+		 * \tparam Args Arguments
 		 * \param message Message that should be displayed. Use {} to attach your arguments. 
 		 * \param args The variables you want to display in your message.
 		 */
@@ -28,7 +28,7 @@ namespace real
 		}
 		/**
 		 * \brief A simple logger to log a warning.
-		 * \tparam Args
+		 * \tparam Args Arguments
 		 * \param message Message that should be displayed. Use {} to attach your arguments.
 		 * \param args The variables you want to display in your message.
 		 */
@@ -42,7 +42,7 @@ namespace real
 		}
 		/**
 		* \brief A simple logger to log an error.
-		* \tparam Args
+		* \tparam Args Arguments
 		* \param message Message that should be displayed. Use {} to attach your arguments.
 		* \param args The variables you want to display in your message.
 		*/
@@ -84,7 +84,7 @@ namespace real
 
 			char timeStr[26];
 			ctime_s(timeStr, sizeof timeStr, &time);
-			timeStr[strlen(timeStr) - 1] = '\0'; // remove newline character
+			timeStr[strlen(timeStr) - 1] = '\0';
 
 			return "[" + std::string(timeStr) + "]";
 		}

@@ -10,10 +10,10 @@ class PlayerNameDisplay final : public real::Component,
 public:
 	explicit PlayerNameDisplay(real::GameObject* pOwner);
 	virtual ~PlayerNameDisplay() override;
-	PlayerNameDisplay(const Component& other) = delete;
-	PlayerNameDisplay operator=(const Component& rhs) = delete;
-	PlayerNameDisplay(Component&& other) = delete;
-	PlayerNameDisplay operator=(Component&& rhs) = delete;
+	PlayerNameDisplay(const PlayerNameDisplay& other) = delete;
+	PlayerNameDisplay operator=(const PlayerNameDisplay& rhs) = delete;
+	PlayerNameDisplay(PlayerNameDisplay&& other) = delete;
+	PlayerNameDisplay operator=(PlayerNameDisplay&& rhs) = delete;
 
 	void Start() override;
 	void Update() override {}

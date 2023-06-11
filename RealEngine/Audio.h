@@ -1,7 +1,6 @@
 #ifndef AUDIO_H
 #define AUDIO_H
 
-#include <array>
 #include <string>
 
 namespace real
@@ -29,11 +28,6 @@ namespace real
 
 		virtual void Update() = 0;
 
-		/**
-		 * \brief 
-		 * \param volume default = -1 : default value defined in struct is used, otherwise the value defined in the struct will be overriden;
-		 * \param loops default = -1 : default value defined in struct is used, otherwise the value defined in the struct will be overriden;
-		 */
 		virtual void Play(const Sound sound, const int volume = -1, const int loops = -1) = 0;
 		virtual void Stop(const Sound sound) = 0;
 		virtual void Stop(const int channel) = 0;

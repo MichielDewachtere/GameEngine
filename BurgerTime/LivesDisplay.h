@@ -12,12 +12,12 @@ class LivesDisplay final : public real::Component,
 	public real::Observer<>
 {
 public:
-	LivesDisplay(real::GameObject* pOwner);
+	explicit LivesDisplay(real::GameObject* pOwner);
 	virtual ~LivesDisplay() override;
-	LivesDisplay(const Component& other) = delete;
-	LivesDisplay operator=(const Component& rhs) = delete;
-	LivesDisplay(Component&& other) = delete;
-	LivesDisplay operator=(Component&& rhs) = delete;
+	LivesDisplay(const LivesDisplay& other) = delete;
+	LivesDisplay operator=(const LivesDisplay& rhs) = delete;
+	LivesDisplay(LivesDisplay&& other) = delete;
+	LivesDisplay operator=(LivesDisplay&& rhs) = delete;
 
 	void Start() override;
 	void Update() override {}

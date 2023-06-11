@@ -10,8 +10,12 @@ namespace real
 	class LoggingAudio final : public Audio
 	{
 	public:
-		LoggingAudio(Audio* audio) : m_RealAudio(audio) {}
+		explicit LoggingAudio(Audio* audio) : m_RealAudio(audio) {}
 		virtual ~LoggingAudio() override = default;
+		LoggingAudio(const LoggingAudio& other) = delete;
+		LoggingAudio operator=(const LoggingAudio& rhs) = delete;
+		LoggingAudio(LoggingAudio&& other) = delete;
+		LoggingAudio operator=(LoggingAudio&& rhs) = delete;
 
 		virtual void Update() override;
 		virtual void Play(const Sound sound, const int volume, const int loops) override;

@@ -123,8 +123,6 @@ void real::TextComponent::HandleVerticalAlignment(const glm::vec2& textureSize)
 		break;
 	}
 	}
-
-	//m_OriginalPos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
 }
 
 void real::TextComponent::HandleHorizontalAlignment(const glm::vec2& textureSize)
@@ -150,6 +148,4 @@ void real::TextComponent::HandleHorizontalAlignment(const glm::vec2& textureSize
 		break;
 	}
 	}
-
-	//m_OriginalPos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
 }

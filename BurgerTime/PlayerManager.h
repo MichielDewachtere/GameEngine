@@ -48,7 +48,7 @@ public:
 
 private:
 	friend class Singleton<PlayerManager>;
-	PlayerManager() = default;
+	explicit PlayerManager() = default;
 
 	std::vector<std::shared_ptr<real::GameObject>> m_PlayerPtrs{};
 	std::string m_PlayerName{};

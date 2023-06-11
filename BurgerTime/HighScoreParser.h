@@ -3,9 +3,7 @@
 
 #include <map>
 #include <string>
-#include <algorithm>
 #include <vector>
-#include <iostream>
 #include <ostream>
 
 #pragma warning(disable : 4996)

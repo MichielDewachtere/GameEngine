@@ -43,32 +43,32 @@ void BaseEnemy::Start()
 {
 	for (const auto pPlayer: real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::player))
 	{
-		m_PlayerPtrs.push_back(/*std::unique_ptr<real::GameObject>*/(pPlayer));
+		m_PlayerPtrs.push_back(pPlayer);
 	}
 
 	for (const auto pStair : real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::stair))
 	{
-		m_StairPtrs.push_back(/*std::unique_ptr<real::GameObject>*/(pStair));
+		m_StairPtrs.push_back(pStair);
 	}
 
 	for (const auto pStair : real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::hidden_stair))
 	{
-		m_HiddenStairPtrs.push_back(/*std::unique_ptr<real::GameObject>*/(pStair));
+		m_HiddenStairPtrs.push_back(pStair);
 	}
 
 	for (const auto pFloor : real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::floor))
 	{
-		m_FloorPtrs.push_back(/*std::unique_ptr<real::GameObject>*/(pFloor));
+		m_FloorPtrs.push_back(pFloor);
 	}
 
 	for (const auto pIngredient : real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::ingredient))
 	{
-		m_IngredientPtrs.push_back(/*std::unique_ptr<real::GameObject>*/(pIngredient));
+		m_IngredientPtrs.push_back(pIngredient);
 	}
 
 	m_pWorldBorder = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::boundary)[0]->GetComponent<real::ColliderComponent>();
 
-	for (auto& pPlayer : m_PlayerPtrs)
+	for (const auto& pPlayer : m_PlayerPtrs)
 	{
 		pPlayer->GetComponent<PlayerCharacter>()->pepperThrown.AddObserver(this);
 	}
@@ -157,7 +157,6 @@ void BaseEnemy::Update()
 		if (PlayerHit(pPlayer))
 		{
 			pPlayer->GetComponent<HealthComponent>()->Damage();
-			// LevelManager -> reset level?
 		}
 
 		if (CheckForIngredients())
@@ -216,7 +215,6 @@ void BaseEnemy::Update()
 		if (PlayerHit(pPlayer))
 		{
 			pPlayer->GetComponent<HealthComponent>()->Damage();
-			// LevelManager -> reset level?
 		}
 
 		if (CheckForIngredients())
@@ -295,9 +293,6 @@ void BaseEnemy::Update()
 	}
 	case EnemyState::crushed:
 	{
-		//TODO: add points to score
-		//real::Logger::LogInfo("BaseEnemy => Enemy {} is crushed", GetOwner()->GetId());
-
 		m_DeathTimer += real::Time::GetInstance().GetElapsed();
 
 		if (m_DeathTimer > m_MaxDeathTime)
@@ -338,8 +333,6 @@ void BaseEnemy::Update()
 	}
 	case EnemyState::dead:
 	{
-		//TODO: add points to score
-
 		GetOwner()->GetComponent<real::SpriteComponent>()->Stop(true);
 
 		m_DeathTimer += real::Time::GetInstance().GetElapsed();
@@ -417,7 +410,6 @@ real::GameObject* BaseEnemy::GetClosestPlayer(const std::vector<real::GameObject
 bool BaseEnemy::CheckForStairs(real::TransformComponent* playerTransform)
 {
 	const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
-	//const auto stairPtrs = real::SceneManager::GetInstance().GetActiveScene().FindObjectsWithTag(Tags::stair);
 
 	for (const auto& pStair : m_StairPtrs)
 	{
@@ -433,11 +425,7 @@ bool BaseEnemy::CheckForStairs(real::TransformComponent* playerTransform)
 		if (canGoUp == false && canGoDown == false)
 			continue;
 
-		//m_IsOnStair = true;
 		m_CurrentStair = pStair->GetId();
-
-		//m_IsOnFloor = false;
-		//m_CanTurn = true;
 
 		if (canGoUp && canGoDown)
 		{
@@ -502,11 +490,7 @@ bool BaseEnemy::CheckForPlatforms(real::TransformComponent* playerTransform)
 		if (canGoRight == false && canGoLeft == false)
 			continue;
 
-		//m_IsOnFloor = true;
 		m_CurrentPlatform = pPlatform->GetId();
-
-		//m_IsOnStair = false;
-		//m_CanTurn = true;
 
 		if (canGoRight && canGoLeft)
 		{
@@ -532,9 +516,6 @@ bool BaseEnemy::CheckForPlatforms(real::TransformComponent* playerTransform)
 
 bool BaseEnemy::CheckForIngredients()
 {
-	//const auto pCollider = GetOwner()->GetComponent<real::ColliderComponent>();
-	//const auto pSubCollider = std::make_unique<real::ColliderComponent>(this->GetOwner(), pCollider->GetSize().x / 2, pCollider->GetSize().y);
-	//pSubCollider->Translate(pCollider->GetSize().x / 4, 0);
 	const auto pSubCollider = GetOwner()->GetChildAt(0)->GetComponent<real::ColliderComponent>();
 
 	if (m_IsOnIngredient == false || m_pCurrentIngredient->GetTag() != Tags::ingredient)
@@ -552,7 +533,7 @@ bool BaseEnemy::CheckForIngredients()
 				const auto pPartCollider = pPart->GetComponent<real::ColliderComponent>();
 				if (pPartCollider->IsOverlapping(*pSubCollider))
 				{
-					m_pCurrentIngredient = pIngredient/*.get()*/;
+					m_pCurrentIngredient = pIngredient;
 					m_IsOnIngredient = true;
 
 					m_pCurrentIngredient->GetComponent<Ingredient>()->IncreaseWeight();
@@ -573,21 +554,11 @@ bool BaseEnemy::CheckForIngredients()
 			return true;
 		}
 
-		//const auto pIngredientCollider = m_pCurrentIngredient->GetComponent<real::ColliderComponent>();
-
-		//if (pIngredientCollider->IsOverlapping(*pSubCollider) == false)
-		//{
-		//	m_pCurrentIngredient->GetComponent<Ingredient>()->DecreaseWeight();
-
-		//	m_pCurrentIngredient = nullptr;
-		//	m_IsOnIngredient = false;
-		//}
-
 		bool isOnBurger = false;
 		for (const auto& pPart : m_pCurrentIngredient->GetChildren())
 		{
 			const auto pPartCollider = pPart->GetComponent<real::ColliderComponent>();
-			if (pPartCollider->IsOverlapping(*pSubCollider) /*== false*/)
+			if (pPartCollider->IsOverlapping(*pSubCollider))
 			{
 				isOnBurger = true;
 				break;
@@ -610,16 +581,10 @@ bool BaseEnemy::CheckForIngredients()
 		if (pIngredient->GetTag() != Tags::ingredient)
 			continue;
 
-		//const auto pIngredientTransform = pIngredient->GetComponent<real::TransformComponent>();
-		//if (pIngredientTransform->GetWorldPosition().y < GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition().y)
-		//	return false;
-
 		const auto pIngredientComponent = pIngredient->GetComponent<Ingredient>();
 
 		if (pIngredientComponent->GetIsFalling() == false)
 			continue;
-
-		//real::Logger::LogInfo("Burger is falling");
 
 		const auto pIngredientCollider = pIngredient->GetComponent<real::ColliderComponent>();
 		const auto pCoreCollider = GetOwner()->GetChildAt(0)->GetComponent<real::ColliderComponent>();
@@ -667,21 +632,8 @@ void BaseEnemy::Fall()
 	if (m_pCurrentIngredient->GetTag() != Tags::ingredient)
 	{
 		real::Logger::LogInfo("BaseEnemy => Enemy {} should be destroyed", GetOwner()->GetId());
-		//m_IsFalling = false;
 		m_CurrentState = EnemyState::dead;
 
-		//const auto it = std::ranges::find_if(m_IngredientPtrs, [&](const std::unique_ptr<real::GameObject>& ptr) {
-		//	return ptr.get() == m_pCurrentIngredient;
-		//	});
-		//
-		//m_IngredientPtrs.erase(it);
-		//
-		
-		//m_CurrentState = EnemyState::outOfBounds;
-		//m_pCurrentIngredient->SetTag(Tags::empty);
-
-		//GetOwner()->Destroy();
-		//GetOwner()->GetParent()->GetComponent<Spawner>()->SpawnEnemy();
 		return;
 	}
 
@@ -689,7 +641,7 @@ void BaseEnemy::Fall()
 	if (pIngredient->GetIsFalling() == true)
 	{
 		const auto pTransform = GetOwner()->GetComponent<real::TransformComponent>();
-		pTransform->Translate(0, pIngredient->GetFallSpeed() * real::Time::GetInstance().GetElapsed());
+		pTransform->Translate(0, static_cast<float>(pIngredient->GetFallSpeed()) * real::Time::GetInstance().GetElapsed());
 	}
 	else
 	{
@@ -697,7 +649,7 @@ void BaseEnemy::Fall()
 	}
 }
 
-bool BaseEnemy::PlayerHit(real::GameObject* pPlayer) const
+bool BaseEnemy::PlayerHit(const real::GameObject* pPlayer) const
 {
 	const auto pPlayerFeetCollider = pPlayer->GetChildAt(0)->GetComponent<real::ColliderComponent>();
 	const auto pEnemyCoreCollider = GetOwner()->GetChildAt(0)->GetComponent<real::ColliderComponent>();

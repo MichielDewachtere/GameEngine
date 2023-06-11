@@ -74,8 +74,6 @@ void HighScoreParser::UpdateHighScores(const std::string& playerName, int score)
 
     Document::AllocatorType& allocator = m_Document.GetAllocator();
 
-    //Value newPlayer(kObjectType);
-
     // Only keep the top 5 in the file.
 	m_Document.Clear();
 

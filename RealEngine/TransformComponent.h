@@ -12,7 +12,7 @@ namespace real
 	{
 	public:
 		explicit TransformComponent(GameObject* pOwner) : Component(pOwner) {}
-		~TransformComponent() override = default;
+		virtual ~TransformComponent() override = default;
 		TransformComponent(const TransformComponent& other) = delete;
 		TransformComponent& operator=(const TransformComponent& rhs) = delete;
 		TransformComponent(TransformComponent&& other) = delete;

@@ -51,11 +51,6 @@ void Spawner::Update()
 
 void Spawner::SpawnEnemy(const std::string& type)
 {
-	//if (m_NeedNewEnemy == false)
-	//	m_NeedNewEnemy = true;
-	//else
-	//	real::Logger::LogWarning("Spawner => A new enemy is already requested.");
-
 	if (type == Tags::hot_dog)
 		m_Types.push_back(EnemyTypes::hotDog);
 	else if (type == Tags::egg)
@@ -70,7 +65,6 @@ void Spawner::ReSpawnEnemy(real::GameObject* pEnemy) const
 {
 	const auto spawnPos = GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition();
 	pEnemy->GetComponent<real::TransformComponent>()->SetWorldPosition(spawnPos.x, spawnPos.y - 47);
-	//pEnemy->GetComponent<real::TransformComponent>()->Translate(0, static_cast<float>(-48 + 1));
 }
 
 void Spawner::SpawnEnemyType(const std::string& type, int points)

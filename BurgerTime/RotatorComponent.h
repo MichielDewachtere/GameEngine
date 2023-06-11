@@ -3,12 +3,13 @@
 
 #include <glm/vec2.hpp>
 
-#include "Component.h"
+#include <Component.h>
 
 class RotatorComponent final : public real::Component
 {
 public:
 	explicit RotatorComponent(real::GameObject* pOwner) : Component(pOwner) {}
+	~RotatorComponent() override = default;
 	RotatorComponent(const RotatorComponent& other) = delete;
 	RotatorComponent operator=(const RotatorComponent& rhs) = delete;
 	RotatorComponent(RotatorComponent&& other) = delete;

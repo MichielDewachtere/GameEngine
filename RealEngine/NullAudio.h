@@ -8,8 +8,12 @@ namespace real
 	class NullAudio final : public Audio
 	{
 	public:
-		NullAudio() : Audio() {}
+		explicit NullAudio() : Audio() {}
 		virtual ~NullAudio() override = default;
+		NullAudio(const NullAudio& other) = delete;
+		NullAudio operator=(const NullAudio& rhs) = delete;
+		NullAudio(NullAudio&& other) = delete;
+		NullAudio operator=(NullAudio&& rhs) = delete;
 
 		virtual void Update() override {}
 		virtual void Play(const Sound, const int, const int) override {}

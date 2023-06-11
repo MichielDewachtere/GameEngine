@@ -12,13 +12,13 @@ class HighScoreDisplay final : public real::Component
 public:
 	explicit HighScoreDisplay(real::GameObject* pOwner, ScoreDisplay* pScoreDisplay);
 	virtual ~HighScoreDisplay() override;
-	HighScoreDisplay(const Component& other) = delete;
-	HighScoreDisplay operator=(const Component& rhs) = delete;
-	HighScoreDisplay(Component&& other) = delete;
-	HighScoreDisplay operator=(Component&& rhs) = delete;
+	HighScoreDisplay(const HighScoreDisplay& other) = delete;
+	HighScoreDisplay operator=(const HighScoreDisplay& rhs) = delete;
+	HighScoreDisplay(HighScoreDisplay&& other) = delete;
+	HighScoreDisplay operator=(HighScoreDisplay&& rhs) = delete;
 	
-	void Update() override {}
-	bool CanRender() const override { return false; }
+	virtual void Update() override {}
+	virtual bool CanRender() const override { return false; }
 
 	void HandleEvent(int) override;
 	void OnSubjectDestroy() override {}

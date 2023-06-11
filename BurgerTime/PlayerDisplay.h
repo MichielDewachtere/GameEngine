@@ -1,16 +1,20 @@
-﻿#pragma once
+﻿#ifndef PLAYERDISPLAY_H
+#define PLAYERDISPLAY_H
 
 #include <Component.h>
 #include <Observer.h>
 #include <Minigin.h>
-#include <glm/vec2.hpp>
 
 class PlayerDisplay final : public real::Component,
                             public real::Observer<int>
 {
 public:
-	PlayerDisplay(real::GameObject* pOwner);
+	explicit PlayerDisplay(real::GameObject* pOwner);
 	virtual ~PlayerDisplay() override;
+	PlayerDisplay(const PlayerDisplay& other) = delete;
+	PlayerDisplay operator=(const PlayerDisplay& rhs) = delete;
+	PlayerDisplay(PlayerDisplay&& other) = delete;
+	PlayerDisplay operator=(PlayerDisplay&& rhs) = delete;
 
 	void Update() override {}
 	bool CanRender() const override { return false; }
@@ -20,5 +24,6 @@ public:
 
 private:
 	real::WindowSettings m_Settings;
-	glm::vec2 m_Size{};
 };
+
+#endif // PLAYERDISPLAY_H

@@ -26,7 +26,6 @@ namespace real
 	public:
 		explicit SpriteComponent(GameObject* pOwner, SpriteSheet spriteSheet);
 		virtual ~SpriteComponent() override = default;
-
 		SpriteComponent(const SpriteComponent& other) = delete;
 		SpriteComponent(SpriteComponent&& other) = delete;
 		SpriteComponent& operator=(const SpriteComponent& other) = delete;

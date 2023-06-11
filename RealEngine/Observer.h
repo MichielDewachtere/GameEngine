@@ -7,7 +7,7 @@ namespace real
 	class Observer
 	{
 	public:
-		Observer() = default;
+		explicit Observer() = default;
 		virtual ~Observer() = default;
 		Observer(const Observer& other) = delete;
 		Observer& operator=(const Observer& rhs) = delete;

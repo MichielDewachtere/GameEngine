@@ -11,11 +11,6 @@
 #include "GameInfo.h"
 #include "IngredientPart.h"
 
-void Ingredient::Start()
-{
-	//real::Logger::LogInfo("Called Ingredient Start function");
-}
-
 void Ingredient::Update()
 {
 	if (m_CurrentPlatform == 0)
@@ -102,18 +97,12 @@ void Ingredient::InitCurrentPlatform()
 
 void Ingredient::ResetBurger()
 {
-	//real::Logger::LogInfo("BurgerParts should move up");
-
-	//const auto transform = GetOwner()->GetComponent<real::TransformComponent>();
-
 	for (const auto& child : GetOwner()->GetChildren())
 	{
 		const auto pIngredientPart = child->GetComponent<IngredientPart>();
 	
 		pIngredientPart->Reset();
 	}
-
-	//transform->Translate(0, 3);
 
 	m_PlatformsCrossed = 0;
 	m_AmountOfPartsTriggered = 0;
@@ -153,7 +142,6 @@ void Ingredient::Fall()
 
 		if (pIngredientCollider->IsOverlapping(*pIngredientOtherCollider))
 		{
-			//pOtherIngredient->GetComponent<real::TransformComponent>()->Translate({ 0,6 });
 			pOtherIngredient->GetComponent<Ingredient>()->SetIsFalling(true);
 			// add another 50 points for the ingredient that is dropped by this ingredient
 			burgerDropped.Notify(50);
@@ -175,7 +163,6 @@ void Ingredient::Fall()
 			if (m_PlatformsCrossed > m_PlatformsToSkip)
 			{
 				pTransform->SetWorldPosition({ pTransform->GetWorldPosition().x, pPlatformCollider->GetPosition().y + 33 });
-				//pTransform->Translate({ 0,-1 });
 				real::Locator::GetAudioSystem().Play(Sounds::burger_landing);
 				ResetBurger();
 			}
@@ -203,9 +190,6 @@ void Ingredient::Fall()
 			GetOwner()->SetTag(Tags::empty);
 
 			landedOnPlate.Notify(*this);
-
-			//if (GetOwner()->IsMarkedForDestroy() == false)
-			//GetOwner()->RemoveComponent<Ingredient>();
 		}
 	}
 }

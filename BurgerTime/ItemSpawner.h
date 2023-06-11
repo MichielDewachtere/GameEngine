@@ -2,8 +2,7 @@
 #define ITEMSPAWNER_H
 
 #include <Component.h>
-
-#include "Subject.h"
+#include <Subject.h>
 
 class ItemSpawner final :
 	public real::Component,
