@@ -26,13 +26,13 @@ public:
 	void HandleEvent(real::Scene&) override;
 	void OnSubjectDestroy() override {}
 
+	void SetComponentsActive(bool enable);
 	real::Subject<bool> isItemSpawned;
 private:
 	bool m_IsActive{};
 	float m_AccuTime{};
 	float m_LifeTime{ 6 };
 
-	void SetComponentsActive(bool enable);
 	void RemoveObservers();
 };
 
