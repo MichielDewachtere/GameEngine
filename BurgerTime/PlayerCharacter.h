@@ -10,8 +10,7 @@
 
 class PlayerCharacter : public real::Component,
 	public real::Observer<bool>,
-	public real::Observer<real::Scene&, real::SceneManager::SceneSwitchState>,
-	public real::Observer<int, int>
+	public real::Observer<real::Scene&, real::SceneManager::SceneSwitchState>
 {
 public:
 	enum Stats
@@ -21,7 +20,7 @@ public:
 	};
 
 	explicit PlayerCharacter(real::GameObject* pOwner);
-	virtual ~PlayerCharacter() override;
+	virtual ~PlayerCharacter() override = default;
 	PlayerCharacter(const PlayerCharacter& other) = delete;
 	PlayerCharacter& operator=(const PlayerCharacter& rhs) = delete;
 	PlayerCharacter(PlayerCharacter&& other) = delete;
@@ -32,7 +31,7 @@ public:
 	bool CanRender() const override { return false; }
 
 	void HandleEvent(bool) override;
-	void HandleEvent(int, int) override;
+	//void HandleEvent(int, int) override;
 	void HandleEvent(real::Scene&, real::SceneManager::SceneSwitchState) override;
 	void OnSubjectDestroy() override {}
 
@@ -40,18 +39,19 @@ public:
 	real::Subject<bool> pepperThrown{};
 	real::Subject<int> amountOfPepperChanged{};
 	real::Subject<int> pickedUpItem{};
-	real::Subject<int, int> statsChanged{};
 
-	void SetDirection(glm::vec2 direction) { m_CurrentDirection = direction; }
+	void SetDirection(glm::vec2 direction);
 
 
 private:
 	bool m_ItemSpawned{};
 	bool m_PepperThrown{};
-	int m_Peppers{ 5 };
+	static inline int m_Peppers{ 5 };
 	float m_AccuTime{};
 	float m_MaxStunTime{ 1.f };
+
 	glm::vec2 m_CurrentDirection{};
+	bool m_ReceivedUpdate{};
 
 	real::GameObject* m_pItem{};
 };
