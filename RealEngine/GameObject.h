@@ -20,7 +20,8 @@ namespace real
 	class GameObject final
 	{
 	public:
-		explicit GameObject() = default;
+		explicit GameObject()
+			: m_Id(++m_NextId) {}
 		explicit GameObject(Scene* pScene, const std::string& tag = "empty") 
 			: m_pScene(pScene), m_Tag(tag), m_Id(++m_NextId) {}
 		~GameObject();
