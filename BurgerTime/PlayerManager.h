@@ -37,6 +37,7 @@ public:
 	int GetScore() const { return m_Score; }
 
 	int GetCurrentLevel() const { return m_CurrentLevel; }
+	int GetCurrentLoop() const { return m_CurrentLoop; }
 	//void ResetLevel();
 
 	real::Subject<> levelHasEnded{};
@@ -61,6 +62,7 @@ private:
 	float m_AccuTime{};
 
 	int m_CurrentLevel{ 0 };
+	int m_CurrentLoop{ 1 };
 	bool m_GameHasBegun{};
 
 	void PlayerWins();

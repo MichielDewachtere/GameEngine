@@ -15,6 +15,7 @@
 #include "IngredientPrefab.h"
 #include "ItemSpawnerPrefab.h"
 #include "Plate.h"
+#include "PlayerManager.h"
 #include "SpawnPoint.h"
 #include "Stair.h"
 
@@ -94,16 +95,21 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     }
     //SPAWNPOINT
 		// enemy
-    for (const auto& spawnPoint : document["enemy_spawnpoint"].GetArray())
+    for (const auto& data : document["enemy_spawnpoint"].GetArray())
     {
-        std::vector<std::string> enemiePtrs;
+        if (data["loop"].GetInt() != std::min(PlayerManager::GetInstance().GetCurrentLoop(), 2))
+            continue;
 
-        for (const auto& pEnemy : spawnPoint[2].GetArray())
+        const auto spawnPoint = data["data"].GetArray();
+        for (const auto& newSpawnPoint : spawnPoint)
         {
-	        enemiePtrs.emplace_back(pEnemy.GetString());
+            std::vector<std::string> enemiePtrs;
+            for (const auto& pEnemy : newSpawnPoint[2].GetArray())
+            {
+                enemiePtrs.emplace_back(pEnemy.GetString());
+            }
+            SpawnPoint::CreateSpawnPoint(pLevel, { newSpawnPoint[0].GetDouble(), newSpawnPoint[1].GetDouble() }, enemiePtrs);
         }
-
-	    SpawnPoint::CreateSpawnPoint(pLevel, { spawnPoint[0].GetDouble(), spawnPoint[1].GetDouble() }, enemiePtrs);
     }
 		// item
 	const auto itemSpawner = document["item_spawnpoint"].GetArray();
