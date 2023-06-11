@@ -2,13 +2,50 @@
 #include "PlayerCharacter.h"
 
 #include <GameTime.h>
+#include <ColliderComponent.h>
+#include <Scene.h>
+#include <TextureComponent.h>
+#include <TransformComponent.h>
 
-#include "TextureComponent.h"
-#include "TransformComponent.h"
+#include "GameInfo.h"
+#include "ItemSpawner.h"
+#include "PlayerManager.h"
 
 PlayerCharacter::PlayerCharacter(real::GameObject* pOwner)
-	: real::Component(pOwner)
+	: Component(pOwner)
 {
+}
+
+PlayerCharacter::~PlayerCharacter()
+{
+	real::SceneManager::GetInstance().onSceneSwitch.RemoveObserver(this);
+
+	if (PlayerManager::GetInstance().GetAmountOfPlayers() == 1)
+		return;
+
+	for (const auto& pPlayer : PlayerManager::GetInstance().GetPlayers())
+	{
+		if (pPlayer->GetId() == GetOwner()->GetId())
+			continue;
+
+		pPlayer->GetComponent<PlayerCharacter>()->statsChanged.RemoveObserver(this);
+	}
+}
+
+void PlayerCharacter::Start()
+{
+	real::SceneManager::GetInstance().onSceneSwitch.AddObserver(this);
+
+	if (PlayerManager::GetInstance().GetAmountOfPlayers() == 1)
+		return;
+
+	for (const auto& pPlayer : PlayerManager::GetInstance().GetPlayers())
+	{
+		if (pPlayer->GetId() == GetOwner()->GetId())
+			continue;
+
+		pPlayer->GetComponent<PlayerCharacter>()->statsChanged.AddObserver(this);
+	}
 }
 
 void PlayerCharacter::Update()
@@ -25,18 +62,72 @@ void PlayerCharacter::Update()
 			pepperThrown.Notify(m_PepperThrown);
 		}
 	}
+
+	if (m_ItemSpawned)
+	{
+		const auto pCoreCollider = GetOwner()->GetChildAt(0)->GetComponent<real::ColliderComponent>();
+		const auto pItemCollider = m_pItem->GetComponent<real::ColliderComponent>();
+
+		if (pCoreCollider->IsOverlapping(*pItemCollider))
+		{
+			int points = PlayerManager::GetInstance().GetCurrentLevel() % 3;
+
+			if (points == 0)
+				points = 3;
+
+			++m_Peppers;
+
+			amountOfPepperChanged.Notify(m_Peppers);
+			pickedUpItem.Notify(500 * points);
+
+			m_ItemSpawned = false;
+			m_pItem->GetComponent<ItemSpawner>()->SetComponentsActive(m_ItemSpawned);
+		}
+	}
+}
+
+void PlayerCharacter::HandleEvent(bool itemSpawned)
+{
+	m_ItemSpawned = itemSpawned;
+}
+
+void PlayerCharacter::HandleEvent(int stat, int newValue)
+{
+	if (stat == Stats::pepper)
+	{
+		m_Peppers = newValue;
+		amountOfPepperChanged.Notify(m_Peppers);
+	}
+}
+
+void PlayerCharacter::HandleEvent(real::Scene& scene, real::SceneManager::SceneSwitchState state)
+{
+	if (scene.GetName().find("Level") == std::string::npos)
+		return;
+
+	if (state == real::SceneManager::SceneSwitchState::loaded)
+	{
+		scene.FindObjectsWithTag(Tags::item_spawn)[0]->GetComponent<ItemSpawner>()->isItemSpawned.AddObserver(this);
+		m_pItem = scene.FindObjectsWithTag(Tags::item_spawn)[0];
+	}
+	else if (state == real::SceneManager::SceneSwitchState::exit)
+	{
+		scene.FindObjectsWithTag(Tags::item_spawn)[0]->GetComponent<ItemSpawner>()->isItemSpawned.RemoveObserver(this);
+		m_pItem = nullptr;
+	}
 }
 
 void PlayerCharacter::ThrowPepper()
 {
-	if (m_PepperThrown || m_PepperLeft <= 0)
+	if (m_PepperThrown || m_Peppers <= 0)
 		return;
 
 	m_PepperThrown = true;
 	pepperThrown.Notify(m_PepperThrown);
 
-	--m_PepperLeft;
-	amountOfPepperChanged.Notify(m_PepperLeft);
+	--m_Peppers;
+	amountOfPepperChanged.Notify(m_Peppers);
+	statsChanged.Notify(Stats::pepper, m_Peppers);
 
 	const auto pPepperTransform = GetOwner()->GetChildAt(1)->GetComponent<real::TransformComponent>();
 	const auto playerPos = GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition();

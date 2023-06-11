@@ -9,11 +9,41 @@
 #include "PlayerManager.h"
 #include "BaseEnemy.h"
 #include "GameInfo.h"
+#include "PlayerCharacter.h"
 
 HealthComponent::HealthComponent(real::GameObject* pOwner, int lives)
 	: Component(pOwner)
 	, m_Lives(lives)
 {
+}
+
+HealthComponent::~HealthComponent()
+{
+	if (PlayerManager::GetInstance().GetAmountOfPlayers() == 1)
+		return;
+
+	for (const auto& pPlayer : PlayerManager::GetInstance().GetPlayers())
+	{
+		if (pPlayer->GetId() == GetOwner()->GetId())
+			continue;
+
+		pPlayer->GetComponent<HealthComponent>()->onStatChanged.RemoveObserver(this);
+	}
+}
+
+void HealthComponent::Start()
+{
+	if (PlayerManager::GetInstance().GetAmountOfPlayers() == 1)
+		return;
+
+	const auto playerPtrs = PlayerManager::GetInstance().GetPlayers();
+	for (const auto& pPlayer : playerPtrs)
+	{
+		if (pPlayer->GetId() == GetOwner()->GetId())
+			continue;
+
+		pPlayer->GetComponent<HealthComponent>()->onStatChanged.AddObserver(this);
+	}
 }
 
 void HealthComponent::Update()
@@ -53,10 +83,21 @@ void HealthComponent::Update()
 	}
 }
 
+void HealthComponent::HandleEvent(int stat, int health)
+{
+	if (stat == PlayerCharacter::Stats::health)
+	{
+		m_PlayerDied = true;
+		GetOwner()->GetComponent<real::SpriteComponent>()->SelectSprite(13);
+		m_Lives = health;
+	}
+}
+
 void HealthComponent::Damage()
 {
 	--m_Lives;
 	m_PlayerDied = true;
+	onStatChanged.Notify(PlayerCharacter::Stats::health, m_Lives);
 	GetOwner()->GetComponent<real::SpriteComponent>()->SelectSprite(13);
 
 	const auto& scene = real::SceneManager::GetInstance().GetActiveScene();

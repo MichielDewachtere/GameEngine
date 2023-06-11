@@ -34,7 +34,7 @@ LivesDisplay::~LivesDisplay()
 
 void LivesDisplay::HandleEvent()
 {
-	GetOwner()->GetChildAt(m_LivesLost)->SetIsActive(false);
+	GetOwner()->GetChildAt(std::min(m_LivesLost, 2))->SetIsActive(false);
 	++m_LivesLost;
 }
 

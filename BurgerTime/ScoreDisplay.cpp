@@ -7,17 +7,28 @@
 #include "GameInfo.h"
 #include "Ingredient.h"
 #include "BaseEnemy.h"
+#include "PlayerCharacter.h"
 #include "PlayerManager.h"
 
 ScoreDisplay::ScoreDisplay(real::GameObject* pOwner)
 	: Component(pOwner)
 {
 	real::SceneManager::GetInstance().onSceneSwitch.AddObserver(this);
+
+	for (const auto& pPlayer : PlayerManager::GetInstance().GetPlayers())
+	{
+		pPlayer->GetComponent<PlayerCharacter>()->pickedUpItem.AddObserver(this);
+	}
 }
 
 ScoreDisplay::~ScoreDisplay()
 {
 	real::SceneManager::GetInstance().onSceneSwitch.RemoveObserver(this);
+
+	for (const auto& pPlayer : PlayerManager::GetInstance().GetPlayers())
+	{
+		pPlayer->GetComponent<PlayerCharacter>()->pickedUpItem.RemoveObserver(this);
+	}
 }
 
 void ScoreDisplay::Start()
