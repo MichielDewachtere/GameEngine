@@ -45,6 +45,11 @@ void PlayerManager::HandleEvent(real::Scene& scene)
 	{
 		InitHud();
 		m_pHud->Start();
+
+		for (const auto& pPlayer : m_PlayerPtrs)
+		{
+			pPlayer->Start();
+		}
 	}
 
 	++m_CurrentLevel;
