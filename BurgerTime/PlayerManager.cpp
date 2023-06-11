@@ -17,6 +17,7 @@
 #include "Locator.h"
 #include "Logger.h"
 #include "MoveCommand.h"
+#include "MuteCommand.h"
 #include "PepperCounter.h"
 #include "PlayerCharacter.h"
 #include "ScoreDisplay.h"
@@ -172,6 +173,7 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		pInputMap->AddKeyboardCommands<StunCommand>(SDL_SCANCODE_Z, SDL_KEYUP, pCharacter);
 		pInputMap->AddKeyboardCommands<StunCommand>(SDL_SCANCODE_X, SDL_KEYUP, pCharacter);
 		pInputMap->AddKeyboardCommands<LoadNextLevelCommand>(SDL_SCANCODE_F1, SDL_KEYUP, pCharacter, Scenes::level03);
+		pInputMap->AddKeyboardCommands<MuteCommand>(SDL_SCANCODE_F2, SDL_KEYUP, nullptr);
 
 		m_KeyboardInUse = true;
 	}
@@ -187,8 +189,9 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		pInputMap->AddControllerCommands<MoveCommand>(controller_button::DPadDown, input_type::pressed, controllerIdx, pCharacter, glm::vec2{ 0, -1 });
 		pInputMap->AddControllerCommands<MoveCommand>(controller_button::DPadUp, input_type::pressed, controllerIdx, pCharacter, glm::vec2{ 0, 1 });
 		pInputMap->AddControllerCommands<StunCommand>(controller_button::ButtonDown, input_type::down, controllerIdx, pCharacter);
-		pInputMap->AddControllerCommands<StunCommand>(controller_button::ButtonLeft, input_type::down, controllerIdx, pCharacter);
+		pInputMap->AddControllerCommands<StunCommand>(controller_button::ButtonRight, input_type::down, controllerIdx, pCharacter);
 		pInputMap->AddControllerCommands<LoadNextLevelCommand>(controller_button::Back, input_type::down, controllerIdx, pCharacter, Scenes::level03);
+		pInputMap->AddControllerCommands<MuteCommand>(controller_button::ButtonLeft, input_type::down, controllerIdx, nullptr);
 	}
 
 	m_PlayerPtrs.push_back(std::shared_ptr<real::GameObject>(pCharacter));

@@ -25,8 +25,8 @@ namespace real
 			LeftShoulder = 0x0100,
 			RightShoulder = 0x0200,
 			ButtonDown = 0x1000,
-			ButtonLeft = 0x2000,
-			ButtonRight = 0x4000,
+			ButtonRight = 0x2000,
+			ButtonLeft = 0x4000,
 			ButtonUp = 0x8000
 		};
 

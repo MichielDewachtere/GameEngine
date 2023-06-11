@@ -10,6 +10,7 @@
 
 #include "LoadNextLevelCommand.h"
 #include "GameInfo.h"
+#include "MuteCommand.h"
 #include "PlayerDisplay.h"
 #include "PlayerJoinCommand.h"
 #include "PlayerManager.h"
@@ -45,9 +46,6 @@ void MainMenu::Load()
 	pTitleText->GetComponent<real::TextComponent>()->SetText("Burger Time");
 	pTitleText->GetComponent<real::TextComponent>()->SetColor(Colors::red);
 	pTitleText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(vertical_alignment::center);
-
-	//const auto pKeyBoardText = pTitleText->CreateGameObject<real::TextObject>();
-	//pKeyBoardText->InitComponents({ 0,20 }, pFont, "Keyboard: ");
 
 	const auto pControlsText = CreateGameObject();
 	pControlsText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width) / 2.f, 100);
@@ -154,12 +152,14 @@ void MainMenu::Load()
 	pInputMap->AddKeyboardCommands<PlayerJoinCommand>(SDL_SCANCODE_RETURN, SDL_KEYUP, nullptr);
 	pInputMap->AddKeyboardCommands<LoadNextLevelCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, nullptr, Scenes::level01);
 	pInputMap->AddKeyboardCommands<QuitCommand>(SDL_SCANCODE_ESCAPE, SDL_KEYUP, nullptr);
+	pInputMap->AddKeyboardCommands<MuteCommand>(SDL_SCANCODE_F2, SDL_KEYUP, nullptr);
 
 	if (controllerIdcs.empty() == false)
 	{
 		pInputMap->AddControllerCommands<PlayerJoinCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, -1, nullptr);
 		pInputMap->AddControllerCommands<LoadNextLevelCommand>(real::XInputController::ControllerButton::Start, real::XInputController::InputType::down, -1, nullptr, Scenes::level01);
 		pInputMap->AddControllerCommands<QuitCommand>(real::XInputController::ControllerButton::Back, real::XInputController::InputType::down, -1, nullptr);
+		pInputMap->AddControllerCommands<MuteCommand>(real::XInputController::ControllerButton::ButtonLeft, real::XInputController::InputType::down, -1, nullptr);
 	}
 
 	m_IsLoaded = true;

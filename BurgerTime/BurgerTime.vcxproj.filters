@@ -150,6 +150,9 @@
     <ClCompile Include="LevelDisplay.cpp">
       <Filter>Components\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="MuteCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -263,6 +266,9 @@
     </ClInclude>
     <ClInclude Include="LevelDisplay.h">
       <Filter>Components\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="MuteCommand.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
