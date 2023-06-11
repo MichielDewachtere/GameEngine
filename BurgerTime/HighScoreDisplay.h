@@ -2,9 +2,9 @@
 #define HIGHSCOREDISPLAY_H
 
 #include <Component.h>
+#include <Observer.h>
 
 #include "ScoreDisplay.h"
-#include <Observer.h>
 
 class HighScoreDisplay final : public real::Component
 	, public real::Observer<int>
