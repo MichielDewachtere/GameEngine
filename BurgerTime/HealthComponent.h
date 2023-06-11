@@ -37,6 +37,7 @@ public:
 	void SetSpawnPoint(const glm::vec2& spawnPoint) { m_SpawnPoint = spawnPoint; }
 
 	void Damage();
+	bool IsDead() const { return m_PlayerDied; }
 
 	//real::Subject<> playerDied;
 	//real::Subject<int, int> onStatChanged;

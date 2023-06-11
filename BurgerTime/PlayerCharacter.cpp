@@ -10,6 +10,7 @@
 #include <SpriteComponent.h>
 
 #include "GameInfo.h"
+#include "HealthComponent.h"
 #include "ItemSpawner.h"
 #include "PlayerManager.h"
 
@@ -62,7 +63,7 @@ void PlayerCharacter::Update()
 		}
 	}
 
-	if (m_ReceivedUpdate == false)
+	if (m_ReceivedUpdate == false && GetOwner()->GetComponent<HealthComponent>()->IsDead() == false)
 	{
 		m_CurrentDirection = { 0,0 };
 		GetOwner()->GetComponent<real::SpriteComponent>()->SelectSprite(1);
