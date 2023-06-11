@@ -5,7 +5,6 @@
 #include <ColliderComponent.h>
 #include <Input.h>
 #include <InputMap.h>
-#include <iostream>
 #include <ResourceManager.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
@@ -14,6 +13,7 @@
 #include "HealthComponent.h"
 #include "HighScoreDisplay.h"
 #include "HighScoreParser.h"
+#include "LevelDisplay.h"
 #include "LivesDisplay.h"
 #include "LoadNextLevelCommand.h"
 #include "Locator.h"
@@ -278,6 +278,9 @@ void PlayerManager::InitHud()
 	pLivesCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(48, 586);
 	pLivesCounter->AddComponent<LivesDisplay>();
 
+	const auto pLevelCounter = m_pHud->CreateGameObject();
+	pLevelCounter->GetComponent<real::TransformComponent>()->SetLocalPosition(652, 659);
+	pLevelCounter->AddComponent<LevelDisplay>();
 
 	m_pHud->Start();
 }
@@ -299,9 +302,9 @@ void PlayerManager::PlayerWins()
 	}
 	else
 	{
+		++m_CurrentLoop;
 		m_CurrentLevel = 0;
 		const std::string nextLevel = "Level0" + std::to_string(m_CurrentLevel + 1);
 		real::SceneManager::GetInstance().SetSceneActive(nextLevel, 3.f);
-	//	real::Logger::LogInfo("Player has beaten the game.");
 	}
 }

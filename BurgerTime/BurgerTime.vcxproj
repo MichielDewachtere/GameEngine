@@ -177,6 +177,7 @@
     <ClCompile Include="Level01.cpp" />
     <ClCompile Include="Level02.cpp" />
     <ClCompile Include="Level03.cpp" />
+    <ClCompile Include="LevelDisplay.cpp" />
     <ClCompile Include="LevelParser.cpp" />
     <ClCompile Include="LivesDisplay.cpp" />
     <ClCompile Include="LoadNextLevelCommand.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="Level01.h" />
     <ClInclude Include="Level02.h" />
     <ClInclude Include="Level03.h" />
+    <ClInclude Include="LevelDisplay.h" />
     <ClInclude Include="LevelParser.h" />
     <ClInclude Include="LivesDisplay.h" />
     <ClInclude Include="LoadNextLevelCommand.h" />

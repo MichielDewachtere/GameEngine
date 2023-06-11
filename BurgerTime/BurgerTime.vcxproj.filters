@@ -144,6 +144,7 @@
     <ClCompile Include="GameOverMenu.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="LevelDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -252,5 +253,6 @@
     <ClInclude Include="GameOverMenu.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="LevelDisplay.h" />
   </ItemGroup>
 </Project>
