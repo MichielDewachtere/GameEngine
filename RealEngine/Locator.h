@@ -17,7 +17,7 @@ namespace real
         static void ShutDown();
     private:
         inline static std::unique_ptr<Audio> m_AudioSystem = nullptr;
-        inline static NullAudio m_DefaultSystem{};
+        inline static NullAudio m_DefaultAudioSystem{};
     };
 }
 #endif // LOCATOR_H
