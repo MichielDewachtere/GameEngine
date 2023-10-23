@@ -22,10 +22,14 @@ namespace real
 		void SetTexture(std::shared_ptr<Texture2D> pTexture) { m_pTexture = std::move(pTexture); }
 		Texture2D* GetTexture() const { return m_pTexture.get(); }
 
+		void Scale(const float uniformScale);
+		void Scale(const float scaleX, const float scaleY);
+
 		bool CanRender() const override { return true; }
 
 	private:
 		std::shared_ptr<Texture2D> m_pTexture{ nullptr };
+		glm::vec2 m_Scale{1, 1};
 	};
 }
 
