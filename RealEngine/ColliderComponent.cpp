@@ -2,7 +2,7 @@
 #include "ColliderComponent.h"
 
 #include "Logger.h"
-#include "Renderer.h"
+#include "SDLRenderer.h"
 #include "TransformComponent.h"
 
 real::ColliderComponent::ColliderComponent(GameObject* pOwner, const glm::vec2& size)
@@ -31,7 +31,7 @@ void real::ColliderComponent::DebugRender() const
 	if (m_DrawDebug == false)
 		return;
 
-	const auto renderer = Renderer::GetInstance().GetSDLRenderer();
+	const auto renderer = SDLRenderer::GetInstance().GetSDLRenderer();
 
 	SDL_Rect rect;
 	rect.x = static_cast<int>(m_Pos.x + m_Offset.x);
