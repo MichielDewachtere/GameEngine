@@ -4,6 +4,7 @@
 #include <glm/vec2.hpp>
 
 struct SDL_Texture;
+
 namespace real
 {
 	/**
@@ -17,13 +18,15 @@ namespace real
 		~Texture2D();
 
 		glm::ivec2 GetSize() const;
+		void Scale(const float uniformScale) const;
+		void Scale(const float scaleX, const float scaleY) const;
 
 		Texture2D(const Texture2D &) = delete;
 		Texture2D(Texture2D &&) = delete;
 		Texture2D & operator= (const Texture2D &) = delete;
 		Texture2D & operator= (const Texture2D &&) = delete;
 	private:
-		SDL_Texture* m_texture;
+		SDL_Texture* m_pTexture;
 	};
 }
 
