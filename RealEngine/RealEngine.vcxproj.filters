@@ -76,7 +76,7 @@
     <ClInclude Include="Font.h">
       <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
+    <ClInclude Include="SDLRenderer.h">
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Texture2D.h">
@@ -173,7 +173,7 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
+    <ClCompile Include="SDLRenderer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
