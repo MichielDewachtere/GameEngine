@@ -21,7 +21,7 @@ namespace real
 		//ImGui
 		bool m_ShowDemo{ false };
 	public:
-		void Init(SDL_Window* window);
+		void Init(SDL_Window* window, SDL_Color background);
 		void Render();
 		void Destroy();
 

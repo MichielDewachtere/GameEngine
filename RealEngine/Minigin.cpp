@@ -76,7 +76,7 @@ real::Minigin::Minigin(const std::string &dataPath, const WindowSettings& window
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
 
-	SDLRenderer::GetInstance().Init(g_window);
+	SDLRenderer::GetInstance().Init(g_window, window.background);
 
 	ResourceManager::GetInstance().Init(dataPath);
 

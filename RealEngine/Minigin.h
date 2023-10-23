@@ -3,6 +3,7 @@
 
 #include <string>
 #include <functional>
+#include <SDL_pixels.h>
 
 namespace real
 {
@@ -10,6 +11,7 @@ namespace real
 	{
 		std::string title{};
 		int width{}, height{};
+		SDL_Color background{};
 	};
 
 	class Minigin

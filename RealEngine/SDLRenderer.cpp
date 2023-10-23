@@ -20,9 +20,11 @@ int GetOpenGLDriverIndex()
 	return openglIndex;
 }
 
-void real::SDLRenderer::Init(SDL_Window* window)
+void real::SDLRenderer::Init(SDL_Window* window, SDL_Color background)
 {
 	m_window = window;
+	m_clearColor = background;
+
 	m_renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED);
 	if (m_renderer == nullptr) 
 	{
