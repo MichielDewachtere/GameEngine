@@ -2,14 +2,14 @@
 #include "Minigin.h"
 
 #include <SDL_image.h>
-#include <SDL_ttf.h>
+	#include <SDL_ttf.h>
 #include <SDL_mixer.h>
 #include <SDL_version.h>
 
 #include "Input.h"
 #include "InputManager.h"
 #include "SceneManager.h"
-#include "Renderer.h"
+#include "SDLRenderer.h"
 #include "ResourceManager.h"
 #include "GameTime.h"
 #include "Locator.h"
@@ -76,7 +76,7 @@ real::Minigin::Minigin(const std::string &dataPath, const WindowSettings& window
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
 
-	Renderer::GetInstance().Init(g_window);
+	SDLRenderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
 
@@ -91,7 +91,7 @@ real::Minigin::Minigin(const std::string &dataPath, const WindowSettings& window
 
 real::Minigin::~Minigin()
 {
-	Renderer::GetInstance().Destroy();
+	SDLRenderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
 	SDL_Quit();
@@ -101,7 +101,7 @@ void real::Minigin::Run(const std::function<void()>& load)
 {
 	load();
 
-	auto& renderer = Renderer::GetInstance();
+	auto& renderer = SDLRenderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = Input::GetInstance();
 	auto& time = Time::GetInstance();
@@ -110,7 +110,7 @@ void real::Minigin::Run(const std::function<void()>& load)
 	// todo: this update loop could use some work.
 	bool doContinue = true;
 	auto lastTime = std::chrono::high_resolution_clock::now();
-	constexpr int desiredFps = 144;
+	constexpr int desiredFps = 144;	
 	constexpr int desiredFrameTime = 1000 / desiredFps;
 	float lag = 0.0f;
 	while (doContinue)
