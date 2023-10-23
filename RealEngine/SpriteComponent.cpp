@@ -3,7 +3,7 @@
 #include <glm/vec2.hpp>
 
 #include "GameTime.h"
-#include "Renderer.h"
+#include "SDLRenderer.h"
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "Texture2D.h"
@@ -84,7 +84,7 @@ void real::SpriteComponent::Render() const
 
 	const SDL_Point rotationCenter{ dst.w / 2, dst.h / 2 };
 
-	SDL_RenderCopyEx(Renderer::GetInstance().GetSDLRenderer(), m_SpriteSheet.pTexture->GetSDLTexture(), &m_Rect, &dst, 0, &rotationCenter, m_Flip);
+	SDL_RenderCopyEx(SDLRenderer::GetInstance().GetSDLRenderer(), m_SpriteSheet.pTexture->GetSDLTexture(), &m_Rect, &dst, 0, &rotationCenter, m_Flip);
 }
 
 void real::SpriteComponent::SelectSprite(int idx)

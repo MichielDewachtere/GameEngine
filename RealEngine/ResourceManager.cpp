@@ -5,7 +5,7 @@
 #include <SDL_ttf.h>
 #include <stdexcept>
 
-#include "Renderer.h"
+#include "SDLRenderer.h"
 #include "Texture2D.h"
 #include "Font.h"
 
@@ -22,7 +22,7 @@ void real::ResourceManager::Init(const std::string& dataPath)
 std::shared_ptr<real::Texture2D> real::ResourceManager::LoadTexture(const std::string& file) const
 {
 	const auto fullPath = m_dataPath + file;
-	auto texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
+	auto texture = IMG_LoadTexture(SDLRenderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
 	if (texture == nullptr)
 	{
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());

@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include "Renderer.h"
+#include "SDLRenderer.h"
 
 #include <stdexcept>
 
@@ -20,7 +20,7 @@ int GetOpenGLDriverIndex()
 	return openglIndex;
 }
 
-void real::Renderer::Init(SDL_Window* window)
+void real::SDLRenderer::Init(SDL_Window* window)
 {
 	m_window = window;
 	m_renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED);
@@ -37,7 +37,7 @@ void real::Renderer::Init(SDL_Window* window)
 #endif // USE_IMGUI
 }
 
-void real::Renderer::Render()
+void real::SDLRenderer::Render()
 {
 	const auto& color = GetBackgroundColor();
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
@@ -61,7 +61,7 @@ void real::Renderer::Render()
 	SDL_RenderPresent(m_renderer);
 }
 
-void real::Renderer::Destroy()
+void real::SDLRenderer::Destroy()
 {
 #ifdef USE_IMGUI
 	ImGui_ImplOpenGL2_Shutdown();
@@ -76,7 +76,7 @@ void real::Renderer::Destroy()
 	}
 }
 
-void real::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
+void real::SDLRenderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
 {
 	SDL_Rect dst{};
 	dst.x = static_cast<int>(x);
@@ -85,7 +85,7 @@ void real::Renderer::RenderTexture(const Texture2D& texture, const float x, cons
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
-void real::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
+void real::SDLRenderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
 {
 	SDL_Rect dst;
 	dst.x = static_cast<int>(x);
@@ -95,4 +95,4 @@ void real::Renderer::RenderTexture(const Texture2D& texture, const float x, cons
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
-inline SDL_Renderer* real::Renderer::GetSDLRenderer() const { return m_renderer; }
+inline SDL_Renderer* real::SDLRenderer::GetSDLRenderer() const { return m_renderer; }

@@ -1,5 +1,5 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#ifndef SDLRENDERER_H
+#define SDLRENDERER_H
 
 #include <SDL_render.h>
 #include <SDL_video.h>
@@ -12,7 +12,7 @@ namespace real
 	/**
 	 * Simple RAII wrapper for the SDL renderer
 	 */
-	class Renderer final : public Singleton<Renderer>
+	class SDLRenderer final : public Singleton<SDLRenderer>
 	{
 		SDL_Renderer* m_renderer{};
 		SDL_Window* m_window{};
@@ -35,4 +35,4 @@ namespace real
 	};
 }
 
-#endif // RENDERER_H
+#endif // SDLRENDERER_H

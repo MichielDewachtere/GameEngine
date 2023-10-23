@@ -1,7 +1,7 @@
 //#include "stdafx.h"
 #include "TextureComponent.h"
 
-#include "Renderer.h"
+#include "SDLRenderer.h"
 #include "TransformComponent.h"
 
 void real::TextureComponent::Render() const
@@ -14,5 +14,5 @@ void real::TextureComponent::Render() const
 		return;
 
 	const glm::vec2& pos = pTransform->GetWorldPosition();
-	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
+	SDLRenderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
 }
