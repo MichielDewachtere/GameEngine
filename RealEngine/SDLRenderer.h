@@ -3,6 +3,8 @@
 
 #include <SDL_render.h>
 #include <SDL_video.h>
+#include <vector>
+#include <glm/vec2.hpp>
 
 #include "Singleton.h"
 
@@ -27,6 +29,14 @@ namespace real
 
 		void RenderTexture(const Texture2D& texture, float x, float y) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
+
+		void RenderRectangle(const SDL_Rect& rect, bool isFilled, SDL_Color color) const;
+		void RenderPoint(int x, int y, SDL_Color color) const;
+		void RenderPoint(const glm::ivec2 pos, SDL_Color color) const { RenderPoint(pos.x, pos.y, color); }
+		void RenderLine(int x1, int y1, int x2, int y2, SDL_Color color) const;
+		void RenderLine(const glm::ivec2 begin, const glm::ivec2 end, SDL_Color color) const { RenderLine(begin.x, begin.y, end.x, end.y, color); }
+		void RenderShape(const SDL_Point* points, int count, SDL_Color color) const;
+		void RenderShape(const std::vector<SDL_Point>& points, SDL_Color color) const;
 
 		SDL_Renderer* GetSDLRenderer() const;
 

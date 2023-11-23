@@ -97,4 +97,52 @@ void real::SDLRenderer::RenderTexture(const Texture2D& texture, const float x, c
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
+void real::SDLRenderer::RenderRectangle(const SDL_Rect& rect, bool isFilled, SDL_Color color) const
+{
+	SDL_Color originalColor;
+	SDL_GetRenderDrawColor(m_renderer, &originalColor.r, &originalColor.g, &originalColor.b, &originalColor.a);
+
+	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, 255);
+	if (isFilled)
+		SDL_RenderFillRect(GetSDLRenderer(), &rect);
+	else
+		SDL_RenderDrawRect(GetSDLRenderer(), &rect);
+	SDL_SetRenderDrawColor(m_renderer, originalColor.r, originalColor.g, originalColor.b, originalColor.a);
+}
+
+void real::SDLRenderer::RenderPoint(const int x, const int y, SDL_Color color) const
+{
+	SDL_Color originalColor;
+	SDL_GetRenderDrawColor(m_renderer, &originalColor.r, &originalColor.g, &originalColor.b, &originalColor.a);
+
+	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, 255);
+	SDL_RenderDrawPoint(GetSDLRenderer(), x, y);
+	SDL_SetRenderDrawColor(m_renderer, originalColor.r, originalColor.g, originalColor.b, originalColor.a);
+}
+
+void real::SDLRenderer::RenderLine(const int x1, const int y1, const int x2, const int y2, SDL_Color color) const
+{
+	SDL_Color originalColor;
+	SDL_GetRenderDrawColor(m_renderer, &originalColor.r, &originalColor.g, &originalColor.b, &originalColor.a);
+
+	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, 255);
+	SDL_RenderDrawLine(GetSDLRenderer(), x1, y1, x2, y2);
+	SDL_SetRenderDrawColor(m_renderer, originalColor.r, originalColor.g, originalColor.b, originalColor.a);
+}
+
+void real::SDLRenderer::RenderShape(const SDL_Point* points, int count, SDL_Color color) const
+{
+	SDL_Color originalColor;
+	SDL_GetRenderDrawColor(m_renderer, &originalColor.r, &originalColor.g, &originalColor.b, &originalColor.a);
+
+	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, 255);
+	SDL_RenderDrawLines(m_renderer, points, count);
+	SDL_SetRenderDrawColor(m_renderer, originalColor.r, originalColor.g, originalColor.b, originalColor.a);
+}
+
+void real::SDLRenderer::RenderShape(const std::vector<SDL_Point>& points, SDL_Color color) const
+{
+	RenderShape(&points.front(), static_cast<int>(points.size()), color);
+}
+
 inline SDL_Renderer* real::SDLRenderer::GetSDLRenderer() const { return m_renderer; }
