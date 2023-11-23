@@ -5,6 +5,7 @@
 
 #include "SDLRenderer.h"
 #include "Font.h"
+#include "ResourceManager.h"
 #include "Texture2D.h"
 #include "TextureComponent.h"
 #include "TransformComponent.h"
@@ -17,34 +18,41 @@ real::TextComponent::TextComponent(GameObject* pOwner)
 
 void real::TextComponent::Update()
 {
-	if (m_NeedsUpdate)
+	if (!m_NeedsUpdate)
+		return;
+
+	const auto pTextureRenderer = this->GetOwner()->GetComponent<real::TextureComponent>();
+
+	if (!pTextureRenderer)
+		return;
+
+	//m_OriginalPos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
+
+	const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_pText.c_str(), m_Color);
+	if (surf == nullptr)
 	{
-		const auto pTextureRenderer = this->GetOwner()->GetComponent<real::TextureComponent>();
-
-		if (!pTextureRenderer)
-			return;
-
-		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_pText.c_str(), m_Color);
-		if (surf == nullptr) 
-		{ 
-			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
-		}
-		auto texture = SDL_CreateTextureFromSurface(SDLRenderer::GetInstance().GetSDLRenderer(), surf);
-		if (texture == nullptr) 
-		{
-			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
-		}
-		SDL_FreeSurface(surf);
-
-		const auto pTexture = std::make_shared<Texture2D>(texture);
-
-		HandleHorizontalAlignment(pTexture->GetSize());
-		HandleVerticalAlignment(pTexture->GetSize());
-
-		pTextureRenderer->SetTexture(pTexture);
-
-		m_NeedsUpdate = false;
+		throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
 	}
+	auto texture = SDL_CreateTextureFromSurface(SDLRenderer::GetInstance().GetSDLRenderer(), surf);
+	if (texture == nullptr)
+	{
+		throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
+	}
+	SDL_FreeSurface(surf);
+
+
+	// TODO: mayba add texture array in texturecomponent?
+	const auto pTexture = std::make_shared<Texture2D>(texture);
+
+	glm::ivec2 renderOffset;
+
+	HandleVerticalAlignment(pTexture->GetSize(), renderOffset);
+	HandleHorizontalAlignment(pTexture->GetSize(), renderOffset);
+
+	pTextureRenderer->SetText(pTexture);
+	pTextureRenderer->SetTextRenderOffset(renderOffset);
+
+	m_NeedsUpdate = false;
 }
 
 // This implementation uses the "dirty flag" pattern
@@ -84,15 +92,6 @@ void real::TextComponent::SetColor(const Uint8 r, const Uint8 g, const Uint8 b, 
 
 void real::TextComponent::ChangeHorizontalAlignment(HorizontalAlignment newAlignment)
 {
-	if (m_CurVerticalAlignment != newAlignment)
-	{
-		m_CurVerticalAlignment = newAlignment;
-		m_NeedsUpdate = true;
-	}
-}
-
-void real::TextComponent::ChangeVerticalAlignment(VerticalAlignment newAlignment)
-{
 	if (m_CurHorizontalAlignment != newAlignment)
 	{
 		m_CurHorizontalAlignment = newAlignment;
@@ -100,51 +99,54 @@ void real::TextComponent::ChangeVerticalAlignment(VerticalAlignment newAlignment
 	}
 }
 
-void real::TextComponent::HandleVerticalAlignment(const glm::vec2& textureSize)
+void real::TextComponent::ChangeVerticalAlignment(VerticalAlignment newAlignment)
 {
-	switch (m_CurVerticalAlignment)
+	if (m_CurVerticalAlignment != newAlignment)
+	{
+		m_CurVerticalAlignment = newAlignment;
+		m_NeedsUpdate = true;
+	}
+}
+
+void real::TextComponent::HandleHorizontalAlignment(const glm::vec2& textureSize, glm::ivec2& renderOffset) const
+{
+	switch (m_CurHorizontalAlignment)
 	{
 	case HorizontalAlignment::left:
 	{
-		const auto newPos = m_OriginalPos - glm::vec2{static_cast<float>(textureSize.x), 0 };
-		GetOwner()->GetComponent<TransformComponent>()->SetLocalPosition(newPos);
+		renderOffset.x = static_cast<int>(textureSize.x);
 		break;
 	}
 	case HorizontalAlignment::center:
 	{
-		const auto newPos = m_OriginalPos - glm::vec2{static_cast<float>(textureSize.x) / 2.f, 0};
-		GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+		renderOffset.x = static_cast<int>(textureSize.x / 2.f);
 		break;
 	}
 	case HorizontalAlignment::right:
 	{
-		const auto newPos = m_OriginalPos;
-		GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+		renderOffset.x = 0;
 		break;
 	}
 	}
 }
 
-void real::TextComponent::HandleHorizontalAlignment(const glm::vec2& textureSize)
+void real::TextComponent::HandleVerticalAlignment(const glm::vec2& textureSize, glm::ivec2& renderOffset) const
 {
-	switch (m_CurHorizontalAlignment)
+	switch (m_CurVerticalAlignment)
 	{
 	case VerticalAlignment::up:
 	{
-		const auto newPos = m_OriginalPos - glm::vec2{ 0, -static_cast<float>(textureSize.y) };
-		GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+		renderOffset.y = static_cast<int>(textureSize.y);
 		break;
 	}
 	case VerticalAlignment::center:
 	{
-		const auto newPos = m_OriginalPos - glm::vec2{ 0, -static_cast<float>(textureSize.y) / 2.f };
-		GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+		renderOffset.y = static_cast<int>(textureSize.y / 2.f);
 		break;
 	}
 	case VerticalAlignment::down:
 	{
-		const auto newPos = m_OriginalPos;
-		GetOwner()->GetComponent<TransformComponent>()->SetWorldPosition(newPos);
+		renderOffset.y = 0;
 		break;
 	}
 	}

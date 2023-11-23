@@ -59,11 +59,11 @@ namespace real
 
 		glm::vec2 m_OriginalPos{};
 
-		HorizontalAlignment m_CurVerticalAlignment{ HorizontalAlignment::right };
-		VerticalAlignment m_CurHorizontalAlignment{ VerticalAlignment::down };
+		HorizontalAlignment m_CurHorizontalAlignment{ HorizontalAlignment::right };
+		VerticalAlignment m_CurVerticalAlignment{ VerticalAlignment::down };
 
-		void HandleVerticalAlignment(const glm::vec2&);
-		void HandleHorizontalAlignment(const glm::vec2&);
+		void HandleHorizontalAlignment(const glm::vec2&, glm::ivec2& renderOffset) const;
+		void HandleVerticalAlignment(const glm::vec2&, glm::ivec2&) const;
 	};
 }
 #endif // TEXTCOMPONENT_H
