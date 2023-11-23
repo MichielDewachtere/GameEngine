@@ -47,22 +47,23 @@ void real::TransformComponent::SetLocalPosition(const glm::vec2& pos)
 
 void real::TransformComponent::Translate(float x, float y)
 {
-	SetWorldPosition(GetWorldPosition() + glm::vec2{ x, y });
+	SetLocalPosition(GetLocalPosition() + glm::vec2{ x, y });
 }
 void real::TransformComponent::Translate(const glm::vec2& translation)
 {
-	SetWorldPosition(GetWorldPosition() + translation);
+	SetLocalPosition(GetLocalPosition() + translation);
 }
 
 void real::TransformComponent::UpdateWorldPosition()
 {
-	if (m_PositionIsDirty)
-	{
-		if (GetOwner()->GetParent() == nullptr || m_IgnoreParent)
-			m_WorldPosition = m_LocalPosition;
-		else
-			m_WorldPosition = GetOwner()->GetParent()->GetComponent<TransformComponent>()->GetWorldPosition() + m_LocalPosition;
-	}
+	if (m_PositionIsDirty == false)
+		return;
+
+	if (GetOwner()->GetParent() == nullptr || m_IgnoreParent)
+		m_WorldPosition = m_LocalPosition;
+	else
+		m_WorldPosition = GetOwner()->GetParent()->GetComponent<TransformComponent>()->GetWorldPosition() + m_LocalPosition;
+
 	m_PositionIsDirty = false;
 }
 
