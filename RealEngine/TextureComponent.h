@@ -22,14 +22,22 @@ namespace real
 		void SetTexture(std::shared_ptr<Texture2D> pTexture) { m_pTexture = std::move(pTexture); }
 		Texture2D* GetTexture() const { return m_pTexture.get(); }
 
-		void Scale(const float uniformScale);
-		void Scale(const float scaleX, const float scaleY);
+		void SetText(std::shared_ptr<Texture2D> pText) { m_pText = std::move(pText); }
+		Texture2D* GetText() const { return m_pText.get(); }
+
+		void SetRenderOffset(const glm::ivec2 offset) { m_RenderOffset = offset; }
+		void SetRenderOffset(int x, int y) { SetRenderOffset({ x,y }); }
+		glm::ivec2 GetRenderOffset() const { return m_RenderOffset; }
+
+		void SetTextRenderOffset(const glm::ivec2 offset) { m_TextRenderOffset = offset; }
+		void SetTextRenderOffset(int x, int y) { SetRenderOffset({ x,y }); }
+		glm::ivec2 GetTextRenderOffset() const { return m_TextRenderOffset; }
 
 		bool CanRender() const override { return true; }
 
 	private:
-		std::shared_ptr<Texture2D> m_pTexture{ nullptr };
-		glm::vec2 m_Scale{1, 1};
+		std::shared_ptr<Texture2D> m_pTexture{ nullptr }, m_pText{ nullptr };
+		glm::ivec2 m_RenderOffset{0, 0}, m_TextRenderOffset{ 0,0 };
 	};
 }
 

@@ -6,25 +6,21 @@
 
 void real::TextureComponent::Render() const
 {
-	if (!m_pTexture)
-		return;
-
 	const auto pTransform = this->GetOwner()->GetComponent<TransformComponent>();
+
 	if (!pTransform)
 		return;
 
 	const glm::vec2& pos = pTransform->GetWorldPosition();
-	const glm::vec2& size = { static_cast<float>(m_pTexture->GetSize().x) * m_Scale.x, static_cast<float>(m_pTexture->GetSize().y) * m_Scale.y };
-	SDLRenderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, size.x, size.y);
-}
 
-void real::TextureComponent::Scale(const float uniformScale)
-{
-	Scale(uniformScale, uniformScale);
-}
+	for (const auto& [texture, offset] 
+		: { std::make_pair(m_pTexture, m_RenderOffset), std::make_pair(m_pText, m_TextRenderOffset) })
+	{
+		if (texture == nullptr)
+			continue;
 
-void real::TextureComponent::Scale(const float scaleX, const float scaleY)
-{
-	m_Scale.x = scaleX;
-	m_Scale.y = scaleY;
+		const glm::vec2& size = { static_cast<float>(texture->GetSize().x), static_cast<float>(texture->GetSize().y) };
+		SDLRenderer::GetInstance().RenderTexture(*texture, pos.x - static_cast<float>(offset.x), pos.y - static_cast<float>(offset.y), size.x, size.y);
+
+	}
 }
