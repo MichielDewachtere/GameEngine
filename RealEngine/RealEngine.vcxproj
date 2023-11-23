@@ -215,6 +215,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
   <ItemGroup>
     <ClInclude Include="Achievements.h" />
     <ClInclude Include="Audio.h" />
+    <ClInclude Include="ButtonPrefab.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
@@ -228,12 +229,15 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="NullAudio.h" />
     <ClInclude Include="Observer.h" />
+    <ClInclude Include="Prefab.h" />
+    <ClInclude Include="Rectangle.h" />
     <ClInclude Include="SDLRenderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SDLAudio.h" />
+    <ClInclude Include="Shape.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="stdafx.h" />
@@ -249,6 +253,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
   <ItemGroup>
     <ClCompile Include="Achievements.cpp" />
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="ButtonPrefab.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -262,11 +267,14 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="NullAudio.cpp" />
     <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="Prefab.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="SDLRenderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SDLAudio.cpp" />
+    <ClCompile Include="Shape.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
