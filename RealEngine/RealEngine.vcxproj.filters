@@ -41,6 +41,12 @@
     <Filter Include="Service">
       <UniqueIdentifier>{4290f2a3-dccd-4434-a7be-50a8d91d65be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shapes">
+      <UniqueIdentifier>{0e8dd713-5a99-45c0-81a7-b9724c44c81d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefab">
+      <UniqueIdentifier>{014ada0c-801e-4acc-aac6-9079d8a2f89b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -135,6 +141,18 @@
     <ClInclude Include="SpriteComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonPrefab.h">
+      <Filter>Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="Prefab.h">
+      <Filter>Prefab</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XInputController.cpp">
@@ -222,6 +240,18 @@
     </ClCompile>
     <ClCompile Include="SpriteComponent.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonPrefab.cpp">
+      <Filter>Prefab</Filter>
+    </ClCompile>
+    <ClCompile Include="Prefab.cpp">
+      <Filter>Prefab</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
