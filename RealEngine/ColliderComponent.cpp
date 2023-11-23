@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include "ColliderComponent.h"
 
+#include "Input.h"
 #include "Logger.h"
 #include "SDLRenderer.h"
 #include "TransformComponent.h"
@@ -31,6 +32,8 @@ void real::ColliderComponent::DebugRender() const
 	if (m_DrawDebug == false)
 		return;
 
+	// TODO: use render rectangle
+	//const auto renderer = SDLRenderer::GetInstance().RenderRectangle();
 	const auto renderer = SDLRenderer::GetInstance().GetSDLRenderer();
 
 	SDL_Rect rect;
@@ -118,4 +121,14 @@ bool real::ColliderComponent::IsOverlappingWith(const ColliderComponent& other, 
 		return false;
 
 	return IsOverlapping(other);
+}
+
+bool real::ColliderComponent::IsMouseOverlapping() const
+{
+	const auto mousePos = Input::GetInstance().GetMousePosition();
+
+	return mousePos.x > m_Pos.x
+		&& mousePos.y > m_Pos.y
+		&& mousePos.x < m_Pos.x + m_Size.x
+		&& mousePos.y < m_Pos.y + m_Size.y;
 }

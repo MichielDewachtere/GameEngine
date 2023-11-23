@@ -53,7 +53,7 @@ namespace real
 		*/
 		bool IsOverlappingWith(const ColliderComponent& other, const std::string& expectedTag) const;
 		//bool IsOverlappingOrUnder(const ColliderComponent& other);
-
+		bool IsMouseOverlapping() const;
 
 	private:
 		glm::vec2 m_Pos{};
