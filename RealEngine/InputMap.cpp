@@ -37,3 +37,21 @@ real::InputMap::KeyboardCommandsMapRawPtr real::InputMap::GetKeyboardCommands() 
 
 	return map;
 }
+
+real::InputMap::MouseCommandsMapRawPtr real::InputMap::GetMouseCommands() const
+{
+	using MouseKey = std::pair<Uint32 /*event*/, Uint32 /*scancode*/>;
+	using MouseCommandsRawPtr = std::map<KeyboardKey, Command*>;
+
+	MouseCommandsRawPtr map{};
+
+	for (const auto& commands : m_MouseCommands)
+	{
+		auto first = commands.first;
+		auto second = commands.second.get();
+
+		map.insert(std::pair{ first, second });
+	}
+
+	return map;
+}

@@ -46,6 +46,8 @@ namespace real
 		void StartReadingKeyboard() { m_IsReading = true; }
 		void StopReadingKeyboard() { m_IsReading = false; }
 
+		glm::vec2 GetMousePosition() const;
+
 		Subject<char> inputReceived{};
 
 	private:

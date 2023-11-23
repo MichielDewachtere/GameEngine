@@ -33,11 +33,16 @@ namespace real
 		using KeyboardCommandsMapRawPtr = std::map<KeyboardKey, Command*>;
 		KeyboardCommandsMapRawPtr GetKeyboardCommands() const;
 
+		using MouseCommandsMapRawPtr = KeyboardCommandsMapRawPtr;
+		MouseCommandsMapRawPtr GetMouseCommands() const;
 
 		template <class T, typename... Args>
 		void AddControllerCommands(XInputController::ControllerButton button, XInputController::InputType inputType, int controller, Args... commandArgs);
 		template <class T, typename... Args>
+		void AddMouseCommands(Uint32 scancode, Uint32 event, Args... commandArgs);
+		template <class T, typename... Args>
 		void AddKeyboardCommands(Uint32 scancode, Uint32 event, Args... commandArgs);
+
 	private:
 		std::string m_Name;
 
@@ -49,6 +54,9 @@ namespace real
 		using KeyboardKey = std::pair<Uint32 /*event*/, Uint32 /*scancode*/>;
 		using KeyboardCommandsMap = std::map<KeyboardKey, std::unique_ptr<Command>>;
 		KeyboardCommandsMap m_KeyboardCommands{};
+
+		using MouseCommandsMap = KeyboardCommandsMap;
+		MouseCommandsMap m_MouseCommands{};
 
 		template <class T, typename... Args>
 		void AddControllerCommandsHelper(int controllerIdx, XInputController::ControllerButton button, XInputController::InputType inputType, Args... commandArgs);
@@ -86,6 +94,18 @@ namespace real
 
 		if (controller != -1)
 			throw std::runtime_error("controller doesn't exist");
+	}
+
+	template <class T, typename ... Args>
+	void InputMap::AddMouseCommands(Uint32 scancode, Uint32 event, Args... commandArgs)
+	{
+		if (scancode != SDL_BUTTON_LEFT && scancode != SDL_BUTTON_RIGHT)
+			throw std::runtime_error("The event parameter must be either SDL_SCANCODE_LEFT or SDL_SCANCODE_RIGHT");
+
+		if (event != SDL_MOUSEBUTTONUP && event != SDL_MOUSEBUTTONDOWN)
+			throw std::runtime_error("The event parameter must be either SDL_MOUSEBUTTONUP or SDL_MOUSEBUTTONDOWN");
+
+		m_MouseCommands[std::pair(event, scancode)] = std::make_unique<T>(std::forward<Args>(commandArgs)...);
 	}
 
 	/**

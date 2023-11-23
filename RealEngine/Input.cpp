@@ -64,6 +64,16 @@ bool real::Input::ProcessInput()
 			}
 		}
 
+		for (const auto& [info, command] : m_pActiveInputMap->GetMouseCommands())
+		{
+			if (e.type == info.first)
+			{
+				if (e.button.button == static_cast<Uint8>(info.second))
+				{
+					command->Execute();
+				}
+			}
+		}
 #ifdef USE_IMGUI
 		//process event for ImGui
 		ImGui_ImplSDL2_ProcessEvent(&e);
@@ -213,6 +223,15 @@ void real::Input::SetInputMapActive(const std::string& name)
 	}
 
 	Logger::LogWarning("InputManager => No input map found with the name {}", name);
+}
+
+glm::vec2 real::Input::GetMousePosition() const
+{
+	int mouseX, mouseY;
+
+	SDL_GetMouseState(&mouseX, &mouseY);
+
+	return { mouseX, mouseY };
 }
 
 bool real::Input::ReadKeyboardInput(SDL_Event e)
