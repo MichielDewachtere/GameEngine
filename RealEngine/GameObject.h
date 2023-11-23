@@ -73,7 +73,8 @@ namespace real
 		size_t GetChildCount() const { return m_ChildrenPtrs.size(); }
 		GameObject* GetChildAt(const unsigned int idx) const { return m_ChildrenPtrs[idx].get(); }
 		std::vector<GameObject*> GetChildren() const;
-		void RemoveChild(std::unique_ptr<GameObject> gameObject);
+		void AddChild(GameObject* pChild);
+		void RemoveChild(GameObject* gameObject);
 
 	private:
 		Scene* m_pScene{ nullptr };

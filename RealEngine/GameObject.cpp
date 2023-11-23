@@ -8,15 +8,14 @@
 
 real::GameObject* real::GameObject::CreateGameObject()
 {
-	auto pGameObject{ std::make_unique<GameObject>(m_pScene) };
+	const auto pGameObject = new GameObject(m_pScene);
 	pGameObject->AddComponent<TransformComponent>();
 
-	const auto pGameObjectPtr{ pGameObject.get() };
-	
 	pGameObject->m_pParent = this;
-	m_ChildrenPtrs.push_back(std::move(pGameObject));
+	AddChild(pGameObject);
+	//m_ChildrenPtrs.push_back(pGameObject);
 
-	return pGameObjectPtr;
+	return pGameObject/*.get()*/;
 }
 
 std::vector<real::GameObject*> real::GameObject::GetObjectsWithTag(const std::string& tag)
@@ -197,6 +196,7 @@ void real::GameObject::SetParent(GameObject* pParent, const bool keepWorldPositi
 					pParent->m_ChildrenPtrs.push_back(std::move(pChild));
 				else
 					m_pScene->Add(std::move(pChild));
+					//m_pScene->Add(pChild);
 
 				//Remove Child
 				std::swap(pOldParent->m_ChildrenPtrs[i], pOldParent->m_ChildrenPtrs.back());
@@ -232,7 +232,12 @@ std::vector<real::GameObject*> real::GameObject::GetChildren() const
 	return childrenPtrs;
 }
 
-void real::GameObject::RemoveChild(std::unique_ptr<GameObject> gameObject)
+void real::GameObject::AddChild(GameObject* pChild)
+{
+	m_ChildrenPtrs.push_back(std::unique_ptr<GameObject>(pChild));
+}
+
+void real::GameObject::RemoveChild(GameObject* gameObject)
 {
 	gameObject->Destroy();
 }
