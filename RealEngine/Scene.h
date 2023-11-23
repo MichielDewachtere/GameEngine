@@ -6,7 +6,11 @@
 
 namespace real
 {
+	//class SceneManager;
+
 	//class GameObject;
+	//using gameobject_id = unsigned short;
+
 	class Scene
 	{
 	public:
@@ -18,11 +22,13 @@ namespace real
 
 		GameObject* CreateGameObject();
 
-		template <class T>
-		T* CreateGameObject();
+		//template <class T>
+		//T* CreateGameObject();
 
-		void Add(std::shared_ptr<GameObject> object);
-		void Remove(std::shared_ptr<GameObject> object);
+		void Add(const std::shared_ptr<GameObject>& object);
+		//void Add(GameObject* object);
+		void Remove(const std::shared_ptr<GameObject>& object);
+		//void Remove(GameObject* object);
 		void RemoveAll();
 		std::vector<GameObject*> FindObjectsWithTag(const std::string& tag) const;
 		GameObject* FindObject(gameobject_id id) const;
@@ -49,25 +55,25 @@ namespace real
 
 		std::string m_Name;
 		std::string m_InputMapName;
-		std::vector < std::shared_ptr<GameObject>> m_objects{};
+		std::vector < std::shared_ptr<GameObject>> m_ObjectPtrs{};
+		//std::vector<std::unique_ptr<GameObject>> m_ObjectPtrs{};
 
-		static unsigned int m_idCounter;
+		static unsigned int m_IdCounter;
 
 		bool m_DebugRender{};
 		bool m_IsLoaded{};
 	};
 
-	template <class T>
-	T* Scene::CreateGameObject()
-	{
-		auto pGameObject = std::make_unique<T>(this);
-		pGameObject->Init();
-	
-		T* pGameObjectPtr = pGameObject.get();
-	
-		m_objects.emplace_back(std::move(pGameObject));
-		return pGameObjectPtr;
-	}
+	//template <class T>
+	//T* Scene::CreateGameObject()
+	//{
+	//	const auto pGameObject = std::make_unique<T>(this);
+	//	pGameObject->Init();
+
+	//	//m_ObjectPtrs.emplace_back(std::move(pGameObject));
+	//	m_ObjectPtrs.push_back(pGameObject);
+	//	return pGameObject.get();
+	//}
 }
 
 #endif // SCENE_H

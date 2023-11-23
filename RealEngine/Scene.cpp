@@ -2,10 +2,11 @@
 #include "Scene.h"
 
 #include "TransformComponent.h"
+//#include "GameObject.h"
 
 using namespace real;
 
-unsigned int Scene::m_idCounter = 0;
+unsigned int Scene::m_IdCounter = 0;
 
 Scene::Scene(std::string name, std::string inputMapName)
 	: m_Name(std::move(name))
@@ -17,43 +18,51 @@ Scene::~Scene() = default;
 
 GameObject* Scene::CreateGameObject()
 {
-	auto pGameObject{ std::make_unique<GameObject>(this) };
-	//pGameObject->Init();
+	const auto pGameObject = std::make_shared<GameObject>(this);
+	//const auto pGameObject = new GameObject(this);
 	pGameObject->AddComponent<TransformComponent>();
 
-	GameObject* pGameObjectPtr{ pGameObject.get() };
+	//GameObject* pGameObjectPtr{ pGameObject.get() };
 
-	Add(std::move(pGameObject));
-	return pGameObjectPtr;
+	Add(pGameObject);
+	//Add(std::move(pGameObject));
+	return pGameObject.get();
 }
 
-void Scene::Add(std::shared_ptr<GameObject> object)
+void Scene::Add(const std::shared_ptr<GameObject>& object)
+//void Scene::Add(GameObject* object)
 {
-	m_objects.emplace_back(object);
+	//m_ObjectPtrs.push_back(std::shared_ptr<GameObject>(object));
+	m_ObjectPtrs.emplace_back(object);
 }
 
-void Scene::Remove(std::shared_ptr<GameObject> object)
+void Scene::Remove(const std::shared_ptr<GameObject>& object)
+//void Scene::Remove(GameObject* object)
 {
-	std::erase(m_objects, object);
+	//std::erase(m_ObjectPtrs, std::unique_ptr<GameObject>(object));
+	std::erase_if(m_ObjectPtrs,
+	              [object](const std::shared_ptr<GameObject>& ptr) {
+		              return ptr == object;
+	              });
 }
 
 void Scene::RemoveAll()
 {
-	//m_objects.clear();
-	for (const auto& gameObject : m_objects)
+	//m_ObjectPtrs.clear();
+	for (const auto& gameObject : m_ObjectPtrs)
 	{
 		gameObject->Destroy();
 	}
 
 	m_IsLoaded = false;
-	m_objects.clear();
+	m_ObjectPtrs.clear();
 }
 
 std::vector<GameObject*> Scene::FindObjectsWithTag(const std::string& tag) const
 {
 	std::vector<GameObject*> goPtrs;
 
-	for (const auto& gameObject : m_objects)
+	for (const auto& gameObject : m_ObjectPtrs)
 	{
 		//if (gameObject->GetTag() == tag)
 		//	goPtrs.push_back(gameObject.get());
@@ -69,7 +78,7 @@ std::vector<GameObject*> Scene::FindObjectsWithTag(const std::string& tag) const
 
 GameObject* Scene::FindObject(gameobject_id id) const
 {
-	for (const auto& gameObject : m_objects)
+	for (const auto& gameObject : m_ObjectPtrs)
 	{
 		const auto go = gameObject->GetObject(id);
 
@@ -82,7 +91,7 @@ GameObject* Scene::FindObject(gameobject_id id) const
 
 void Scene::Start()
 {
-	for (const auto& object : m_objects)
+	for (const auto& object : m_ObjectPtrs)
 	{
 		object->Start();
 	}
@@ -90,7 +99,7 @@ void Scene::Start()
 
 void Scene::Update()
 {
-	for(const auto& object : m_objects)
+	for(const auto& object : m_ObjectPtrs)
 	{
 		object->Update();
 	}
@@ -98,7 +107,7 @@ void Scene::Update()
 
 void Scene::Render() const
 {
-	for (const auto& object : m_objects)
+	for (const auto& object : m_ObjectPtrs)
 	{
 		object->Render();
 
@@ -109,7 +118,7 @@ void Scene::Render() const
 
 void Scene::PostUpdate()
 {
-	for (const auto& object : m_objects)
+	for (const auto& object : m_ObjectPtrs)
 		object->PostUpdate();
 }
 
