@@ -15,18 +15,18 @@ real::Input::~Input()
 		delete pInputMap;
 }
 
-void real::Input::ReloadCommands()
+void real::Input::ReloadCommands() const
 {
 	for (const auto& inputMap : m_InputMapPtrs)
 	{
-		for (const auto& [first, command] : inputMap->GetControllerCommands())
+		for (const auto& input : inputMap->GetComputerInputs())
 		{
-			command.first->Start();
+			input->command->Start();
 		}
 
-		for (const auto& [first, command] : inputMap->GetKeyboardCommands())
+		for (const auto& input : inputMap->GetControllerInputs())
 		{
-			command->Start();
+			input->command->Start();
 		}
 	}
 }
@@ -34,43 +34,41 @@ void real::Input::ReloadCommands()
 bool real::Input::ProcessInput()
 {
 	SDL_Event e;
-	while (SDL_PollEvent(&e)) {
-		if (e.type == SDL_QUIT) {
+	while (SDL_PollEvent(&e))
+	{
+		if (e.type == SDL_QUIT)
 			return false;
-		}
 
 		if (m_pActiveInputMap == nullptr)
 			return true;
 
+		// Read keyboard
 		if (m_IsReading)
 		{
 			if (ReadKeyboardInput(e))
 				return true;
 		}
 
-		if (m_UseKeyboard)
+		// Execute keyboard & mouse
+		if (m_UseKeyboard == false)
+			break;
+
+		for (const auto& input : m_pActiveInputMap->GetComputerInputs())
 		{
-			for (const auto& [info, command] : m_pActiveInputMap->GetKeyboardCommands())
+			if (e.type == input->event)
 			{
-				if (e.type == info.first && (info.first == SDL_KEYUP || info.first == SDL_KEYDOWN))
+				if (e.key.keysym.scancode == static_cast<SDL_Scancode>(input->scancode)
+				   || e.button.button == static_cast<Uint8>(input->scancode))
 				{
-					if (e.key.keysym.scancode == (int)info.second)
-					{
-						command->SetKeyBoardInput(static_cast<int>(info.second));
-						command->SetInputController(nullptr);
-						command->Execute();
-					}
+					ExecuteCommand(input->command.get(), nullptr, static_cast<int>(input->scancode));
 				}
 			}
-		}
-
-		for (const auto& [info, command] : m_pActiveInputMap->GetMouseCommands())
-		{
-			if (e.type == info.first)
+			else if (input->event == KEYPRESSED)
 			{
-				if (e.button.button == static_cast<Uint8>(info.second))
+				const uint8_t* pKeyboardState = SDL_GetKeyboardState(nullptr);
+				if (pKeyboardState[input->scancode])
 				{
-					command->Execute();
+					ExecuteCommand(input->command.get(), nullptr, static_cast<int>(input->scancode));
 				}
 			}
 		}
@@ -80,78 +78,55 @@ bool real::Input::ProcessInput()
 #endif // USE_IMGUI
 	}
 
-	if (m_pActiveInputMap == nullptr)
-		return true;
-
-	for (const auto& [info, command] : m_pActiveInputMap->GetKeyboardCommands())
-	{
-		if (info.first != (Uint32)-1)
-			continue;
-		
-		const uint8_t* pKeyboardState = SDL_GetKeyboardState(nullptr);
-		if (pKeyboardState[info.second])
-		{
-			command->SetKeyBoardInput(static_cast<int>(info.second));
-			command->SetInputController(nullptr);
-			command->Execute();
-		}
-	}
-
+	// Controller Logic
 	for (const auto& pController : m_ControllerPtrs)
 	{
-		for (const auto& [key, command] : m_pActiveInputMap->GetControllerCommands())
+		for (const auto& input : m_pActiveInputMap->GetControllerInputs())
 		{
-			switch (command.second)
+			if (input->controller != pController->GetIndex())
+				continue;
+
+			switch (input->inputType)
 			{
 			case XInputController::InputType::pressed:
 			{
-				if (pController->IsPressed(key.second) && key.first == pController->GetIndex())
+				if (pController->IsPressed(input->button))
 				{
-					command.first->SetInputController(pController.get());
-					command.first->SetKeyBoardInput(-1);
-					command.first->Execute();
+					ExecuteCommand(input->command.get(), pController.get(), -1);
 				}
 				
 				break;
 			}
 			case XInputController::InputType::down:
 			{
-				if (pController->IsDown(key.second) && key.first == pController->GetIndex())
+				if (pController->IsDown(input->button))
 				{
-					command.first->SetInputController(pController.get());
-					command.first->SetKeyBoardInput(-1);
-					command.first->Execute();
+					ExecuteCommand(input->command.get(), pController.get(), -1);
 				}
 				break;
 			}
 			case XInputController::InputType::up:
 			{
-				if (pController->IsUp(key.second) && key.first == pController->GetIndex())
+				if (pController->IsUp(input->button))
 				{
-					command.first->SetInputController(pController.get());
-					command.first->SetKeyBoardInput(-1);
-					command.first->Execute();
+					ExecuteCommand(input->command.get(), pController.get(), -1);
 				}
 				
 				break;
 			}
 			case XInputController::InputType::leftThumbMoved:
 			{
-				if (pController->HasLeftThumbStickMoved() && key.first == pController->GetIndex())
+				if (pController->HasLeftThumbStickMoved())
 				{
-					command.first->SetInputController(pController.get());
-					command.first->SetKeyBoardInput(-1);
-					command.first->Execute();
+					ExecuteCommand(input->command.get(), pController.get(), -1);
 				}
 				break;
 			}
 			case XInputController::InputType::rightThumbMoved:
 			{
-				if (pController->HasRightThumbStickMoved() && key.first == pController->GetIndex())
+				if (pController->HasRightThumbStickMoved())
 				{
-					command.first->SetInputController(pController.get());
-					command.first->SetKeyBoardInput(-1);
-					command.first->Execute();
+					ExecuteCommand(input->command.get(), pController.get(), -1);
 				}
 				break;
 			}
@@ -225,7 +200,7 @@ void real::Input::SetInputMapActive(const std::string& name)
 	Logger::LogWarning("InputManager => No input map found with the name {}", name);
 }
 
-glm::vec2 real::Input::GetMousePosition() const
+glm::vec2 real::Input::GetMousePosition()
 {
 	int mouseX, mouseY;
 
@@ -250,7 +225,14 @@ bool real::Input::ReadKeyboardInput(SDL_Event e)
 	return false;
 }
 
-void real::Input::Update()
+void real::Input::ExecuteCommand(Command* command, XInputController* pController, int button)
+{
+	command->Execute();
+	command->SetInputController(pController);
+	command->SetKeyBoardInput(button);
+}
+
+void real::Input::Update() const
 {
 	for (const auto& pController : m_ControllerPtrs)
 	{
@@ -258,11 +240,11 @@ void real::Input::Update()
 	}
 }
 
-const int real::Input::AddController()
+uint8_t real::Input::AddController()
 {
-	int controllerIdx = 0;
+	uint8_t controllerIdx = 0;
 
-	for (int i{ 1 }; i < 5; ++i)
+	for (uint8_t i{ 1 }; i < 5; ++i)
 	{
 		bool indexExists = false;
 		for (const auto& pController : m_ControllerPtrs)
@@ -289,11 +271,11 @@ const int real::Input::AddController()
 	return controllerIdx;
 }
 
-const std::vector<int> real::Input::AddControllers()
+std::vector<uint8_t> real::Input::AddControllers()
 {
-	std::vector<int> controllers{};
+	std::vector<uint8_t> controllers{};
 
-	for (int i{ 0 }; i < 5; ++i)
+	for (uint8_t i{ 0 }; i < 5; ++i)
 	{
 		XINPUT_STATE state;
 		const DWORD result = XInputGetState(i, &state);
