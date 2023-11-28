@@ -39,16 +39,16 @@ namespace real
 			rightThumbMoved
 		};
 
-		explicit XInputController(int controllerIndex);
+		explicit XInputController(uint8_t controllerIndex);
 		~XInputController();
 		XInputController(const XInputController& other) = delete;
 		XInputController operator=(const XInputController& rhs) = delete;
 		XInputController(XInputController&& other) = delete;
 		XInputController operator=(XInputController&& rhs) = delete;
 
-		void Update();
+		void Update() const;
 
-		int GetIndex() const;
+		uint8_t GetIndex() const;
 
 		glm::vec2 GetNormalizedLeftThumbStickPos() const;
 

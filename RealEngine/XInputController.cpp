@@ -12,7 +12,7 @@ using namespace real;
 class XInputController::XInputControllerImpl
 {
 public:
-	explicit XInputControllerImpl(const int controllerIdx)
+	explicit XInputControllerImpl(const uint8_t controllerIdx)
 		: m_ControllerIndex(controllerIdx)
 	{
 		ZeroMemory(&m_PreviousState, sizeof XINPUT_STATE);
@@ -37,7 +37,7 @@ public:
 		m_ButtonsReleasedThisFrame = buttonChanges & (~m_CurrentState.Gamepad.wButtons);
 	}
 
-	int GetIndex() const { return m_ControllerIndex; }
+	uint8_t GetIndex() const { return m_ControllerIndex; }
 
 	glm::vec2 GetNormalizedLeftThumbStickPos() const
 	{
@@ -132,10 +132,10 @@ private:
 	WORD m_ButtonsPressedThisFrame{};
 	WORD m_ButtonsReleasedThisFrame{};
 
-	int m_ControllerIndex{};
+	uint8_t m_ControllerIndex{};
 };
 
-XInputController::XInputController(int controllerIndex)
+XInputController::XInputController(uint8_t controllerIndex)
 	: m_pImpl(new XInputControllerImpl(controllerIndex))
 {
 }
@@ -145,12 +145,12 @@ XInputController::~XInputController()
 	delete m_pImpl;
 }
 
-void XInputController::Update()
+void XInputController::Update() const
 {
 	m_pImpl->Update();
 }
 
-int XInputController::GetIndex() const
+uint8_t XInputController::GetIndex() const
 {
 	return m_pImpl->GetIndex();
 }
