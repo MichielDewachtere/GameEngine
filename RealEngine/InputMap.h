@@ -5,10 +5,11 @@
 #include <stdexcept>
 #include <SDL.h>
 
-#include "Command.h"
 #include "Input.h"
+//#include "Command.h"
+#include "InputTypes.h"
 
-#define KEYPRESSED Uint32(-1)
+#define KEYPRESSED Uint32(0)
 
 namespace real
 {
@@ -24,113 +25,102 @@ namespace real
 
 		std::string GetName() const { return m_Name; }
 
-		using ControllerKey = std::pair<int, XInputController::ControllerButton>;
-		using CommandKeyRawPtr = std::pair<Command*, XInputController::InputType>;
-		using ControllerCommandsMapRawPtr = std::map<ControllerKey, CommandKeyRawPtr>;
-		ControllerCommandsMapRawPtr GetControllerCommands() const;
-
-		using KeyboardKey = std::pair<Uint32 /*event*/, Uint32 /*scancode*/>;
-		using KeyboardCommandsMapRawPtr = std::map<KeyboardKey, Command*>;
-		KeyboardCommandsMapRawPtr GetKeyboardCommands() const;
-
-		using MouseCommandsMapRawPtr = KeyboardCommandsMapRawPtr;
-		MouseCommandsMapRawPtr GetMouseCommands() const;
+		std::vector<ComputerInput*> GetComputerInputs() const;
+		Command& GetComputerCommand(uint8_t id) const;
+		std::vector<ControllerInput*> GetControllerInputs() const;
+		Command& GetControllerCommand(uint8_t id) const;
 
 		template <class T, typename... Args>
-		void AddControllerCommands(XInputController::ControllerButton button, XInputController::InputType inputType, int controller, Args... commandArgs);
+		void AddMouseInput(uint8_t id, uint32_t event, uint32_t button, Args... commandArgs);
 		template <class T, typename... Args>
-		void AddMouseCommands(Uint32 scancode, Uint32 event, Args... commandArgs);
+		void AddKeyboardInput(uint8_t id, uint32_t event, uint32_t scancode, Args... commandArgs);
 		template <class T, typename... Args>
-		void AddKeyboardCommands(Uint32 scancode, Uint32 event, Args... commandArgs);
+		void AddControllerInput(uint8_t id, XInputController::ControllerButton button, XInputController::InputType inputType, Args... commandArgs);
+		template <class T, typename... Args>
+		void AddControllerInput(uint8_t id, uint8_t controller, XInputController::ControllerButton button, XInputController::InputType inputType, Args... commandArgs);
 
 	private:
 		std::string m_Name;
 
-		using ControllerKey = std::pair<int, XInputController::ControllerButton>;
-		using CommandKey = std::pair<std::unique_ptr<Command>, XInputController::InputType>;
-		using ControllerCommandsMap = std::map<ControllerKey, CommandKey>;
-		ControllerCommandsMap m_ControllerCommands{};
-
-		using KeyboardKey = std::pair<Uint32 /*event*/, Uint32 /*scancode*/>;
-		using KeyboardCommandsMap = std::map<KeyboardKey, std::unique_ptr<Command>>;
-		KeyboardCommandsMap m_KeyboardCommands{};
-
-		using MouseCommandsMap = KeyboardCommandsMap;
-		MouseCommandsMap m_MouseCommands{};
+		std::map<uint8_t /*id*/, std::unique_ptr<ComputerInput>> m_ComputerInputs{};
+		std::map<uint8_t /*id*/, std::unique_ptr<ControllerInput>> m_ControllerInputs{};
 
 		template <class T, typename... Args>
-		void AddControllerCommandsHelper(int controllerIdx, XInputController::ControllerButton button, XInputController::InputType inputType, Args... commandArgs);
+		void AddComputerInput(uint8_t id, uint32_t event, uint32_t scancode, Args... commandArgs);
+
+		template <typename T>
+		std::vector<T*> GetInputs(const std::map<uint8_t, std::unique_ptr<T>>& inputs) const;
 	};
 
-	/**
-	 * \brief
-	 * \tparam T must derive from the Command class
-	 * \param button
-	 * \param inputType
-	 * \param controller -1 will allow every controller to invoke this command
-	 * \param commandArgs parameters for the Command class, must have a GameObject and optional params
-	 *		for MoveCommand: FLOAT	speed (= 50)
-	 */
-	template <class T, typename... Args>
-	inline void InputMap::AddControllerCommands(XInputController::ControllerButton button, XInputController::InputType inputType, int controller, Args... commandArgs)
+	template <class T, typename ... Args>
+	void InputMap::AddMouseInput(uint8_t id, uint32_t event, uint32_t button, Args... commandArgs)
 	{
 		static_assert(std::is_base_of<Command, T>(), "T must derive from the Command class");
 
-		int controllerIdx{};
-		for (const auto& pController : Input::GetInstance().GetControllers())
-		{
-			if (controller == -1)
-			{
-				m_ControllerCommands[std::pair(controllerIdx, button)] = std::pair(std::make_unique<T>(commandArgs...), inputType);
-
-				++controllerIdx;
-			}
-			else if (pController->GetIndex() == controller)
-			{
-				m_ControllerCommands[std::pair(controller, button)] = std::pair(std::make_unique<T>(std::forward<Args>(commandArgs)...), inputType);
-				return;
-			}
-		}
-
-		if (controller != -1)
-			throw std::runtime_error("controller doesn't exist");
-	}
-
-	template <class T, typename ... Args>
-	void InputMap::AddMouseCommands(Uint32 scancode, Uint32 event, Args... commandArgs)
-	{
-		if (scancode != SDL_BUTTON_LEFT && scancode != SDL_BUTTON_RIGHT)
-			throw std::runtime_error("The event parameter must be either SDL_SCANCODE_LEFT or SDL_SCANCODE_RIGHT");
+		if (button != SDL_BUTTON_LEFT && button != SDL_BUTTON_RIGHT)
+			throw std::runtime_error("The scancode parameter must be either SDL_SCANCODE_LEFT or SDL_SCANCODE_RIGHT");
 
 		if (event != SDL_MOUSEBUTTONUP && event != SDL_MOUSEBUTTONDOWN)
 			throw std::runtime_error("The event parameter must be either SDL_MOUSEBUTTONUP or SDL_MOUSEBUTTONDOWN");
 
-		m_MouseCommands[std::pair(event, scancode)] = std::make_unique<T>(std::forward<Args>(commandArgs)...);
-	}
+		if (m_ComputerInputs.contains(id))
+			throw std::runtime_error("A mouse input is already registered with id: " + id);
 
-	/**
-	 * \brief
-	 * \tparam T must derive from the Command class
-	 * \param scancode a SDL_SCANCODE_
-	 * \param event SDL_KEYUP, SDL_KEYDOWN or KEYPRESSED, all other inputs will result in a runtime error
-	 * \param commandArgs parameters for the Command class, must have a GameObject and optional params
-	 *		for MoveCommand: FLOAT speed (= 50)
-	 *		for DamageCommand: INT damage (= 1)
-	 */
-	template <class T, typename... Args>
-	void InputMap::AddKeyboardCommands(Uint32 scancode, Uint32 event, Args... commandArgs)
-	{
-		if (event == SDL_KEYUP || event == SDL_KEYDOWN || event == KEYPRESSED)
-			m_KeyboardCommands[std::pair(event, scancode)] = std::make_unique<T>(std::forward<Args>(commandArgs)...);
-		else
-			throw std::runtime_error("The event parameter must be either SDL_KEYDOWN or SDL_KEYUP");
+		m_ComputerInputs.try_emplace(id, std::make_unique<ComputerInput>(event, button, new T(commandArgs...)));
 	}
 
 	template <class T, typename ... Args>
-	void InputMap::AddControllerCommandsHelper(int controllerIdx, XInputController::ControllerButton button,
-	                                           XInputController::InputType inputType, Args... commandArgs)
+	void InputMap::AddKeyboardInput(uint8_t id, uint32_t event, uint32_t scancode, Args... commandArgs)
 	{
-		m_ControllerCommands[std::pair(controllerIdx, button)] = std::pair<std::unique_ptr<T>, XInputController::InputType>(std::make_unique<T>(std::move<Args>(commandArgs)...), inputType);
+		static_assert(std::is_base_of<Command, T>(), "T must derive from the Command class");
+
+		if (event != SDL_KEYUP && event != SDL_KEYDOWN && event != KEYPRESSED)
+			throw std::runtime_error("The scancode parameter must be either SDL_KEYUP, SDL_KEYDOWN or KEYPRESSED");
+
+		if (m_ComputerInputs.contains(id))
+			throw std::runtime_error("A mouse input is already registered with id: " + id);
+
+		m_ComputerInputs.try_emplace(id, std::make_unique<ComputerInput>(event, scancode, new T(commandArgs...)));
+	}
+
+	template <class T, typename ... Args>
+	void InputMap::AddControllerInput(uint8_t id, XInputController::ControllerButton button, XInputController::InputType inputType, Args... commandArgs)
+	{
+		for (size_t i = 0; i < Input::GetInstance().GetControllers().size(); ++i)
+		{
+			AddControllerInput<T>(id, static_cast<uint8_t>(i), button, inputType, commandArgs...);
+		}
+	}
+
+	template <class T, typename ... Args>
+	void InputMap::AddControllerInput(uint8_t id, uint8_t controller, XInputController::ControllerButton button, XInputController::InputType inputType,
+		Args... commandArgs)
+	{
+		static_assert(std::is_base_of<Command, T>(), "T must derive from the Command class");
+
+		if (m_ControllerInputs.contains(id))
+			throw std::runtime_error("A controller input is already registered with id: " + id);
+
+		m_ControllerInputs.try_emplace(id, std::make_unique<ControllerInput>(controller, button, inputType, new T(commandArgs...)));
+	}
+
+	template <class T, typename ... Args>
+	void InputMap::AddComputerInput(uint8_t id, uint32_t event, uint32_t scancode, Args... commandArgs)
+	{
+		m_ComputerInputs.try_emplace(id, std::make_unique<ComputerInput>(event, scancode, new T(commandArgs...)));
+	}
+
+	template <typename T>
+	std::vector<T*> InputMap::GetInputs(const std::map<uint8_t, std::unique_ptr<T>>& inputs) const
+	{
+		std::vector<T*> v;
+
+		for (const auto& input : inputs)
+		{
+			v.push_back(input.second.get());
+		}
+
+		return v;
 	}
 }
 

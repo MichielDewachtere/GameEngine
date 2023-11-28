@@ -1,57 +1,30 @@
 //#include "stdafx.h"
 #include "InputMap.h"
 
-real::InputMap::ControllerCommandsMapRawPtr real::InputMap::GetControllerCommands() const
+#include <ranges>
+
+std::vector<real::ComputerInput*> real::InputMap::GetComputerInputs() const
 {
-	using ControllerKey = std::pair<int, XInputController::ControllerButton>;
-	using CommandKeyRawPtr = std::pair<Command*, XInputController::InputType>;
-	using ControllerCommandsMapRawPtr = std::map<ControllerKey, CommandKeyRawPtr>;
-
-	ControllerCommandsMapRawPtr map{};
-
-	for (const auto& [controllerKey, commandKey] : m_ControllerCommands)
-	{
-		auto first = std::pair{ controllerKey.first, controllerKey.second };
-		auto second = std::pair{ commandKey.first.get(), commandKey.second };
-
-		map.insert(std::pair{ first, second });
-	}
-
-	return map;
+	return GetInputs<ComputerInput>(m_ComputerInputs);
 }
 
-real::InputMap::KeyboardCommandsMapRawPtr real::InputMap::GetKeyboardCommands() const
+real::Command& real::InputMap::GetComputerCommand(uint8_t id) const
 {
-	using KeyboardKey = std::pair<Uint32 /*event*/, Uint32 /*scancode*/>;
-	using KeyboardCommandsMapRawPtr = std::map<KeyboardKey, Command*>;
+	if (m_ComputerInputs.contains(id) == false)
+		throw std::runtime_error("Computer input with the given id: " + std::to_string(id) + ", not found");
 
-	KeyboardCommandsMapRawPtr map{};
-
-	for (const auto& commands : m_KeyboardCommands)
-	{
-		auto first = commands.first;
-		auto second = commands.second.get();
-
-		map.insert(std::pair{ first, second });
-	}
-
-	return map;
+	return *m_ComputerInputs.at(id)->command;
 }
 
-real::InputMap::MouseCommandsMapRawPtr real::InputMap::GetMouseCommands() const
+std::vector<real::ControllerInput*> real::InputMap::GetControllerInputs() const
 {
-	using MouseKey = std::pair<Uint32 /*event*/, Uint32 /*scancode*/>;
-	using MouseCommandsRawPtr = std::map<KeyboardKey, Command*>;
+	return GetInputs<ControllerInput>(m_ControllerInputs);
+}
 
-	MouseCommandsRawPtr map{};
+real::Command& real::InputMap::GetControllerCommand(uint8_t id) const
+{
+	if (m_ControllerInputs.contains(id) == false)
+		throw std::runtime_error("Controller input with the given id: " + std::to_string(id) + ", not found");
 
-	for (const auto& commands : m_MouseCommands)
-	{
-		auto first = commands.first;
-		auto second = commands.second.get();
-
-		map.insert(std::pair{ first, second });
-	}
-
-	return map;
+	return *m_ControllerInputs.at(id)->command;
 }
