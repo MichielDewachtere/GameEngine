@@ -153,6 +153,9 @@
     <ClInclude Include="Prefab.h">
       <Filter>Prefab</Filter>
     </ClInclude>
+    <ClInclude Include="InputTypes.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XInputController.cpp">
