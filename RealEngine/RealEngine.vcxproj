@@ -227,6 +227,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClInclude Include="Logger.h" />
     <ClInclude Include="LoggingAudio.h" />
     <ClInclude Include="Minigin.h" />
+    <ClInclude Include="InputTypes.h" />
     <ClInclude Include="NullAudio.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="Prefab.h" />
