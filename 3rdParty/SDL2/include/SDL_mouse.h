@@ -98,7 +98,7 @@ extern DECLSPEC SDL_Window * SDLCALL SDL_GetMouseFocus(void);
  * \since This function is available since SDL 2.0.0.
  *
  * \sa SDL_GetGlobalMouseState
- * \sa SDL_GetRelativeMouseState
+ * \sa SDL_GetRelativeMouseState0
  * \sa SDL_PumpEvents
  */
 extern DECLSPEC Uint32 SDLCALL SDL_GetMouseState(int *x, int *y);
