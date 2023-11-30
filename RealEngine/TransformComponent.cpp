@@ -3,6 +3,8 @@
 
 void real::TransformComponent::Update()
 {
+	if (/*changedWorldPosition.GetObservers().empty() == false && */m_PositionIsDirty)
+		UpdateWorldPosition();
 }
 
 const glm::vec2& real::TransformComponent::GetLocalPosition() const
@@ -25,6 +27,8 @@ void real::TransformComponent::SetWorldPosition(const float x, const float y)
 void real::TransformComponent::SetWorldPosition(const glm::vec2& pos)
 {
 	m_WorldPosition = pos;
+
+	changedWorldPosition.Notify(m_WorldPosition);
 
 	for (const auto& pChild : GetOwner()->GetChildren())
 		pChild->GetComponent<TransformComponent>()->SetPositionDirty();
@@ -63,6 +67,8 @@ void real::TransformComponent::UpdateWorldPosition()
 		m_WorldPosition = m_LocalPosition;
 	else
 		m_WorldPosition = GetOwner()->GetParent()->GetComponent<TransformComponent>()->GetWorldPosition() + m_LocalPosition;
+
+	changedWorldPosition.Notify(m_WorldPosition);
 
 	m_PositionIsDirty = false;
 }

@@ -4,6 +4,7 @@
 #include <glm/vec2.hpp>
 
 #include "Component.h"
+#include "Subject.h"
 
 namespace real
 {
@@ -36,6 +37,8 @@ namespace real
 		bool GetIgnoreParent() const { return m_IgnoreParent; }
 
 		bool CanRender() const override { return false; }
+
+		Subject<glm::ivec2> changedWorldPosition;
 
 	private:
 		glm::vec2 m_LocalPosition{};
