@@ -33,6 +33,13 @@ namespace real
 	private:
 		void InitComponents(glm::ivec2 pos, glm::ivec2 size, std::shared_ptr<Texture2D> texture, std::shared_ptr<Font> font) const;
 	};
+
+	template <class T, typename ... Args>
+	ButtonPrefab& ButtonPrefab::OnButtonPress(uint8_t commandId, real::InputMap& inputMap, Args... commandArgs)
+	{
+		inputMap.AddMouseInput<T>(commandId, SDL_MOUSEBUTTONUP, SDL_BUTTON_LEFT, m_pGameObject, commandArgs...);
+		return *this;
+	}
 }
 
 #endif // BUTTON_H

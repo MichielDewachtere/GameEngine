@@ -74,8 +74,9 @@ real::ButtonPrefab& real::ButtonPrefab::SetColor(const glm::u8vec4& color)
 void real::ButtonPrefab::InitComponents(glm::ivec2 pos, glm::ivec2 size, std::shared_ptr<Texture2D> texture, std::shared_ptr<Font> font) const
 {
 	m_pGameObject->GetComponent<TransformComponent>()->SetLocalPosition(pos);
-	m_pGameObject->AddComponent<ColliderComponent>(size)->EnableDebugRendering(true);
 	m_pGameObject->AddComponent<TextureComponent>()->SetRenderOffset(size.x / 2, size.y / 2);
+	m_pGameObject->AddComponent<ColliderComponent>(size)->EnableDebugRendering(true);
+	m_pGameObject->GetComponent<ColliderComponent>()->Translate(-(size.x / 2.f), -(size.y / 2.f));
 
 	if (texture != nullptr)
 		m_pGameObject->GetComponent<TextureComponent>()->SetTexture(std::move(texture));
