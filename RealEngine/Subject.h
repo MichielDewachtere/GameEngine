@@ -83,6 +83,8 @@ namespace real
 			}
 		}
 
+		std::vector<Observer<Args ...>*> GetObservers() const { return m_ObserverPtrs; }
+
 	private:
 		std::vector<Observer<Args ...>*> m_ObserverPtrs;
 	};
