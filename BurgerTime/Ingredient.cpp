@@ -49,29 +49,40 @@ void Ingredient::PartIsTriggered()
 
 	if (m_AmountOfPartsTriggered == amountOfParts)
 	{
-		switch (m_PlatformsToSkip)
+		//switch (m_PlatformsToSkip)
+		//{
+		//case 1:
+		//	burgerDropped.Notify(500);
+		//	break;
+		//case 2:
+		//	burgerDropped.Notify(1'000);
+		//	break;
+		//case 3:
+		//	burgerDropped.Notify(2'000);
+		//	break;
+		//case 4:
+		//	burgerDropped.Notify(4'000);
+		//	break;
+		//case 5:
+		//	burgerDropped.Notify(8'000);
+		//	break;
+		//case 6:
+		//	burgerDropped.Notify(16'000);
+		//	break;
+		//}
+
+		//burgerDropped.Notify(50 * (m_PlatformsToSkip + 1));
+
+		int score = 500;
+		for (int i = 0; i < m_PlatformsToSkip; ++i)
 		{
-		case 1:
-			burgerDropped.Notify(500);
-			break;
-		case 2:
-			burgerDropped.Notify(1'000);
-			break;
-		case 3:
-			burgerDropped.Notify(2'000);
-			break;
-		case 4:
-			burgerDropped.Notify(4'000);
-			break;
-		case 5:
-			burgerDropped.Notify(8'000);
-			break;
-		case 6:
-			burgerDropped.Notify(16'000);
-			break;
+			score *= 2;
 		}
 
-		burgerDropped.Notify(50 * (m_PlatformsToSkip + 1));
+		score += 50 * (m_PlatformsToSkip + 1);
+
+		burgerDropped.Notify(score);
+
 		real::Locator::GetAudioSystem().Play(Sounds::burger_falling);
 		
 		m_IsFalling = true;

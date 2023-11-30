@@ -1,7 +1,7 @@
 ﻿#include "GameOverMenu.h"
 
 #include <Input.h>
-#include <ResourceManager.h>
+#include <SDLResourceManager.h>
 #include <TextComponent.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
@@ -19,7 +19,8 @@ GameOverMenu::GameOverMenu(real::WindowSettings settings)
 
 void GameOverMenu::Load()
 {
-	using alignment = real::TextComponent::HorizontalAlignment;
+	using horizontal_alignment = real::TextComponent::HorizontalAlignment;
+	using vertical_alignment = real::TextComponent::VerticalAlignment;
 
 	real::Locator::GetAudioSystem().Play(Sounds::menu_background);
 
@@ -27,9 +28,9 @@ void GameOverMenu::Load()
 	HighScoreParser::UpdateHighScores(playerManager.GetPlayerName(), playerManager.GetScore());
 	const auto highScores = HighScoreParser::GetTopFive();
 
-	const auto pFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
-	const auto pMiddleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
-	const auto pTitleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 32);
+	const auto pFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
+	const auto pMiddleFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
+	const auto pTitleFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 32);
 
 	const auto pTitleText = CreateGameObject();
 	pTitleText->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 50);
@@ -37,7 +38,7 @@ void GameOverMenu::Load()
 	pTitleText->AddComponent<real::TextComponent>()->SetFont(pTitleFont);
 	pTitleText->GetComponent<real::TextComponent>()->SetText("GAME OVER");
 	pTitleText->GetComponent<real::TextComponent>()->SetColor(Colors::white);
-	pTitleText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(alignment::center);
+	pTitleText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(horizontal_alignment::center);
 
 	{
 		const auto pNameText = CreateGameObject();
@@ -54,6 +55,14 @@ void GameOverMenu::Load()
 		pScoreText->GetComponent<real::TextComponent>()->SetText("Score");
 		pScoreText->GetComponent<real::TextComponent>()->SetColor(Colors::red);
 	}
+
+	const auto quitText = CreateGameObject();
+	quitText->GetComponent<real::TransformComponent>()->SetLocalPosition(10, static_cast<float>(m_Settings.height) - 30);
+	quitText->AddComponent<real::TextureComponent>();
+	quitText->AddComponent<real::TextComponent>()->SetFont(pFont);
+	quitText->GetComponent<real::TextComponent>()->SetText("Press ESC/BACK to exit");
+	quitText->GetComponent<real::TextComponent>()->ChangeHorizontalAlignment(horizontal_alignment::right);
+	quitText->GetComponent<real::TextComponent>()->ChangeVerticalAlignment(vertical_alignment::down);
 
 	bool isCurrentPlayerInTopFive = false;
 	for (size_t i = 0; i < highScores.size(); ++i)

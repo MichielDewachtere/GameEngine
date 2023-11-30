@@ -2,7 +2,7 @@
 
 #include <Input.h>
 #include <InputMap.h>
-#include <ResourceManager.h>
+#include <SDLResourceManager.h>
 #include <TextComponent.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
@@ -28,16 +28,18 @@ void MainMenu::Load()
 {
 	//auto& scene = real::SceneManager::GetInstance().AddScene(this);
 	auto& input = real::Input::GetInstance();
-	const auto pInputMap = input.AddInputMap(InputMaps::menu);
+	const auto menuInputMap = input.AddInputMap(InputMaps::menu);
+
+	//this->SetDebugRendering(true);
 
 	real::Locator::GetAudioSystem().Play(Sounds::menu_background);
 
 	using vertical_alignment = real::TextComponent::HorizontalAlignment;
 	using horizontal_alignment = real::TextComponent::VerticalAlignment;
 
-	const auto pFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
-	const auto pMiddleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
-	const auto pTitleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 32);
+	const auto pFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
+	const auto pMiddleFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
+	const auto pTitleFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 32);
 
 	const auto pTitleText = CreateGameObject();
 	pTitleText->GetComponent<real::TransformComponent>()->SetLocalPosition(static_cast<float>(m_Settings.width) / 2.f, 30);
@@ -149,17 +151,17 @@ void MainMenu::Load()
 	input.EnableCoOp(true);
 	const auto controllerIdcs = input.AddControllers();
 
-	pInputMap->AddKeyboardCommands<PlayerJoinCommand>(SDL_SCANCODE_RETURN, SDL_KEYUP, nullptr);
-	pInputMap->AddKeyboardCommands<LoadNextLevelCommand>(SDL_SCANCODE_SPACE, SDL_KEYUP, nullptr, Scenes::level01);
-	pInputMap->AddKeyboardCommands<QuitCommand>(SDL_SCANCODE_ESCAPE, SDL_KEYUP, nullptr);
-	pInputMap->AddKeyboardCommands<MuteCommand>(SDL_SCANCODE_F2, SDL_KEYUP, nullptr);
+	menuInputMap->AddKeyboardInput<PlayerJoinCommand>(0, SDL_KEYUP, SDL_SCANCODE_RETURN, nullptr);
+	menuInputMap->AddKeyboardInput<LoadNextLevelCommand>(1, SDL_KEYUP, SDL_SCANCODE_SPACE, nullptr, Scenes::level01);
+	menuInputMap->AddKeyboardInput<QuitCommand>(2, SDL_KEYUP, SDL_SCANCODE_ESCAPE, nullptr);
+	menuInputMap->AddKeyboardInput<MuteCommand>(3, SDL_KEYUP, SDL_SCANCODE_F2, nullptr);
 
 	if (controllerIdcs.empty() == false)
 	{
-		pInputMap->AddControllerCommands<PlayerJoinCommand>(real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, -1, nullptr);
-		pInputMap->AddControllerCommands<LoadNextLevelCommand>(real::XInputController::ControllerButton::Start, real::XInputController::InputType::down, -1, nullptr, Scenes::level01);
-		pInputMap->AddControllerCommands<QuitCommand>(real::XInputController::ControllerButton::Back, real::XInputController::InputType::down, -1, nullptr);
-		pInputMap->AddControllerCommands<MuteCommand>(real::XInputController::ControllerButton::ButtonLeft, real::XInputController::InputType::down, -1, nullptr);
+		menuInputMap->AddControllerInput<PlayerJoinCommand>(0, real::XInputController::ControllerButton::ButtonDown, real::XInputController::InputType::down, nullptr);
+		menuInputMap->AddControllerInput<LoadNextLevelCommand>(1, real::XInputController::ControllerButton::Start, real::XInputController::InputType::down, nullptr, Scenes::level01);
+		menuInputMap->AddControllerInput<QuitCommand>(2, real::XInputController::ControllerButton::Back, real::XInputController::InputType::down, nullptr);
+		menuInputMap->AddControllerInput<MuteCommand>(3, real::XInputController::ControllerButton::ButtonLeft, real::XInputController::InputType::down, nullptr);
 	}
 
 	m_IsLoaded = true;

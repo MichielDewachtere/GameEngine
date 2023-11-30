@@ -3,7 +3,7 @@
 
 #include <TextComponent.h>
 #include <TransformComponent.h>
-#include <ResourceManager.h>
+#include <SDLResourceManager.h>
 
 #include "HealthComponent.h"
 #include "PlayerManager.h"
@@ -64,7 +64,7 @@ void LivesDisplay::HandleEvent(bool value)
 
 void LivesDisplay::InitLifeIcons(int players)
 {
-	const auto pTexture = real::ResourceManager::GetInstance().LoadTexture("misc/iconsspritesheet.png");
+	const auto pTexture = real::SDLResourceManager::GetInstance().LoadTexture("misc/iconsspritesheet.png");
 
 	m_SpriteSheet.pTexture = pTexture;
 	m_SpriteSheet.columns = 6;

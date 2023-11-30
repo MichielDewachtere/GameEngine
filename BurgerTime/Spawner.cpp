@@ -3,7 +3,7 @@
 
 #include <GameTime.h>
 #include <Logger.h>
-#include <ResourceManager.h>
+#include <SDLResourceManager.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
 #include <ColliderComponent.h>
@@ -64,13 +64,15 @@ void Spawner::SpawnEnemy(const std::string& type)
 void Spawner::ReSpawnEnemy(real::GameObject* pEnemy) const
 {
 	const auto spawnPos = GetOwner()->GetComponent<real::TransformComponent>()->GetWorldPosition();
-	pEnemy->GetComponent<real::TransformComponent>()->SetWorldPosition(spawnPos.x, spawnPos.y - 47);
+	constexpr float offset = 47;
+	pEnemy->GetComponent<real::TransformComponent>()->SetWorldPosition(spawnPos.x, spawnPos.y - offset);
+	pEnemy->GetComponent<real::TransformComponent>()->SetLocalPosition(0, -offset);
 }
 
 void Spawner::SpawnEnemyType(const std::string& type, int points)
 {
 	const auto enemy = GetOwner()->CreateGameObject();
-	const auto pTexture = real::ResourceManager::GetInstance().LoadTexture("enemies/" + type + "spritesheet.png");
+	const auto pTexture = real::SDLResourceManager::GetInstance().LoadTexture("enemies/" + type + "spritesheet.png");
 
 	real::SpriteSheet spriteSheet;
 	spriteSheet.pTexture = pTexture;

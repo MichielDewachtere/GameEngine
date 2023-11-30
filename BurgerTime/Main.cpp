@@ -1,6 +1,6 @@
 //#include "stdafx.h"
 
-#include <Minigin.h> 
+#include <Minigin.h>
 
 #include <InputMap.h>
 #include <SceneManager.h>

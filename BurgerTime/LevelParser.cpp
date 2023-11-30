@@ -6,7 +6,7 @@
 #include <iostream>
 
 #include <TextureComponent.h>
-#include <ResourceManager.h>
+#include <SDLResourceManager.h>
 #include <TransformComponent.h>
 #include <ColliderComponent.h>
 
@@ -41,7 +41,7 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     document.Parse(fileContents.c_str());
 
     const rapidjson::Value& value = document["levelTexturePath"];
-    const auto pBackGroundTexture = real::ResourceManager::GetInstance().LoadTexture(value.GetString());
+    const auto pBackGroundTexture = real::SDLResourceManager::GetInstance().LoadTexture(value.GetString());
 
     const auto pLevel = pScene.CreateGameObject();
     //pLevel->GetComponent<real::TransformComponent>()->Translate(48, 32);
@@ -51,7 +51,8 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     pLevelBoundaries->SetTag(Tags::boundary);
     pLevelBoundaries->GetComponent<real::TransformComponent>()->SetLocalPosition(0, -9);
     glm::vec2 levelBoundaries = { pBackGroundTexture->GetSize().x, pBackGroundTexture->GetSize().y };
-    pLevelBoundaries->AddComponent<real::ColliderComponent>(levelBoundaries)->EnableDebugRendering(false, Colors::red);
+    pLevelBoundaries->AddComponent<real::ColliderComponent>(levelBoundaries)->EnableDebugRendering(true, Colors::red);
+    //pLevelBoundaries->GetComponent<real::ColliderComponent>()->SetPosition(pLevelBoundaries->GetComponent<real::TransformComponent>()->GetLocalPosition());
 
     // PLAYER SPAWN
     const rapidjson::Value& playerPos = document["player_spawnpoint"].GetArray();
@@ -123,5 +124,5 @@ void LevelParser::ParseIngredient(real::GameObject* pGameObject, const rapidjson
     const rapidjson::Value& bunBottomValue = document[part.c_str()];
     const std::string bunBottomTexturePath = bunBottomValue["texturePath"].GetString();
     for (const auto& bunBottom : bunBottomValue["position"].GetArray())
-        IngredientPrefab::CreateIngredient(pGameObject, bunBottomTexturePath, { bunBottom[0].GetDouble(), bunBottom[1].GetDouble() }, false);
+        IngredientPrefab::CreateIngredient(pGameObject, bunBottomTexturePath, { bunBottom[0].GetDouble(), bunBottom[1].GetDouble() }, true);
 }

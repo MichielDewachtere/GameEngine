@@ -3,27 +3,31 @@
 #include <ColliderComponent.h>
 #include <Input.h>
 #include <InputMap.h>
-#include <ResourceManager.h>
+#include <Locator.h>
+#include <Logger.h>
+#include <SDLResourceManager.h>
+#include <SpriteComponent.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
+#include <TextComponent.h>
+
+
+#include "HealthComponent.h"
+#include "PlayerCharacter.h"
 
 #include "GameInfo.h"
-#include "HealthComponent.h"
-#include "HighScoreDisplay.h"
 #include "HighScoreParser.h"
+
+#include "HighScoreDisplay.h"
 #include "LevelDisplay.h"
 #include "LivesDisplay.h"
+#include "PepperCounter.h"
+#include "ScoreDisplay.h"
+
 #include "LoadNextLevelCommand.h"
-#include "Locator.h"
-#include "Logger.h"
 #include "MoveCommand.h"
 #include "MuteCommand.h"
-#include "PepperCounter.h"
-#include "PlayerCharacter.h"
-#include "ScoreDisplay.h"
-#include "SpriteComponent.h"
 #include "StunCommand.h"
-#include "TextComponent.h"
 
 PlayerManager::~PlayerManager()
 {
@@ -85,7 +89,7 @@ void PlayerManager::HandleEvent(Ingredient& ingredient)
 
 	ingredient.landedOnPlate.RemoveObserver(this);
 
-	if (m_AmountOfPlates == 14)
+	if (m_AmountOfPlates == 0)
 		PlayerWins();
 }
 
@@ -98,9 +102,9 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 	}
 
 	auto& input = real::Input::GetInstance();
-	real::InputMap* pInputMap;
+	real::InputMap* gamePlayInputMap;
 
-	std::shared_ptr<real::Texture2D> pCharacterSpriteSheetTexture;
+	std::shared_ptr<real::SDLTexture2D> pCharacterSpriteSheetTexture;
 	real::SpriteSheet spriteSheet;
 	spriteSheet.columns = 9;
 	spriteSheet.rows = 2;
@@ -108,10 +112,10 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 
 	if (m_PlayerPtrs.empty())
 	{
-		pCharacterSpriteSheetTexture = real::ResourceManager::GetInstance().LoadTexture("characters/PeterPepperSpriteSheet.png");
+		pCharacterSpriteSheetTexture = real::SDLResourceManager::GetInstance().LoadTexture("characters/PeterPepperSpriteSheet.png");
 		spriteSheet.pTexture = pCharacterSpriteSheetTexture;
 
-		pInputMap = input.AddInputMap(InputMaps::gameplay);
+		gamePlayInputMap = input.AddInputMap(InputMaps::gameplay);
 		real::Logger::LogInfo("Player 1 has been initialized");
 		playerJoined.Notify(1);
 	}
@@ -124,10 +128,10 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		}
 
 		input.EnableCoOp(true);
-		pCharacterSpriteSheetTexture = real::ResourceManager::GetInstance().LoadTexture("characters/SallySaltSpriteSheet.png");
+		pCharacterSpriteSheetTexture = real::SDLResourceManager::GetInstance().LoadTexture("characters/SallySaltSpriteSheet.png");
 		spriteSheet.pTexture = pCharacterSpriteSheetTexture;
 
-		pInputMap = input.GetInputMap(InputMaps::gameplay);
+		gamePlayInputMap = input.GetInputMap(InputMaps::gameplay);
 		real::Logger::LogInfo("Player 2 has been initialized");
 		playerJoined.Notify(2);
 	}
@@ -137,10 +141,10 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		return;
 	}
 
-	const auto pPepperTexture = real::ResourceManager::GetInstance().LoadTexture("characters/pepper.png");
+	const auto pPepperTexture = real::SDLResourceManager::GetInstance().LoadTexture("characters/pepper.png");
 
-	const auto pCharacter = new real::GameObject();
-	pCharacter->SetTag(Tags::player);
+	const auto pCharacter = new real::GameObject(nullptr, Tags::player);
+	//pCharacter->SetTag(Tags::player);
 	pCharacter->SetCanBeDestroyed(false);
 	pCharacter->AddComponent<real::TransformComponent>()->SetLocalPosition(288, 423);
 	pCharacter->AddComponent<real::SpriteComponent>(spriteSheet)->SelectSprite(1);
@@ -151,6 +155,7 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 	pCharacter->AddComponent<real::ColliderComponent>(spriteSize)->EnableDebugRendering(false);
 
 	const auto pFeet = pCharacter->CreateGameObject();
+	pFeet->SetTag("test");
 	pFeet->SetCanBeDestroyed(false);
 	pFeet->GetComponent<real::TransformComponent>()->SetLocalPosition(12, 0);
 	pFeet->AddComponent<real::ColliderComponent>(glm::vec2{ 24, 48 })->EnableDebugRendering(false, Colors::purple);
@@ -166,14 +171,15 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 	if (useKeyboard && m_KeyboardInUse == false)
 	{
 		input.UseKeyboard(true);
-		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_LEFT, KEYPRESSED, pCharacter, glm::vec2{ -1, 0 });
-		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_RIGHT, KEYPRESSED, pCharacter, glm::vec2{ 1, 0 });
-		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_DOWN, KEYPRESSED, pCharacter, glm::vec2{ 0, -1 });
-		pInputMap->AddKeyboardCommands<MoveCommand>(SDL_SCANCODE_UP, KEYPRESSED, pCharacter, glm::vec2{ 0, 1 });
-		pInputMap->AddKeyboardCommands<StunCommand>(SDL_SCANCODE_Z, SDL_KEYUP, pCharacter);
-		pInputMap->AddKeyboardCommands<StunCommand>(SDL_SCANCODE_X, SDL_KEYUP, pCharacter);
-		pInputMap->AddKeyboardCommands<LoadNextLevelCommand>(SDL_SCANCODE_F1, SDL_KEYUP, pCharacter, Scenes::level03);
-		pInputMap->AddKeyboardCommands<MuteCommand>(SDL_SCANCODE_F2, SDL_KEYUP, nullptr);
+
+		gamePlayInputMap->AddKeyboardInput<MoveCommand>(0, KEYPRESSED, SDL_SCANCODE_LEFT, pCharacter, glm::vec2{ -1, 0 });
+		gamePlayInputMap->AddKeyboardInput<MoveCommand>(1, KEYPRESSED, SDL_SCANCODE_RIGHT, pCharacter, glm::vec2{ 1, 0 });
+		gamePlayInputMap->AddKeyboardInput<MoveCommand>(2, KEYPRESSED,SDL_SCANCODE_DOWN, pCharacter, glm::vec2{ 0, -1 });
+		gamePlayInputMap->AddKeyboardInput<MoveCommand>(3, KEYPRESSED,SDL_SCANCODE_UP, pCharacter, glm::vec2{ 0, 1 });
+		gamePlayInputMap->AddKeyboardInput<StunCommand>(4, SDL_KEYUP, SDL_SCANCODE_Z, pCharacter);
+		gamePlayInputMap->AddKeyboardInput<StunCommand>(5, SDL_KEYUP, SDL_SCANCODE_X, pCharacter);
+		gamePlayInputMap->AddKeyboardInput<LoadNextLevelCommand>(6, SDL_KEYUP, SDL_SCANCODE_F1, pCharacter, Scenes::level03);
+		gamePlayInputMap->AddKeyboardInput<MuteCommand>(7, SDL_KEYUP, SDL_SCANCODE_F2, nullptr);
 
 		m_KeyboardInUse = true;
 	}
@@ -184,14 +190,14 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		using controller_button = real::XInputController::ControllerButton;
 		using input_type = real::XInputController::InputType;
 
-		pInputMap->AddControllerCommands<MoveCommand>(controller_button::DPadLeft, input_type::pressed, controllerIdx, pCharacter, glm::vec2{ -1, 0 });
-		pInputMap->AddControllerCommands<MoveCommand>(controller_button::DPadRight, input_type::pressed, controllerIdx, pCharacter, glm::vec2{ 1, 0 });
-		pInputMap->AddControllerCommands<MoveCommand>(controller_button::DPadDown, input_type::pressed, controllerIdx, pCharacter, glm::vec2{ 0, -1 });
-		pInputMap->AddControllerCommands<MoveCommand>(controller_button::DPadUp, input_type::pressed, controllerIdx, pCharacter, glm::vec2{ 0, 1 });
-		pInputMap->AddControllerCommands<StunCommand>(controller_button::ButtonDown, input_type::down, controllerIdx, pCharacter);
-		pInputMap->AddControllerCommands<StunCommand>(controller_button::ButtonRight, input_type::down, controllerIdx, pCharacter);
-		pInputMap->AddControllerCommands<LoadNextLevelCommand>(controller_button::Back, input_type::down, controllerIdx, pCharacter, Scenes::level03);
-		pInputMap->AddControllerCommands<MuteCommand>(controller_button::ButtonLeft, input_type::down, controllerIdx, nullptr);
+		gamePlayInputMap->AddControllerInput<MoveCommand>(0, static_cast<uint8_t>(controllerIdx), controller_button::DPadLeft, input_type::pressed, pCharacter, glm::vec2{ -1, 0 });
+		gamePlayInputMap->AddControllerInput<MoveCommand>(1, static_cast<uint8_t>(controllerIdx),controller_button::DPadRight, input_type::pressed, pCharacter, glm::vec2{ 1, 0 });
+		gamePlayInputMap->AddControllerInput<MoveCommand>(2, static_cast<uint8_t>(controllerIdx),controller_button::DPadDown, input_type::pressed, pCharacter, glm::vec2{ 0, -1 });
+		gamePlayInputMap->AddControllerInput<MoveCommand>(3, static_cast<uint8_t>(controllerIdx),controller_button::DPadUp, input_type::pressed, pCharacter, glm::vec2{ 0, 1 });
+		gamePlayInputMap->AddControllerInput<StunCommand>(4, static_cast<uint8_t>(controllerIdx),controller_button::ButtonDown, input_type::down, pCharacter);
+		gamePlayInputMap->AddControllerInput<StunCommand>(5, static_cast<uint8_t>(controllerIdx),controller_button::ButtonRight, input_type::down, pCharacter);
+		gamePlayInputMap->AddControllerInput<LoadNextLevelCommand>(6, static_cast<uint8_t>(controllerIdx), controller_button::Back, input_type::down, pCharacter, Scenes::level03);
+		gamePlayInputMap->AddControllerInput<MuteCommand>(7, static_cast<uint8_t>(controllerIdx), controller_button::ButtonLeft, input_type::down, nullptr);
 	}
 
 	m_PlayerPtrs.push_back(std::shared_ptr<real::GameObject>(pCharacter));
@@ -219,9 +225,9 @@ void PlayerManager::SubmitName(std::string name)
 
 void PlayerManager::InitHud()
 {
-	const auto pFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
-	const auto pMiddleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
-	const auto pTitleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 32);
+	const auto pFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
+	const auto pMiddleFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
+	const auto pTitleFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 32);
 
 	using alignment = real::TextComponent::HorizontalAlignment;
 

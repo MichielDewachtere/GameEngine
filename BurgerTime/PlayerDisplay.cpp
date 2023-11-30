@@ -1,6 +1,6 @@
 ﻿#include "PlayerDisplay.h"
 
-#include <ResourceManager.h>
+#include <SDLResourceManager.h>
 #include <TextComponent.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
@@ -20,8 +20,8 @@ PlayerDisplay::~PlayerDisplay()
 
 void PlayerDisplay::HandleEvent(int player)
 {
-	const auto pMiddleFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
-	const auto pFont = real::ResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
+	const auto pMiddleFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
+	const auto pFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
 
 	using alignment = real::TextComponent::HorizontalAlignment;
 
