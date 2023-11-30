@@ -63,7 +63,26 @@ bool real::Input::ProcessInput()
 					ExecuteCommand(input->command.get(), nullptr, static_cast<int>(input->scancode));
 				}
 			}
-			else if (input->event == KEYPRESSED)
+			//else if (input->event == KEYPRESSED)
+			//{
+			//	const uint8_t* pKeyboardState = SDL_GetKeyboardState(nullptr);
+			//	if (pKeyboardState[input->scancode])
+			//	{
+			//		ExecuteCommand(input->command.get(), nullptr, static_cast<int>(input->scancode));
+			//	}
+			//}
+		}
+#ifdef USE_IMGUI
+		//process event for ImGui
+		ImGui_ImplSDL2_ProcessEvent(&e);
+#endif // USE_IMGUI
+	}
+
+	if (m_UseKeyboard)
+	{
+		for (const auto& input : m_pActiveInputMap->GetComputerInputs())
+		{
+			if (input->event == KEYPRESSED)
 			{
 				const uint8_t* pKeyboardState = SDL_GetKeyboardState(nullptr);
 				if (pKeyboardState[input->scancode])
@@ -72,10 +91,6 @@ bool real::Input::ProcessInput()
 				}
 			}
 		}
-#ifdef USE_IMGUI
-		//process event for ImGui
-		ImGui_ImplSDL2_ProcessEvent(&e);
-#endif // USE_IMGUI
 	}
 
 	// Controller Logic
