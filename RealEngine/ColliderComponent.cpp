@@ -9,10 +9,8 @@
 real::ColliderComponent::ColliderComponent(GameObject* pOwner, const glm::vec2& size)
 	: Component(pOwner)
 {
-	if (GetOwner() != nullptr)
-		m_Pos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
-	else
-		m_Pos = { 0,0 };
+	if (pOwner != nullptr)
+		GetOwner()->GetComponent<TransformComponent>()->changedWorldPosition.AddObserver(this);
 
 	SetSize(size);
 }
@@ -22,9 +20,28 @@ real::ColliderComponent::ColliderComponent(GameObject* pOwner, float width, floa
 {
 }
 
+real::ColliderComponent::~ColliderComponent()
+{
+	//if (GetOwner() != nullptr)+
+	//	GetOwner()->GetComponent<TransformComponent>()->changedWorldPosition.RemoveObserver(this);
+}
+
+void real::ColliderComponent::Start()
+{
+	if (GetOwner() != nullptr)
+		m_Pos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
+	else
+		m_Pos = { 0,0 };
+}
+
 void real::ColliderComponent::Update()
 {
-	m_Pos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
+	if (m_IsDirty)
+	{
+		m_Pos += m_Offset;
+		//m_Offset = { 0,0 };
+		m_IsDirty = false;
+	}
 }
 
 void real::ColliderComponent::DebugRender() const
@@ -32,18 +49,24 @@ void real::ColliderComponent::DebugRender() const
 	if (m_DrawDebug == false)
 		return;
 
-	// TODO: use render rectangle
-	//const auto renderer = SDLRenderer::GetInstance().RenderRectangle();
-	const auto renderer = SDLRenderer::GetInstance().GetSDLRenderer();
-
 	SDL_Rect rect;
-	rect.x = static_cast<int>(m_Pos.x + m_Offset.x);
-	rect.y = static_cast<int>(m_Pos.y + m_Offset.y);
+	rect.x = static_cast<int>(m_Pos.x);
+	rect.y = static_cast<int>(m_Pos.y);
 	rect.w = static_cast<int>(m_Size.x);
 	rect.h = static_cast<int>(m_Size.y);
 
-	SDL_SetRenderDrawColor(renderer, static_cast<Uint8>(m_Color.r), static_cast<Uint8>(m_Color.g), static_cast<Uint8>(m_Color.b), static_cast<Uint8>(m_Color.a));
-	SDL_RenderDrawRect(renderer, &rect);
+	SDL_Color color;
+	color.r = static_cast<Uint8>(m_Color.r);
+	color.g = static_cast<Uint8>(m_Color.g);
+	color.b = static_cast<Uint8>(m_Color.b);
+	color.a = static_cast<Uint8>(m_Color.a);
+	SDLRenderer::GetInstance().RenderRectangle(rect, false, color);
+}
+
+void real::ColliderComponent::HandleEvent(glm::ivec2 newPos)
+{
+	m_Pos = newPos;
+	m_Pos += m_Offset;
 }
 
 void real::ColliderComponent::SetSize(const glm::vec2& size)
@@ -68,19 +91,17 @@ bool real::ColliderComponent::IsOverlapping(const ColliderComponent& other) cons
 	const auto otherSize = other.GetSize();
 	const auto otherPos = other.GetPosition();
 
-	const auto pos = m_Pos + m_Offset;
-
-	if (pos.x > otherPos.x + otherSize.x)
+	if (m_Pos.x > otherPos.x + otherSize.x)
 		return false;
 
-	if (pos.x + m_Size.x < otherPos.x)
+	if (m_Pos.x + m_Size.x < otherPos.x)
 		return false;
 
 	// Y(0,0) IS ON THE TOP RIGHT OF THE SCREEN
-	if (pos.y > otherPos.y + otherSize.y)
+	if (m_Pos.y > otherPos.y + otherSize.y)
 		return false;
 
-	if (pos.y + m_Size.y < otherPos.y)
+	if (m_Pos.y + m_Size.y < otherPos.y)
 		return false;
 
 	return true;
@@ -91,7 +112,7 @@ bool real::ColliderComponent::IsEntireColliderOverlapping(const ColliderComponen
 	const auto otherSize = other.GetSize();
 	const auto otherPos = other.GetPosition();
 
-	auto pos = m_Pos + m_Offset;
+	auto pos = m_Pos;
 	pos.x -= offset.x / 2;
 	pos.y -= offset.y / 2;
 
