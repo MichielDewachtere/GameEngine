@@ -94,6 +94,10 @@ real::Scene& real::SceneManager::SetSceneActive(const std::string& name, float t
 			m_pActiveScene = pScene;
 
 			pScene->Start();
+
+			if (m_pActiveScene->GetDefaultInputMap() != "empty")
+				Input::GetInstance().SetInputMapActive(m_pActiveScene->GetDefaultInputMap());
+
 			Input::GetInstance().ReloadCommands();
 
 			onSceneLoaded.Notify(*m_pActiveScene);
