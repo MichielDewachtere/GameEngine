@@ -60,7 +60,7 @@ namespace real
 		InputMap* m_pActiveInputMap{};
 
 		bool m_EnableCoOp{ false };
-		bool m_UseKeyboard{ false };
+		bool m_UseKeyboard{ true };
 
 		bool m_IsReading{};
 		bool ReadKeyboardInput(SDL_Event e);
