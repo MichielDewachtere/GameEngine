@@ -8,7 +8,7 @@ namespace real
 	class NullResourceManager final : public ResourceManager
 	{
 	public:
-		explicit NullResourceManager() = default;
+		explicit NullResourceManager(std::string dataPath = "") : ResourceManager(std::move(dataPath)) {}
 		virtual ~NullResourceManager() override = default;
 
 		NullResourceManager(const NullResourceManager& other) = delete;

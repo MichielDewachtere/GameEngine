@@ -8,7 +8,7 @@ namespace real
 	class LoggingResourceManager final : public ResourceManager
 	{
 	public:
-		explicit LoggingResourceManager(ResourceManager* resourceManager) : m_RealResourceManager(resourceManager) {}
+		explicit LoggingResourceManager(ResourceManager* resourceManager) : ResourceManager(""), m_RealResourceManager(resourceManager) {}
 		virtual ~LoggingResourceManager() override = default;
 
 		LoggingResourceManager(const LoggingResourceManager& other) = delete;

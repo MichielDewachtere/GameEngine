@@ -39,9 +39,6 @@ namespace real
 
 		virtual std::shared_ptr<Texture2D> LoadTexture(const std::string& file) const override;
 		virtual std::shared_ptr<Font> LoadFont(const std::string& file, unsigned size) const override;
-
-	private:
-		std::string m_DataPath;
 	};
 }
 
