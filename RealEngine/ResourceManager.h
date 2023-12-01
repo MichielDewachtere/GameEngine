@@ -1,25 +1,21 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 
-#include <memory>
 #include <string>
-
-#include "Singleton.h"
+#include <memory>
 
 namespace real
 {
 	class Texture2D;
 	class Font;
-	class ResourceManager final : public Singleton<ResourceManager>
+
+	class ResourceManager
 	{
 	public:
-		void Init(const std::string& data);
-		std::shared_ptr<Texture2D> LoadTexture(const std::string& file) const;
-		std::shared_ptr<Font> LoadFont(const std::string& file, unsigned int size) const;
-	private:
-		friend class Singleton<ResourceManager>;
-		ResourceManager() = default;
-		std::string m_dataPath;
+		virtual ~ResourceManager() = default;
+
+		virtual std::shared_ptr<Texture2D> LoadTexture(const std::string& file) const = 0;
+		virtual std::shared_ptr<Font> LoadFont(const std::string& file, unsigned int size) const = 0;
 	};
 }
 
