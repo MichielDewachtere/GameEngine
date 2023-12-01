@@ -1,7 +1,6 @@
 ﻿#include "GameOverMenu.h"
 
 #include <Input.h>
-#include <SDLResourceManager.h>
 #include <TextComponent.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
@@ -28,9 +27,9 @@ void GameOverMenu::Load()
 	HighScoreParser::UpdateHighScores(playerManager.GetPlayerName(), playerManager.GetScore());
 	const auto highScores = HighScoreParser::GetTopFive();
 
-	const auto pFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
-	const auto pMiddleFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
-	const auto pTitleFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 32);
+	const auto pFont = real::Locator::GetResourceSystem().LoadFont("fonts/8-bit-hud.ttf", 10);
+	const auto pMiddleFont = real::Locator::GetResourceSystem().LoadFont("fonts/8-bit-hud.ttf", 16);
+	const auto pTitleFont = real::Locator::GetResourceSystem().LoadFont("fonts/8-bit-hud.ttf", 32);
 
 	const auto pTitleText = CreateGameObject();
 	pTitleText->GetComponent<real::TransformComponent>()->SetLocalPosition(m_Settings.width / 2.f, 50);

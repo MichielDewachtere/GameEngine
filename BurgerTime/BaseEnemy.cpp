@@ -140,7 +140,7 @@ void BaseEnemy::Update()
 			if (GetOwner()->GetComponent<real::SpriteComponent>()->IsAnimationPlaying() == false)
 			{
 				GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(2, 4);
-				GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(SDL_FLIP_HORIZONTAL);
+				GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(real::RenderFlip::horizontal);
 			}
 			m_Direction = { 1,0 };
 		}
@@ -181,7 +181,7 @@ void BaseEnemy::Update()
 			&& CanMoveTo(enemyPos, pCollider->GetSize(), *currentFloorCollider, Direction::left) == false
 			&& WillHitStair() == false)
 		{
-			GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(SDL_FLIP_HORIZONTAL);
+			GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(real::RenderFlip::horizontal);
 			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(2, 4);
 
 			m_CurrentStair = 0;
@@ -201,7 +201,7 @@ void BaseEnemy::Update()
 		{
 			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(2, 4);
 			if (static_cast<int>(m_Direction.x) == 1)
-				GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(SDL_FLIP_HORIZONTAL);
+				GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(real::RenderFlip::horizontal);
 		}
 
 		MoveEnemy();
@@ -258,7 +258,7 @@ void BaseEnemy::Update()
 			GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(2, 4);
 
 			if (static_cast<int>(m_Direction.x) == 1)
-				GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(SDL_FLIP_HORIZONTAL);
+				GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(real::RenderFlip::horizontal);
 
 			m_CurrentState = EnemyState::moveX;
 			MoveEnemy();

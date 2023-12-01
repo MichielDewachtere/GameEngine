@@ -131,7 +131,7 @@ void PlayerCharacter::SetDirection(glm::vec2 direction)
 	if (m_CurrentDirection == glm::vec2{1, 0})
 	{
 		GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(3, 6);
-		GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(SDL_FLIP_HORIZONTAL);
+		GetOwner()->GetComponent<real::SpriteComponent>()->FlipTexture(real::RenderFlip::horizontal);
 	}
 	else if (m_CurrentDirection == glm::vec2{-1, 0})
 	{

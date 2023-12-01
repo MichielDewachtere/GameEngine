@@ -1,14 +1,13 @@
 //#include "stdafx.h"
-
 #include "LevelParser.h"
 
 #include <fstream>
 #include <iostream>
 
 #include <TextureComponent.h>
-#include <SDLResourceManager.h>
 #include <TransformComponent.h>
 #include <ColliderComponent.h>
+#include <Locator.h>
 
 #include "GameInfo.h"
 #include "Floor.h"
@@ -41,7 +40,7 @@ real::GameObject* LevelParser::ParseLevel(real::Scene& pScene, const std::string
     document.Parse(fileContents.c_str());
 
     const rapidjson::Value& value = document["levelTexturePath"];
-    const auto pBackGroundTexture = real::SDLResourceManager::GetInstance().LoadTexture(value.GetString());
+    const auto pBackGroundTexture = real::Locator::GetResourceSystem().LoadTexture(value.GetString());
 
     const auto pLevel = pScene.CreateGameObject();
     //pLevel->GetComponent<real::TransformComponent>()->Translate(48, 32);

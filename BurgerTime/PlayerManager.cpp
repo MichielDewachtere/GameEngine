@@ -5,7 +5,6 @@
 #include <InputMap.h>
 #include <Locator.h>
 #include <Logger.h>
-#include <SDLResourceManager.h>
 #include <SpriteComponent.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
@@ -104,7 +103,7 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 	auto& input = real::Input::GetInstance();
 	real::InputMap* gamePlayInputMap;
 
-	std::shared_ptr<real::SDLTexture2D> pCharacterSpriteSheetTexture;
+	std::shared_ptr<real::Texture2D> pCharacterSpriteSheetTexture;
 	real::SpriteSheet spriteSheet;
 	spriteSheet.columns = 9;
 	spriteSheet.rows = 2;
@@ -112,7 +111,7 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 
 	if (m_PlayerPtrs.empty())
 	{
-		pCharacterSpriteSheetTexture = real::SDLResourceManager::GetInstance().LoadTexture("characters/PeterPepperSpriteSheet.png");
+		pCharacterSpriteSheetTexture = real::Locator::GetResourceSystem().LoadTexture("characters/PeterPepperSpriteSheet.png");
 		spriteSheet.pTexture = pCharacterSpriteSheetTexture;
 
 		gamePlayInputMap = input.AddInputMap(InputMaps::gameplay);
@@ -128,7 +127,7 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		}
 
 		input.EnableCoOp(true);
-		pCharacterSpriteSheetTexture = real::SDLResourceManager::GetInstance().LoadTexture("characters/SallySaltSpriteSheet.png");
+		pCharacterSpriteSheetTexture = real::Locator::GetResourceSystem().LoadTexture("characters/SallySaltSpriteSheet.png");
 		spriteSheet.pTexture = pCharacterSpriteSheetTexture;
 
 		gamePlayInputMap = input.GetInputMap(InputMaps::gameplay);
@@ -141,7 +140,7 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		return;
 	}
 
-	const auto pPepperTexture = real::SDLResourceManager::GetInstance().LoadTexture("characters/pepper.png");
+	const auto pPepperTexture = real::Locator::GetResourceSystem().LoadTexture("characters/pepper.png");
 
 	const auto pCharacter = new real::GameObject(nullptr, Tags::player);
 	//pCharacter->SetTag(Tags::player);
@@ -225,9 +224,9 @@ void PlayerManager::SubmitName(std::string name)
 
 void PlayerManager::InitHud()
 {
-	const auto pFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 10);
-	const auto pMiddleFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 16);
-	const auto pTitleFont = real::SDLResourceManager::GetInstance().LoadFont("fonts/8-bit-hud.ttf", 32);
+	const auto pFont = real::Locator::GetResourceSystem().LoadFont("fonts/8-bit-hud.ttf", 10);
+	const auto pMiddleFont = real::Locator::GetResourceSystem().LoadFont("fonts/8-bit-hud.ttf", 16);
+	const auto pTitleFont = real::Locator::GetResourceSystem().LoadFont("fonts/8-bit-hud.ttf", 32);
 
 	using alignment = real::TextComponent::HorizontalAlignment;
 

@@ -3,8 +3,8 @@
 #include <Scene.h>
 #include <TransformComponent.h>
 #include <SpriteComponent.h>
-#include <SDLResourceManager.h>
 #include <ColliderComponent.h>
+#include <Locator.h>
 
 #include "GameInfo.h"
 #include "ItemSpawner.h"
@@ -36,7 +36,7 @@ real::GameObject* ItemSpawnerPrefab::CreateItemSpawnerPrefab(real::GameObject* p
 
 void ItemSpawnerPrefab::InitComponents(real::GameObject* pOwner, const glm::vec2 pos)
 {
-	const auto pTexture = real::SDLResourceManager::GetInstance().LoadTexture("Misc/ItemsSpriteSheet.png");
+	const auto pTexture = real::Locator::GetResourceSystem().LoadTexture("Misc/ItemsSpriteSheet.png");
 
 	real::SpriteSheet spriteSheet;
 	spriteSheet.pTexture = pTexture;

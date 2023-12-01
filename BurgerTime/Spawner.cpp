@@ -3,7 +3,7 @@
 
 #include <GameTime.h>
 #include <Logger.h>
-#include <SDLResourceManager.h>
+#include <Locator.h>
 #include <TextureComponent.h>
 #include <TransformComponent.h>
 #include <ColliderComponent.h>
@@ -72,7 +72,7 @@ void Spawner::ReSpawnEnemy(real::GameObject* pEnemy) const
 void Spawner::SpawnEnemyType(const std::string& type, int points)
 {
 	const auto enemy = GetOwner()->CreateGameObject();
-	const auto pTexture = real::SDLResourceManager::GetInstance().LoadTexture("enemies/" + type + "spritesheet.png");
+	const auto pTexture = real::Locator::GetResourceSystem().LoadTexture("enemies/" + type + "spritesheet.png");
 
 	real::SpriteSheet spriteSheet;
 	spriteSheet.pTexture = pTexture;
@@ -86,10 +86,10 @@ void Spawner::SpawnEnemyType(const std::string& type, int points)
 	const auto spriteSize = enemy->GetComponent<real::SpriteComponent>()->GetSpriteSize();
 	enemy->AddComponent<real::ColliderComponent>(spriteSize)->EnableDebugRendering(false, Colors::white);
 	enemy->AddComponent<BaseEnemy>(points);
-	enemy->GetComponent<real::TransformComponent>()->Translate(0, -spriteSize.y + 1);
+	enemy->GetComponent<real::TransformComponent>()->Translate(0, static_cast<float>(-spriteSize.y + 1));
 
 	const auto core = enemy->CreateGameObject();
-	core->GetComponent<real::TransformComponent>()->SetLocalPosition(spriteSize.x / 4, spriteSize.y / 4);
+	core->GetComponent<real::TransformComponent>()->SetLocalPosition(spriteSize.x / 4.f, spriteSize.y / 4.f);
 	core->AddComponent<real::ColliderComponent>(glm::vec2{spriteSize.x / 2, spriteSize.y / 2})->EnableDebugRendering(false, Colors::purple);
 
 	enemy->Start();

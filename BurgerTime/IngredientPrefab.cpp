@@ -4,13 +4,12 @@
 #include <Scene.h>
 #include <ColliderComponent.h>
 #include <TransformComponent.h>
-#include <SDLResourceManager.h>
-#include <SDLTexture2D.h>
 #include <TextureComponent.h>
 
 #include "GameInfo.h"
 #include "Ingredient.h"
 #include "IngredientPart.h"
+#include "Locator.h"
 
 
 real::GameObject* IngredientPrefab::CreateIngredient(real::Scene* pScene, const std::string& texturePath, const glm::vec2 pos,
@@ -41,10 +40,10 @@ real::GameObject* IngredientPrefab::CreateIngredient(real::GameObject* pGameObje
 
 void IngredientPrefab::InitComponents(real::GameObject* pOwner, const std::string& texturePath, const glm::vec2 pos, bool drawDebug)
 {
-	const auto leftTexture = real::SDLResourceManager::GetInstance().LoadTexture(texturePath + "left.png");
-	const auto leftMiddleTexture = real::SDLResourceManager::GetInstance().LoadTexture(texturePath + "middle01.png");
-	const auto leftRightTexture = real::SDLResourceManager::GetInstance().LoadTexture(texturePath + "middle02.png");
-	const auto rightTexture = real::SDLResourceManager::GetInstance().LoadTexture(texturePath + "right.png");
+	const auto leftTexture = real::Locator::GetResourceSystem().LoadTexture(texturePath + "left.png");
+	const auto leftMiddleTexture = real::Locator::GetResourceSystem().LoadTexture(texturePath + "middle01.png");
+	const auto leftRightTexture = real::Locator::GetResourceSystem().LoadTexture(texturePath + "middle02.png");
+	const auto rightTexture = real::Locator::GetResourceSystem().LoadTexture(texturePath + "right.png");
 
 	pOwner->SetTag(Tags::ingredient);
 	pOwner->GetComponent<real::TransformComponent>()->SetLocalPosition(pos.x, pos.y - static_cast<float>(leftTexture->GetSize().y));
