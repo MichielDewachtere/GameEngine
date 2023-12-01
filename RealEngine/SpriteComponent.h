@@ -6,11 +6,12 @@
 //	Github: https://github.com/MendelDebrabandere/GameEngineProg4/blob/main/Minigin/SpriteComponent.h
 //==================================
 
-#include <SDL_rect.h>
 #include <glm/vec2.hpp>
-#include <SDL_render.h>
+#include <glm/vec4.hpp>
 
 #include "Component.h"
+#include "Renderer.h"
+#include "Texture2D.h"
 
 namespace real
 {
@@ -43,9 +44,9 @@ namespace real
 		bool IsAnimationPlaying() const { return m_IsAnimationPlaying; }
 		void Pause(bool value);
 		void Stop(bool value);
-		void FlipTexture(SDL_RendererFlip flip);
+		void FlipTexture(RenderFlip flip);
 
-		glm::vec2 GetSpriteSize() const; 
+		glm::ivec2 GetSpriteSize() const; 
 
 	private:
 		SpriteSheet m_SpriteSheet;
@@ -66,10 +67,10 @@ namespace real
 		bool m_Stop{};
 
 		glm::vec2 m_RenderPos{};
-		SDL_Rect m_Rect{};
-		SDL_RendererFlip m_Flip{ SDL_FLIP_NONE };
+		glm::ivec4 m_Rect{};
+		RenderFlip m_Flip{ RenderFlip::none };
 
-		//std::shared_ptr<Texture2D> m_Texture{};
+		//std::shared_ptr<SDLTexture2D> m_Texture{};
 	};
 }
 #endif // SPRITECOMPONENT_H

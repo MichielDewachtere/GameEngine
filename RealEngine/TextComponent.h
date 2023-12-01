@@ -11,7 +11,7 @@
 namespace real
 {
 	class Font;
-	class Texture2D;
+
 	class TextComponent final : public Component
 	{
 	public:
@@ -42,9 +42,8 @@ namespace real
 
 		void SetFont(const std::shared_ptr<Font>& pFont);
 
-		void SetColor(const SDL_Color& color);
-		void SetColor(const glm::vec4& color);
-		void SetColor(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a = 0);
+		void SetColor(const glm::u8vec4& color);
+		void SetColor(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a = 0);
 
 		void ChangeHorizontalAlignment(HorizontalAlignment newAlignment);
 		void ChangeVerticalAlignment(VerticalAlignment newAlignment);
@@ -55,7 +54,7 @@ namespace real
 		bool m_NeedsUpdate{ true };
 		std::string m_pText{"empty"};
 		std::shared_ptr<Font> m_pFont{};
-		SDL_Color m_Color{ 255,255,255,255 };
+		glm::u8vec4 m_Color{ 255,255,255,255 };
 
 		glm::vec2 m_OriginalPos{};
 

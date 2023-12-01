@@ -2,6 +2,7 @@
 #define RECTANGLE_H
 
 #include <SDL_rect.h>
+#include <glm/vec4.hpp>
 
 #include "Component.h"
 
@@ -23,18 +24,18 @@ namespace real
 		bool CanRender() const override { return true; }
 		void Render() const override;
 
-		void SetRect(SDL_Rect rect);
+		void SetRect(glm::ivec4 rect);
 		void SetRect(int x, int y, int width, int height);
 
-		SDL_Rect GetRectangle() const { return m_Rectangle; }
+		glm::ivec4 GetRectangle() const { return m_Rectangle; }
 
 		void SetIsFilled(bool isFilled) { m_IsFilled = isFilled; }
-		void SetColor(SDL_Color color) { m_Color = color; }
+		void SetColor(glm::u8vec4 color) { m_Color = color; }
 
 	private:
-		SDL_Rect m_Rectangle{};
+		glm::ivec4 m_Rectangle{};
 		bool m_IsFilled{ true };
-		SDL_Color m_Color{ 255,255,255,255 };
+		glm::u8vec4 m_Color{ 255,255,255,255 };
 	};
 }
 

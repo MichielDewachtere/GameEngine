@@ -6,6 +6,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 
+#include "InputMap.h"
 #include "Prefab.h"
 
 namespace real
@@ -29,7 +30,8 @@ namespace real
 		ButtonPrefab& SetColor(const glm::u8vec4& color);
 
 		// TODO: add functionality
-
+		template <class T, typename... Args>
+		ButtonPrefab& OnButtonPress(uint8_t commandId, real::InputMap& inputMap, Args... commandArgs);
 	private:
 		void InitComponents(glm::ivec2 pos, glm::ivec2 size, std::shared_ptr<Texture2D> texture, std::shared_ptr<Font> font) const;
 	};

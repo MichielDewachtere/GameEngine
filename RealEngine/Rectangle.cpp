@@ -1,6 +1,6 @@
 ﻿#include "Rectangle.h"
 
-#include "SDLRenderer.h"
+#include "Locator.h"
 
 real::Rectangle::Rectangle(GameObject* pOwner)
 	: Component(pOwner)
@@ -9,15 +9,15 @@ real::Rectangle::Rectangle(GameObject* pOwner)
 
 void real::Rectangle::Render() const
 {
-	SDLRenderer::GetInstance().RenderRectangle(m_Rectangle, m_IsFilled, m_Color);
+	Locator::GetRenderSystem().RenderRectangle(m_Rectangle, m_IsFilled, m_Color);
 }
 
-void real::Rectangle::SetRect(SDL_Rect rect)
+void real::Rectangle::SetRect(glm::ivec4 rect)
 {
 	m_Rectangle = rect;
 }
 
 void real::Rectangle::SetRect(int x, int y, int width, int height)
 {
-	SetRect(SDL_Rect{ x, y, width, height });
+	SetRect(glm::ivec4{ x, y, width, height });
 }

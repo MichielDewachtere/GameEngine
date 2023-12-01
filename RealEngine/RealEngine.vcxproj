@@ -116,7 +116,8 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\*.dll $(OutputPath) /Y</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -142,11 +143,8 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)\3rdParty\steamworks\redistributable_bin\win64\steam_api64.dll $(OutputPath) /Y
-xcopy $(SolutionDir)\3rdParty\SDL2\lib\x64\SDL2.dll $(OutputPath) /Y
-xcopy $(SolutionDir)\3rdParty\SDL2_image\lib\x64\SDL2_image.dll $(OutputPath) /Y
-xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -176,7 +174,8 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\*.dll $(OutputPath) /Y</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -206,7 +205,8 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll $(OutputPath) /Y</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -220,21 +220,28 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="LoggingResourceManager.h" />
+    <ClInclude Include="NullResourceManager.h" />
+    <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="SDLFont.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputMap.h" />
     <ClInclude Include="Locator.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="LoggingAudio.h" />
+    <ClInclude Include="LoggingRenderer.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="InputTypes.h" />
     <ClInclude Include="NullAudio.h" />
+    <ClInclude Include="NullRenderer.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="Prefab.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="SDLRenderer.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="SDLResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SDLAudio.h" />
@@ -245,6 +252,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClInclude Include="SteamAchievements.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TextComponent.h" />
+    <ClInclude Include="SDLTexture2D.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="GameTime.h" />
@@ -259,19 +267,26 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="LoggingResourceManager.cpp" />
+    <ClCompile Include="NullResourceManager.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="SDLFont.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputMap.cpp" />
     <ClCompile Include="Locator.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="LoggingAudio.cpp" />
+    <ClCompile Include="LoggingRenderer.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="NullAudio.cpp" />
+    <ClCompile Include="NullRenderer.cpp" />
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="Prefab.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SDLRenderer.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="SDLResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SDLAudio.cpp" />
@@ -283,6 +298,7 @@ xcopy $(SolutionDir)\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll $(OutputPath) /Y
     <ClCompile Include="SteamAchievements.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextComponent.cpp" />
+    <ClCompile Include="SDLTexture2D.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="GameTime.cpp" />

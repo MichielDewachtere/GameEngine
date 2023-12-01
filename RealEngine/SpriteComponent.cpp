@@ -3,10 +3,8 @@
 #include <glm/vec2.hpp>
 
 #include "GameTime.h"
-#include "SDLRenderer.h"
 #include "GameObject.h"
-#include "ResourceManager.h"
-#include "Texture2D.h"
+#include "Locator.h"
 #include "TransformComponent.h"
 
 
@@ -14,8 +12,8 @@ real::SpriteComponent::SpriteComponent(GameObject* pOwner, SpriteSheet spriteShe
 	: Component(pOwner)
 	, m_SpriteSheet(std::move(spriteSheet))
 {
-	m_Rect.w = m_SpriteSheet.pTexture->GetSize().x / m_SpriteSheet.columns;
-	m_Rect.h = m_SpriteSheet.pTexture->GetSize().y / m_SpriteSheet.rows;
+	m_Rect.z = m_SpriteSheet.pTexture->GetSize().x / m_SpriteSheet.columns;
+	m_Rect.w = m_SpriteSheet.pTexture->GetSize().y / m_SpriteSheet.rows;
 }
 
 void real::SpriteComponent::Update()
@@ -49,8 +47,8 @@ void real::SpriteComponent::Update()
 			}
 
 			//Move rect
-			m_Rect.x = (m_CurrIdx % m_SpriteSheet.columns) * m_Rect.w;
-			m_Rect.y = (m_CurrIdx / m_SpriteSheet.columns) * m_Rect.h;
+			m_Rect.x = (m_CurrIdx % m_SpriteSheet.columns) * m_Rect.z;
+			m_Rect.y = (m_CurrIdx / m_SpriteSheet.columns) * m_Rect.w;
 		}
 		else
 		{
@@ -66,8 +64,8 @@ void real::SpriteComponent::Update()
 				m_CurrIdx = 0;
 			}
 
-			m_Rect.x = (m_SelectedIdcs[m_CurrIdx] % m_SpriteSheet.columns) * m_Rect.w;
-			m_Rect.y = (m_SelectedIdcs[m_CurrIdx] / m_SpriteSheet.columns) * m_Rect.h;
+			m_Rect.x = (m_SelectedIdcs[m_CurrIdx] % m_SpriteSheet.columns) * m_Rect.z;
+			m_Rect.y = (m_SelectedIdcs[m_CurrIdx] / m_SpriteSheet.columns) * m_Rect.w;
 		}
 
 		m_AccuTime = 0.f;
@@ -76,23 +74,23 @@ void real::SpriteComponent::Update()
 
 void real::SpriteComponent::Render() const
 {
-	SDL_Rect dst;
-	dst.x = static_cast<int>(m_RenderPos.x);
-	dst.y = static_cast<int>(m_RenderPos.y);
-	dst.w = static_cast<int>(m_Rect.w);
-	dst.h = static_cast<int>(m_Rect.h);
+	glm::ivec4 dstRect;
+	dstRect.x = static_cast<int>(m_RenderPos.x);
+	dstRect.y = static_cast<int>(m_RenderPos.y);
+	dstRect.z = m_Rect.z;
+	dstRect.w = m_Rect.w;
 
-	const SDL_Point rotationCenter{ dst.w / 2, dst.h / 2 };
+	const glm::ivec2 rotationCenter{ dstRect.z / 2, dstRect.w / 2 };
 
-	SDL_RenderCopyEx(SDLRenderer::GetInstance().GetSDLRenderer(), m_SpriteSheet.pTexture->GetSDLTexture(), &m_Rect, &dst, 0, &rotationCenter, m_Flip);
+	Locator::GetRenderSystem().RenderSprite(*m_SpriteSheet.pTexture, m_Rect, dstRect, 0, rotationCenter, m_Flip);
 }
 
 void real::SpriteComponent::SelectSprite(int idx)
 {
 	m_Pause = true;
 
-	m_Rect.x = (idx % m_SpriteSheet.columns) * m_Rect.w;
-	m_Rect.y = (idx / m_SpriteSheet.columns) * m_Rect.h;
+	m_Rect.x = (idx % m_SpriteSheet.columns) * m_Rect.z;
+	m_Rect.y = (idx / m_SpriteSheet.columns) * m_Rect.w;
 }
 
 void real::SpriteComponent::PlayAnimation(int startIdx, int endIdx, int loops)
@@ -109,7 +107,7 @@ void real::SpriteComponent::PlayAnimation(int startIdx, int endIdx, int loops)
 	m_Stop = false;
 	m_IsAnimationPlaying = true;
 
-	m_Flip = SDL_FLIP_NONE;
+	m_Flip = RenderFlip::none;
 }
 
 void real::SpriteComponent::PlayAnimation(const std::vector<int>& idcs, int loops)
@@ -125,7 +123,7 @@ void real::SpriteComponent::PlayAnimation(const std::vector<int>& idcs, int loop
 	m_Stop = false;
 	m_IsAnimationPlaying = true;
 
-	m_Flip = SDL_FLIP_NONE;
+	m_Flip = RenderFlip::none;
 }
 
 void real::SpriteComponent::UpdateAnimation(int startIdx, int endIdx, int loops)
@@ -152,12 +150,12 @@ void real::SpriteComponent::Stop(bool value)
 		m_IsAnimationPlaying = false;
 }
 
-void real::SpriteComponent::FlipTexture(SDL_RendererFlip flip)
+void real::SpriteComponent::FlipTexture(RenderFlip flip)
 {
 	m_Flip = flip;
 }
 
-glm::vec2 real::SpriteComponent::GetSpriteSize() const
+glm::ivec2 real::SpriteComponent::GetSpriteSize() const
 {
-	return glm::vec2(m_Rect.w, m_Rect.h);
+	return glm::ivec2(m_Rect.z, m_Rect.w);
 }

@@ -1,7 +1,7 @@
 //#include "stdafx.h"
 #include "TextureComponent.h"
 
-#include "SDLRenderer.h"
+#include "Locator.h"
 #include "TransformComponent.h"
 
 void real::TextureComponent::Render() const
@@ -19,8 +19,9 @@ void real::TextureComponent::Render() const
 		if (texture == nullptr)
 			continue;
 
-		const glm::vec2& size = { static_cast<float>(texture->GetSize().x), static_cast<float>(texture->GetSize().y) };
-		SDLRenderer::GetInstance().RenderTexture(*texture, pos.x - static_cast<float>(offset.x), pos.y - static_cast<float>(offset.y), size.x, size.y);
-
+		const auto texturePosX = pos.x - static_cast<float>(offset.x);
+		const auto texturePosY = pos.y - static_cast<float>(offset.y);
+		Locator::GetRenderSystem().RenderTexture(*texture, texturePosX, texturePosY,
+			static_cast<float>(texture->GetSize().x), static_cast<float>(texture->GetSize().y));
 	}
 }

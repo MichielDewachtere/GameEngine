@@ -3,9 +3,11 @@
 
 #include <SDL_ttf.h>
 
-#include "SDLRenderer.h"
 #include "Font.h"
-#include "ResourceManager.h"
+#include "SDLRenderer.h"
+//#include "SDLFont.h"
+#include "SDLResourceManager.h"
+//#include "SDLTexture2D.h"
 #include "Texture2D.h"
 #include "TextureComponent.h"
 #include "TransformComponent.h"
@@ -28,21 +30,23 @@ void real::TextComponent::Update()
 
 	//m_OriginalPos = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
 
-	const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_pText.c_str(), m_Color);
-	if (surf == nullptr)
-	{
-		throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
-	}
-	auto texture = SDL_CreateTextureFromSurface(SDLRenderer::GetInstance().GetSDLRenderer(), surf);
-	if (texture == nullptr)
-	{
-		throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
-	}
-	SDL_FreeSurface(surf);
+	//const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_pText.c_str(), m_Color);
+	//if (surf == nullptr)
+	//{
+	//	throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
+	//}
+	//auto texture = SDL_CreateTextureFromSurface(SDLRenderer::GetInstance().GetSDLRenderer(), surf);
+	//if (texture == nullptr)
+	//{
+	//	throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
+	//}
+	//SDL_FreeSurface(surf);
 
 
-	// TODO: mayba add texture array in texturecomponent?
-	const auto pTexture = std::make_shared<Texture2D>(texture);
+	//// TODO: mayba add texture array in texturecomponent?
+	//const auto pTexture = std::make_shared<SDLTexture2D>(texture);
+
+	const auto pTexture = m_pFont->CreateTexture(m_pText, m_Color);
 
 	glm::ivec2 renderOffset;
 
@@ -68,27 +72,18 @@ void real::TextComponent::SetFont(const std::shared_ptr<Font>& pFont)
 	m_NeedsUpdate = true;
 }
 
-void real::TextComponent::SetColor(const SDL_Color& color)
+void real::TextComponent::SetColor(const glm::u8vec4& color)
 {
 	m_Color = color;
 }
 
-void real::TextComponent::SetColor(const glm::vec4& color)
-{
-	m_Color.r = static_cast<Uint8>(color.r);
-	m_Color.g = static_cast<Uint8>(color.g);
-	m_Color.b = static_cast<Uint8>(color.b);
-	m_Color.a = static_cast<Uint8>(color.a);
-}
-
-void real::TextComponent::SetColor(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a)
+void real::TextComponent::SetColor(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a)
 {
 	m_Color.r = r;
 	m_Color.g = g;
 	m_Color.b = b;
 	m_Color.a = a;
 }
-
 
 void real::TextComponent::ChangeHorizontalAlignment(HorizontalAlignment newAlignment)
 {

@@ -12,7 +12,7 @@ namespace real
 {
 	//class TransformComponent;
 	class Scene;
-	class Texture2D;
+	class SDLTexture2D;
 	class Component;
 
 	using gameobject_id = unsigned short;

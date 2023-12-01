@@ -3,7 +3,8 @@
 
 #include <string>
 #include <functional>
-#include <SDL_pixels.h>
+
+#include <glm/vec4.hpp>
 
 namespace real
 {
@@ -11,7 +12,7 @@ namespace real
 	{
 		std::string title{};
 		int width{}, height{};
-		SDL_Color background{};
+		glm::u8vec4 background{};
 	};
 
 	class Minigin

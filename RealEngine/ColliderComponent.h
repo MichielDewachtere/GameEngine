@@ -40,12 +40,12 @@ namespace real
 		void SetSize(float width, float height) { SetSize({ width, height }); }
 		glm::vec2 GetSize() const { return m_Size; }
 
-		void EnableDebugRendering(bool enable, const glm::vec4& color = { 0,255,0,255 }) { m_DrawDebug = enable; m_Color = color; }
+		void EnableDebugRendering(bool enable, const glm::u8vec4& color = { 0,255,0,255 }) { m_DrawDebug = enable; m_Color = color; }
 		/**
 		 * \brief The Color of the debug box
 		 * \param color values between 0 and 255
 		 */
-		void SetColor(const glm::vec4& color) { m_Color = color; }
+		void SetColor(const glm::u8vec4& color) { m_Color = color; }
 
 		bool IsOverlapping(const ColliderComponent& other) const;
 		bool IsEntireColliderOverlapping(const ColliderComponent& other, const glm::vec2& offset = { 0,0 }) const;
@@ -65,7 +65,7 @@ namespace real
 	private:
 		glm::vec2 m_Pos{}, m_Offset{}, m_Size{};
 		bool m_IsDirty{ false }, m_DrawDebug{ false };
-		glm::vec4 m_Color{ 0,255,0,255 };
+		glm::u8vec4 m_Color{ 0,255,0,255 };
 	};
 }
 #endif // COLLIDERCOMPONENT_H

@@ -20,9 +20,6 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{8738c70d-f565-4ac8-aae3-edf664a145d0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{5c7887ad-060c-4408-8c1a-277e3dd8ae81}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Renderer">
       <UniqueIdentifier>{33dd40d4-e06b-4153-933d-38000850d442}</UniqueIdentifier>
     </Filter>
@@ -46,6 +43,27 @@
     </Filter>
     <Filter Include="Prefab">
       <UniqueIdentifier>{014ada0c-801e-4acc-aac6-9079d8a2f89b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{5c7887ad-060c-4408-8c1a-277e3dd8ae81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{13b924c5-a787-4ad5-95d0-8d818c73cec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio\Base">
+      <UniqueIdentifier>{e6ecbca6-79e4-4e3a-a1b0-3e781e08123f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Base">
+      <UniqueIdentifier>{fee44efa-88b5-4dad-80e4-094e047c302d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Manager">
+      <UniqueIdentifier>{8add7f7e-72ef-4e3c-b143-3e282859d7ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Texture2D">
+      <UniqueIdentifier>{4771de4f-be23-499a-911a-cae0f7ab326f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Font">
+      <UniqueIdentifier>{cf5693cc-8502-4da9-885f-8f9665725836}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -79,20 +97,11 @@
     <ClInclude Include="Scene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Font.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="SDLRenderer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture2D.h">
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Command</Filter>
@@ -119,9 +128,6 @@
     </ClInclude>
     <ClInclude Include="ColliderComponent.h">
       <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio.h">
-      <Filter>Audio</Filter>
     </ClInclude>
     <ClInclude Include="Locator.h">
       <Filter>Service</Filter>
@@ -156,6 +162,42 @@
     <ClInclude Include="InputTypes.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="NullRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggingRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Audio\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Renderer\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Resources\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Resources\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLFont.h">
+      <Filter>Resources\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Resources\Texture2D</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLTexture2D.h">
+      <Filter>Resources\Texture2D</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLResourceManager.h">
+      <Filter>Resources\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="NullResourceManager.h">
+      <Filter>Resources\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggingResourceManager.h">
+      <Filter>Resources\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XInputController.cpp">
@@ -188,16 +230,7 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Texture2D.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="SDLRenderer.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
@@ -222,9 +255,6 @@
     </ClCompile>
     <ClCompile Include="ColliderComponent.cpp">
       <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Audio.cpp">
-      <Filter>Audio</Filter>
     </ClCompile>
     <ClCompile Include="Locator.cpp">
       <Filter>Service</Filter>
@@ -255,6 +285,42 @@
     </ClCompile>
     <ClCompile Include="Prefab.cpp">
       <Filter>Prefab</Filter>
+    </ClCompile>
+    <ClCompile Include="NullRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggingRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Audio\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Renderer\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Resources\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Resources\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLFont.cpp">
+      <Filter>Resources\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Resources\Texture2D</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLTexture2D.cpp">
+      <Filter>Resources\Texture2D</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLResourceManager.cpp">
+      <Filter>Resources\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="NullResourceManager.cpp">
+      <Filter>Resources\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggingResourceManager.cpp">
+      <Filter>Resources\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

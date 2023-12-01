@@ -2,7 +2,7 @@
 #include "Minigin.h"
 
 #include <SDL_image.h>
-	#include <SDL_ttf.h>
+#include <SDL_ttf.h>
 #include <SDL_mixer.h>
 #include <SDL_version.h>
 
@@ -10,10 +10,12 @@
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "SDLRenderer.h"
-#include "ResourceManager.h"
+#include "SDLResourceManager.h"
 #include "GameTime.h"
 #include "Locator.h"
 #include "LoggingAudio.h"
+#include "LoggingRenderer.h"
+#include "LoggingResourceManager.h"
 #include "SDLAudio.h"
 
 SDL_Window* g_window{};
@@ -76,22 +78,22 @@ real::Minigin::Minigin(const std::string &dataPath, const WindowSettings& window
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
 
-	SDLRenderer::GetInstance().Init(g_window, window.background);
-
-	ResourceManager::GetInstance().Init(dataPath);
-
 	Time::GetInstance().Init();
 
 #if _DEBUG
 	Locator::RegisterAudioSystem(new LoggingAudio(new SDLAudio()));
+	Locator::RegisterRenderSystem(new LoggingRenderer(new SDLRenderer(g_window, window.background)));
+	Locator::RegisterResourceSystem(new LoggingResourceManager(new SDLResourceManager(dataPath)));
 #else
 	Locator::RegisterAudioSystem(new SDLAudio());
+	Locator::RegisterRenderSystem(new SDLRenderer(g_window, window.background));
+	Locator::RegisterResourceSystem(new SDLResourceManager(dataPath));
 #endif
 }
 
 real::Minigin::~Minigin()
 {
-	SDLRenderer::GetInstance().Destroy();
+	Locator::GetRenderSystem().Destroy();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
 	SDL_Quit();
@@ -101,7 +103,7 @@ void real::Minigin::Run(const std::function<void()>& load)
 {
 	load();
 
-	auto& renderer = SDLRenderer::GetInstance();
+	const auto& renderer = Locator::GetRenderSystem();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = Input::GetInstance();
 	auto& time = Time::GetInstance();

@@ -2,6 +2,7 @@
 #include "ColliderComponent.h"
 
 #include "Input.h"
+#include "Locator.h"
 #include "Logger.h"
 #include "SDLRenderer.h"
 #include "TransformComponent.h"
@@ -49,18 +50,7 @@ void real::ColliderComponent::DebugRender() const
 	if (m_DrawDebug == false)
 		return;
 
-	SDL_Rect rect;
-	rect.x = static_cast<int>(m_Pos.x);
-	rect.y = static_cast<int>(m_Pos.y);
-	rect.w = static_cast<int>(m_Size.x);
-	rect.h = static_cast<int>(m_Size.y);
-
-	SDL_Color color;
-	color.r = static_cast<Uint8>(m_Color.r);
-	color.g = static_cast<Uint8>(m_Color.g);
-	color.b = static_cast<Uint8>(m_Color.b);
-	color.a = static_cast<Uint8>(m_Color.a);
-	SDLRenderer::GetInstance().RenderRectangle(rect, false, color);
+	Locator::GetRenderSystem().RenderRectangle({ m_Pos.x, m_Pos.y, m_Size.x, m_Size.y }, false, m_Color);
 }
 
 void real::ColliderComponent::HandleEvent(glm::ivec2 newPos)
