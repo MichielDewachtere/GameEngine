@@ -89,7 +89,7 @@ void BaseEnemy::Update()
 		pPlayer = GetClosestPlayer(playerPtrs);
 	else if (playerPtrs.empty() || playerPtrs.size() > 2)
 	{
-		real::Logger::LogError("BaseEnemy => No players found");
+		real::Logger::LogError({"BaseEnemy => No players found"});
 		return;
 	}
 
@@ -547,7 +547,7 @@ bool BaseEnemy::CheckForIngredients()
 	{
 		if (m_pCurrentIngredient->GetComponent<Ingredient>()->GetIsFalling() == true)
 		{
-			real::Logger::LogInfo("BaseEnemy => Enemy {} should fall with burger", GetOwner()->GetId());
+			real::Logger::LogInfo({"BaseEnemy => Enemy {} should fall with burger"}, GetOwner()->GetId());
 			GetOwner()->GetComponent<real::SpriteComponent>()->Pause(true);
 			real::Locator::GetAudioSystem().Play(Sounds::enemy_fall);
 			m_CurrentState = EnemyState::fall;
@@ -631,7 +631,7 @@ void BaseEnemy::Fall()
 {
 	if (m_pCurrentIngredient->GetTag() != Tags::ingredient)
 	{
-		real::Logger::LogInfo("BaseEnemy => Enemy {} should be destroyed", GetOwner()->GetId());
+		real::Logger::LogInfo({"BaseEnemy => Enemy {} should be destroyed"}, GetOwner()->GetId());
 		m_CurrentState = EnemyState::dead;
 
 		return;

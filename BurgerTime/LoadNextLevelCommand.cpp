@@ -18,7 +18,7 @@ void LoadNextLevelCommand::Execute()
 {
 	if (PlayerManager::GetInstance().GetAmountOfPlayers() == 0)
 	{
-		real::Logger::LogError("LoadNextLevelCommand => No player found, can not start the game");
+		real::Logger::LogError({"LoadNextLevelCommand => No player found, can not start the game"});
 		return;
 	}
 

@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include "SDLResourceManager.h"
 
+#include <codecvt>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <stdexcept>
@@ -12,7 +13,7 @@
 #include "SDLFont.h"
 
 real::SDLResourceManager::SDLResourceManager(std::string dataPath)
-	: m_DataPath(std::move(dataPath))
+	: ResourceManager(dataPath)
 {
 	if (TTF_Init() != 0)
 	{
@@ -22,9 +23,8 @@ real::SDLResourceManager::SDLResourceManager(std::string dataPath)
 
 std::shared_ptr<real::Texture2D> real::SDLResourceManager::LoadTexture(const std::string& file) const
 {
-	const auto fullPath = m_DataPath + file;
-
 	SDL_Renderer* renderer;
+	const auto fullPath = m_DataPath + file;
 
 #ifdef _DEBUG
 	renderer = dynamic_cast<SDLRenderer*>(&dynamic_cast<LoggingRenderer*>(&Locator::GetRenderSystem())->GetRenderer())->GetSDLRenderer();
@@ -43,5 +43,6 @@ std::shared_ptr<real::Texture2D> real::SDLResourceManager::LoadTexture(const std
 
 std::shared_ptr<real::Font> real::SDLResourceManager::LoadFont(const std::string& file, unsigned size) const
 {
-	return std::make_shared<SDLFont>(m_DataPath + file, size);
+	const auto fullPath = m_DataPath + file;
+	return std::make_shared<SDLFont>(fullPath.c_str(), size);
 }

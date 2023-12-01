@@ -131,7 +131,7 @@ void HighScoreParser::GenerateDefaultJson(const std::string& filename)
     std::ofstream file(filename);
     if (!file.is_open()) 
     {
-        real::Logger::LogError("HighScoreParser => Failed to create JSON file {}", filename);
+        real::Logger::LogError({"HighScoreParser => Failed to create JSON file {}"}, filename);
     	return;
     }
 

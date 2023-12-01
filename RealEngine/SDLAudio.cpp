@@ -107,7 +107,7 @@ namespace real
 		}
 		void Stop(const Sound sound) override
 		{
-			Logger::LogWarning("SDLAudio => The stop function is not yet implemented, {} can not be stopped this way", sound.fileName);
+			Logger::LogWarning({"SDLAudio => The stop function is not yet implemented, {} can not be stopped this way"}, sound.fileName);
 		}
 		void StopAllSounds() override
 		{
@@ -146,7 +146,7 @@ namespace real
 
 			if (!mixChunk) 
 			{
-				Logger::LogError("SDL_mixer could not load sound effect file! SDL_mixer Error: {}", Mix_GetError());
+				Logger::LogError({"SDL_mixer could not load sound effect file! SDL_mixer Error: {}"}, Mix_GetError());
 				return;
 			}
 
@@ -163,7 +163,7 @@ namespace real
 			const int result = Mix_PlayChannel(sound.channel, mixChunk, sound.loops);
 			if (result == -1) 
 			{
-				Logger::LogError("SDL_mixer could not play sound effect! SDL_mixer Error: {}", Mix_GetError());
+				Logger::LogError({"SDL_mixer could not play sound effect! SDL_mixer Error: {}"}, Mix_GetError());
 				return;
 			}
 

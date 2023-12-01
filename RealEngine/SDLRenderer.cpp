@@ -26,7 +26,7 @@ real::SDLRenderer::SDLRenderer(SDL_Window* window, glm::u8vec4 background)
 	Init(window, glmToSDLColor(background));
 }
 
-void real::SDLRenderer::Init(SDL_Window* window, SDL_Color background)
+void real::SDLRenderer::Init(SDL_Window* window, SDL_Color /*background*/)
 {
 	m_pWindow = window;
 	m_pRenderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED);

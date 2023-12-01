@@ -38,7 +38,7 @@ void SpawnPoint::InitComponents(real::GameObject* pOwner, const glm::vec2 pos, c
 	{
 		if ((enemy == Tags::hot_dog || enemy == Tags::egg || enemy == Tags::pickle) == false)
 		{
-			real::Logger::LogWarning("SpawnPoint prefab => {} was not recognized as a tag.", enemy);
+			real::Logger::LogWarning({"SpawnPoint prefab => {} was not recognized as a tag."}, enemy);
 			return;
 		}
 	}

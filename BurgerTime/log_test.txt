@@ -1,0 +1,99 @@
+[Fri Dec  1 16:23:14 2023] [36m[INFO][0m Scene MainMenu is loaded in 0 seconds
+[Fri Dec  1 16:23:14 2023] [36m[INFO][0m Started playing sound 16, attached to file ../data/audio/19_burgermenu.ogg
+[Fri Dec  1 16:23:14 2023] [36m[INFO][0m Loaded font from file: fonts/8-bit-hud.ttf, with size 10
+[Fri Dec  1 16:23:14 2023] [36m[INFO][0m Loaded font from file: fonts/8-bit-hud.ttf, with size 16
+[Fri Dec  1 16:23:14 2023] [36m[INFO][0m Loaded font from file: fonts/8-bit-hud.ttf, with size 32
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: characters/PeterPepperSpriteSheet.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Player 1 has been initialized
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded font from file: fonts/8-bit-hud.ttf, with size 16
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded font from file: fonts/8-bit-hud.ttf, with size 10
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: characters/pepper.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Scene Level01 is loaded in 0 seconds
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Levels/Level01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunTop/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Lettuce/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/Patty/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/left.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/middle01.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/middle02.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Burger/BunBottom/right.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: Misc/ItemsSpriteSheet.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Stopped all sounds from playing
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded font from file: fonts/8-bit-hud.ttf, with size 10
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded font from file: fonts/8-bit-hud.ttf, with size 16
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded font from file: fonts/8-bit-hud.ttf, with size 32
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: misc/iconsspritesheet.png
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Loaded texture from file: misc/iconsspritesheet.png
+[Fri Dec  1 16:23:16 2023] [33m[WARNING][0m @ C:\2022-2023\_Programming4\RealEngine\RealEngine\GameObject.h::class ScoreDisplay *__cdecl real::GameObject::GetComponentInChildren<class ScoreDisplay>(void) (line 130)
+ =>GameObject::GetComponentInChildren => This GameObject doesn't have any child objects
+[Fri Dec  1 16:23:16 2023] [33m[WARNING][0m @ C:\2022-2023\_Programming4\RealEngine\RealEngine\GameObject.h::class ScoreDisplay *__cdecl real::GameObject::GetComponentInChildren<class ScoreDisplay>(void) (line 130)
+ =>GameObject::GetComponentInChildren => This GameObject doesn't have any child objects
+[Fri Dec  1 16:23:16 2023] [33m[WARNING][0m @ C:\2022-2023\_Programming4\RealEngine\RealEngine\GameObject.h::class ScoreDisplay *__cdecl real::GameObject::GetComponentInChildren<class ScoreDisplay>(void) (line 130)
+ =>GameObject::GetComponentInChildren => This GameObject doesn't have any child objects
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Started playing sound 14, attached to file ../data/audio/10_level_intro.ogg
+[Fri Dec  1 16:23:16 2023] [36m[INFO][0m Started playing sound 1, attached to file ../data/audio/11_main.ogg
+[Fri Dec  1 16:23:18 2023] [36m[INFO][0m Spawner => Hotdog should spawn
+[Fri Dec  1 16:23:18 2023] [36m[INFO][0m Loaded texture from file: enemies/HotDogspritesheet.png
+[Fri Dec  1 16:23:18 2023] [36m[INFO][0m Spawner => Egg should spawn
+[Fri Dec  1 16:23:18 2023] [36m[INFO][0m Loaded texture from file: enemies/Eggspritesheet.png
+[Fri Dec  1 16:23:18 2023] [36m[INFO][0m Spawner => Hotdog should spawn
+[Fri Dec  1 16:23:18 2023] [36m[INFO][0m Loaded texture from file: enemies/HotDogspritesheet.png
+[Fri Dec  1 16:23:18 2023] [36m[INFO][0m Spawner => Hotdog should spawn
+[Fri Dec  1 16:23:18 2023] [36m[INFO][0m Loaded texture from file: enemies/HotDogspritesheet.png

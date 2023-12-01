@@ -17,6 +17,7 @@
 #include "LoggingRenderer.h"
 #include "LoggingResourceManager.h"
 #include "SDLAudio.h"
+#include "Logger.h"
 
 SDL_Window* g_window{};
 
@@ -79,6 +80,7 @@ real::Minigin::Minigin(const std::string &dataPath, const WindowSettings& window
 	}
 
 	Time::GetInstance().Init();
+	Logger::Initialize();
 
 #if _DEBUG
 	Locator::RegisterAudioSystem(new LoggingAudio(new SDLAudio()));

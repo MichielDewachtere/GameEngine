@@ -127,7 +127,7 @@ namespace real
 	{
 		if (m_ChildrenPtrs.empty())
 		{
-			Logger::LogWarning("GameObject::GetComponentInChildren => This GameObject doesn't have any child objects");
+			Logger::LogWarning({ "GameObject {} doesn't have any child objects" }, m_Id);
 			return nullptr;
 		}
 
@@ -139,7 +139,7 @@ namespace real
 			pChild->GetComponentInChildren<T>();
 		}
 
-		Logger::LogWarning("GameObject::GetComponentInChildren => No component found in children");
+		Logger::LogWarning({ "No component found in children from game object {}" }, m_Id);
 
 		return nullptr;
 	}

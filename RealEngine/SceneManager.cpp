@@ -52,7 +52,7 @@ real::Scene& real::SceneManager::AddScene(real::Scene* scene)
 
 real::Scene& real::SceneManager::SetSceneActive(const std::string& name, float timer)
 {
-	Logger::LogInfo("Scene {} is loaded in {} seconds", name, timer);
+	Logger::LogInfo({"Scene {} is loaded in {} seconds"}, name, timer);
 
 	timer = std::max(timer, 0.f);
 

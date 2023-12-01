@@ -63,13 +63,13 @@ void real::ColliderComponent::SetSize(const glm::vec2& size)
 {
 	if (size.y < 0)
 	{
-		Logger::LogError("In ColliderComponent, the size of a collider must be positive => size.y was {}", size.y);
+		Logger::LogError({"In ColliderComponent, the size of a collider must be positive => size.y was {}"}, size.y);
 		return;
 	}
 
 	if (size.x < 0)
 	{
-		Logger::LogError("In ColliderComponent, the size of a collider must be positive => size.x was {}", size.x);
+		Logger::LogError({"In ColliderComponent, the size of a collider must be positive => size.x was {}"}, size.x);
 		return;
 	}
 

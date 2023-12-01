@@ -31,7 +31,7 @@ namespace real
 		{
 			if (std::find(m_ObserverPtrs.begin(), m_ObserverPtrs.end(), pObserver) != m_ObserverPtrs.end())
 			{
-				Logger::LogWarning("Observer {} is already added as listener to subject {}", pObserver, this);
+				//Logger::LogWarning(LogString{L"Observer is already added as listener to subject"});
 				return;
 			}
 
@@ -56,8 +56,8 @@ namespace real
 				
 				if (removeIt == m_ObserverPtrs.end())
 				{
-					//m_ObserverPtrs.erase(m_ObserverPtrs.begin());
-					Logger::LogWarning("Subject.h => Could not remove observer {}", pObserver);
+					// TODO: cant add object pointer to logger, maybe add name for subject? OPTIONAL
+					//Logger::LogWarning(LogString{L"Could not remove observer"});
 				}
 				else
 				{

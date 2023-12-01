@@ -197,7 +197,7 @@ real::InputMap* real::Input::GetInputMap(const std::string& name) const
 		}
 	}
 
-	Logger::LogWarning("InputManager => No input map found with the name {}", name);
+	Logger::LogWarning({"InputManager => No input map found with the name {}"}, name);
 	return nullptr;
 }
 
@@ -212,7 +212,7 @@ void real::Input::SetInputMapActive(const std::string& name)
 		}
 	}
 
-	Logger::LogWarning("InputManager => No input map found with the name {}", name);
+	Logger::LogWarning({"InputManager => No input map found with the name {}"}, name);
 }
 
 glm::vec2 real::Input::GetMousePosition()

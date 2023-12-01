@@ -11,7 +11,7 @@ void real::LoggingRenderer::Render() const
 void real::LoggingRenderer::Destroy()
 {
 	m_RealRenderer->Destroy();
-	Logger::LogInfo("Destroyed Renderer");
+	Logger::LogInfo({"Destroyed Renderer"});
 }
 
 void real::LoggingRenderer::RenderTexture(const Texture2D& texture, float x, float y) const

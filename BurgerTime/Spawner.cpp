@@ -27,17 +27,17 @@ void Spawner::Update()
 		switch (m_Types[m_NeedEnemies - 1])
 		{
 		case EnemyTypes::hotDog:
-			real::Logger::LogInfo("Spawner => Hotdog should spawn");
+			real::Logger::LogInfo({"Spawner => Hotdog should spawn"});
 
 			SpawnEnemyType(Tags::hot_dog, 100);
 			break;
 		case EnemyTypes::egg:
-			real::Logger::LogInfo("Spawner => Egg should spawn");
+			real::Logger::LogInfo({"Spawner => Egg should spawn"});
 
 			SpawnEnemyType(Tags::egg, 300);
 			break;
 		case EnemyTypes::pickle:
-			real::Logger::LogInfo("Spawner => Pickle should spawn");
+			real::Logger::LogInfo({"Spawner => Pickle should spawn"});
 
 			SpawnEnemyType(Tags::pickle, 200);
 			break;

@@ -96,7 +96,7 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 {
 	if (m_ControllersInUse.empty() == false && std::ranges::find(m_ControllersInUse, controllerIdx) != m_ControllersInUse.end())
 	{
-		real::Logger::LogWarning("Controller {} has already been assigned to a character", controllerIdx);
+		real::Logger::LogWarning({"Controller {} has already been assigned to a character"}, controllerIdx);
 		return;
 	}
 
@@ -115,14 +115,14 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		spriteSheet.pTexture = pCharacterSpriteSheetTexture;
 
 		gamePlayInputMap = input.AddInputMap(InputMaps::gameplay);
-		real::Logger::LogInfo("Player 1 has been initialized");
+		real::Logger::LogInfo({"Player 1 has been initialized"});
 		playerJoined.Notify(1);
 	}
 	else if (m_PlayerPtrs.size() == 1)
 	{
 		if (useKeyboard && m_KeyboardInUse)
 		{
-			real::Logger::LogWarning("The keyboard is already linked to an existing player");
+			real::Logger::LogWarning({"The keyboard is already linked to an existing player"});
 			return;
 		}
 
@@ -131,12 +131,12 @@ void PlayerManager::AddPlayer(bool useKeyboard, const int controllerIdx)
 		spriteSheet.pTexture = pCharacterSpriteSheetTexture;
 
 		gamePlayInputMap = input.GetInputMap(InputMaps::gameplay);
-		real::Logger::LogInfo("Player 2 has been initialized");
+		real::Logger::LogInfo({"Player 2 has been initialized"});
 		playerJoined.Notify(2);
 	}
 	else
 	{
-		real::Logger::LogWarning("There are already 2 players initialized");
+		real::Logger::LogWarning({"There are already 2 players initialized"});
 		return;
 	}
 
